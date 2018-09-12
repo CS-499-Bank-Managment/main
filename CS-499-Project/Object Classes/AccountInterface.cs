@@ -39,16 +39,10 @@ namespace CS_499_Project.Object_Classes
         //TODO: May add extra data that other banks have, but for now, this is the minimum
 
         //get for balance
-        public decimal accountBalance()
-        {
-            return balance;
-        }
+        public decimal accountBalance() { return this.balance; }
 
         //set for balance
-        public void changeAccountBalance(decimal bal)
-        {
-            balance = bal;
-        }
+        public void changeAccountBalance(decimal bal) { this.balance = bal; }
 
         //will be used to add transactions when we get those
         public void addTransaction(/*put some kind of Transaction object here*/)
