@@ -34,8 +34,9 @@ namespace CS_499_Project.Object_Classes
         protected string display_name;
         //The balance after pending transactions, such as transfers or payments
         protected decimal pending_balance;
-        
-        //TODO: We also need a transaction object so we can make a list of transactions in here
+        //The list of all transactions under this account
+        protected List<Transaction> transactionList;
+
         //TODO: May add extra data that other banks have, but for now, this is the minimum
 
         //get for balance
@@ -44,10 +45,10 @@ namespace CS_499_Project.Object_Classes
         //set for balance
         public void changeAccountBalance(decimal bal) { this.balance = bal; }
 
-        //will be used to add transactions when we get those
-        public void addTransaction(/*put some kind of Transaction object here*/)
+        //add transaction to the list
+        public void addTransaction(Transaction transaction)
         {
-            //transactionList.add(transaction) or something like that
+            transactionList.add(transaction);
         }
     }
 }
