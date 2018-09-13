@@ -50,5 +50,19 @@ namespace CS_499_Project.Object_Classes
         {
             transactionList.add(transaction);
         }
+
+        public AccountInterface(decimal initial_amount, 
+                                long number, 
+                                int type, 
+                                string user_name,
+                                string account_name)
+        {
+            //TODO: define the interest rate and date based on the account type
+            this.balance = initial_amount;
+            this.account_type = type;
+            this.user = user_name;
+            this.display_name = account_name;
+            this.account_number = number;
+        }
     }
 }
