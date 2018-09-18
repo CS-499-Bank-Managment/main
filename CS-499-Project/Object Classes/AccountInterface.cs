@@ -6,18 +6,18 @@ using System.DateTime;
 
 namespace CS_499_Project.Object_Classes
 {
+    //an enum to make account types simple
+    enum AccountType
+    {
+        CHECKING,
+        SAVINGS,
+        MONEY_MARKET,
+        MORTGAGE,
+        CREDIT
+    }
+
     public abstract class AccountInterface
     {
-        //an enum to make account types simple
-        enum AccountType
-        {
-            CHECKING,
-            SAVINGS,
-            MONEY_MARKET,
-            MORTGAGE,
-            CREDIT
-        }
-
         //How much is in the account
         protected decimal balance;
         //Account number, whatever we use internally for that
@@ -44,6 +44,8 @@ namespace CS_499_Project.Object_Classes
 
         //set for balance
         public void changeAccountBalance(decimal bal) { this.balance = bal; }
+
+        public long accountNumber() { return this.account_number; }
 
         //add transaction to the list
         public void addTransaction(Transaction transaction)
