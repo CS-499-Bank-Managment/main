@@ -20,11 +20,12 @@ namespace CS_499_Project.Object_Classes
             return true;
         }
 
-    public bool DeleteTeller()
+    public bool DeleteTeller(TellerProfile teller)
     {
         //Lookup the MongoDB and delete the record from the collection.
         //Logout the teller
-        TellerProfile.LogOut();
+        teller.LogOut();
+        return !teller.IsAuthenticated();
     }
 }
 }
