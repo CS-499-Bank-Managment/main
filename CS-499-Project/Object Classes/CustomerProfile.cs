@@ -9,7 +9,7 @@ namespace CS_499_Project.Object_Classes
     {
         public CustomerProfile()
         {
-            AccountInterface account1 = new AccountInterface(100.00, 123456, AccountType.CHECKING, "my_user", "Checking Account");
+            AccountInterface account1 = new AccountInterface(100.00m, 123456, (int)AccountType.CHECKING, "my_user", "Checking Account");
             this.accounts.Add(account1);
         }
 

@@ -12,5 +12,19 @@ namespace CS_499_Project.Object_Classes
         {
             this.profile_type = ProfileType.ADMIN;
         }
+
+        public bool CreateTeller()
+        {
+            TellerProfile newteller = new TellerProfile();
+            //TODO: input the new teller into MongoDB.
+            return true;
+        }
+
+    public bool DeleteTeller()
+    {
+        //Lookup the MongoDB and delete the record from the collection.
+        //Logout the teller
+        TellerProfile.LogOut();
+    }
 }
 }

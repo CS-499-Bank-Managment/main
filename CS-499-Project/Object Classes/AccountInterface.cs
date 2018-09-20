@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.DateTime;
+//using System.DateTime;
 
 namespace CS_499_Project.Object_Classes
 {
@@ -16,7 +16,7 @@ namespace CS_499_Project.Object_Classes
         CREDIT
     }
 
-    public abstract class AccountInterface
+    public class AccountInterface
     {
         //How much is in the account
         protected decimal balance;
@@ -50,7 +50,7 @@ namespace CS_499_Project.Object_Classes
         //add transaction to the list
         public void addTransaction(Transaction transaction)
         {
-            transactionList.add(transaction);
+            transactionList.Add(transaction);
         }
 
         public AccountInterface(decimal initial_amount, 
