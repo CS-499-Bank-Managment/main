@@ -17,6 +17,7 @@ namespace CS_499_Project
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -26,13 +27,18 @@ namespace CS_499_Project
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("admin", "{controller=Home}/{action=Index}/{username}/{password}");
+                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                //https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/routing?view=aspnetcore-2.1
+                //https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/introduction/adding-a-view
+                //https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/introduction/adding-a-controller
+            }
+            );
 
             app.Run(async (context) =>
             {
-                string page = context.Request.Path.ToString();
-                string[] route = page.Split("/");
-                string content;
-                await context.Response.WriteAsync( System.IO.File.ReadAllText("./wwwroot/" + route[1]) );
                 await context.Response.WriteAsync("Hello World!");
             });
         }
