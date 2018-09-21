@@ -9,4 +9,9 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\Angular\app.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\Angular\controller.js" />
+  </ItemGroup>
+
 </Project>

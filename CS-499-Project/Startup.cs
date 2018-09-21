@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +29,10 @@ namespace CS_499_Project
 
             app.Run(async (context) =>
             {
+                string page = context.Request.Path.ToString();
+                string[] route = page.Split("/");
+                string content;
+                await context.Response.WriteAsync( System.IO.File.ReadAllText("./wwwroot/" + route[1]) );
                 await context.Response.WriteAsync("Hello World!");
             });
         }
