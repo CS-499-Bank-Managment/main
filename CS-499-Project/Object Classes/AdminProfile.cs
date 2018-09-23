@@ -17,8 +17,9 @@ namespace CS_499_Project.Object_Classes
 
         public bool CreateProfile(string username, string password, string role)
         {
-            using (StreamWriter outputFile = new StreamWriter(Path.Combine("./","WriteLines.txt"))) {
-                outputFile.WriteLine($"{username},{password},{role}");
+            using (StreamWriter w = File.AppendText("./WriteLines.txt"))
+            {
+                w.WriteLine($"{username},{password},{role}");
             }
             return true;
         }
@@ -27,8 +28,9 @@ namespace CS_499_Project.Object_Classes
         {
             
             //DELETE THIS LATER. Flatfile for testing.
-            using (StreamWriter outputFile = new StreamWriter(Path.Combine("./","WriteLines.txt"))) {
-                outputFile.WriteLine($"{user.username},{user.temp_password_field},{user.profile_type}");
+            using (StreamWriter w = File.AppendText("./WriteLines.txt"))
+            {
+                w.WriteLine($"{user.username},{user.temp_password_field},{user.profile_type}");
             }
             
             

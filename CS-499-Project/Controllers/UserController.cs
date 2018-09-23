@@ -34,7 +34,17 @@ namespace CS_499_Project.Controllers
                         if (role == "admin")
                         {
                             //do stuff.
-                            ViewBag.status = "Logged in";
+                            ViewBag.status = "Admin";
+                        }
+
+                        if (role == "teller")
+                        {
+                            ViewBag.status = "Teller";
+                        }
+
+                        if (role == "customer")
+                        {
+                            ViewBag.status = "Customer";
                         }
                     }
                 }

@@ -30,7 +30,7 @@ namespace CS_499_Project
             }
             app.UseMvc(routes =>
                 {
-                routes.MapRoute("admin", "{controller=Home}/{action=Index}/{username?}/{password?}/{role?}");
+                routes.MapRoute("admin", "{controller}/{action}/{username?}/{password?}/{role?}");
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 routes.MapRoute("index page", "/", new {controller = "User", action = "Index"});
                 //https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/routing?view=aspnetcore-2.1
