@@ -6,6 +6,11 @@ namespace CS_499_Project.Controllers
 {
     public class UserController : Controller
     {
+        public IActionResult Index()
+        {
+            return View();
+        }
+        
         // GET
         public IActionResult Login(string username, string password)
         {
@@ -29,7 +34,7 @@ namespace CS_499_Project.Controllers
                         if (role == "admin")
                         {
                             //do stuff.
-                            ViewBag.status = "yes";
+                            ViewBag.status = "Logged in";
                         }
                     }
                 }
