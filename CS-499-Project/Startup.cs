@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CS_499_Project
@@ -29,7 +30,7 @@ namespace CS_499_Project
             }
             app.UseMvc(routes =>
             {
-                routes.MapRoute("admin", "{controller=Home}/{action=Index}/{username}/{password}");
+                routes.MapRoute("admin", "{controller=Home}/{action=Index}/{username?}/{password?}/{role?}");
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 //https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/routing?view=aspnetcore-2.1
                 //https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/introduction/adding-a-view
