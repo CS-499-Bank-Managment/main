@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CS_499_Project.Object_Classes
 {
-    public class CustomerProfile
+    public class CustomerProfile : ProfileInterface
     {
         public CustomerProfile()
         {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CS_499_Project.Object_Classes
 {
-    public class TellerProfile
+    public class TellerProfile : ProfileInterface
     {
         private bool authenticated;
         private string FullName;
