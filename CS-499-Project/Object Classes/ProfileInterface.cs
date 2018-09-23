@@ -61,5 +61,11 @@ namespace CS_499_Project.Object_Classes
             
         }
 
+        public ProfileInterface(string username, string password)
+            {
+            //Constructor that can be used to login.
+}           //MongoDB.FineOne({"username" : username, "password" : password})
+            //Construct object based on role record.
+
     }
 }
