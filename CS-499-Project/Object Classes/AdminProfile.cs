@@ -13,18 +13,32 @@ namespace CS_499_Project.Object_Classes
             this.profile_type = ProfileType.ADMIN;
         }
 
-        public bool CreateTeller()
+        public bool CreateProfile(ProfileInterface user)
         {
-            TellerProfile newteller = new TellerProfile();
+            
             //TODO: input the new teller into MongoDB.
+            //MongoDB.Insert, Collection = Accounts.
+            /* Mongo Json:
+             * { "_id" : getNextSequenceValue("id"),
+             * "username" : user.username,
+             * "password" : user.password,
+             * "fullname" : user.user_firstname + user.user_surname,
+             * "role" : user.profile_type
+             * }
+             */
             return true;
         }
 
-    public bool DeleteTeller(TellerProfile teller)
+    public bool DeleteProfile(ProfileInterface user)
     {
         //Lookup the MongoDB and delete the record from the collection.
+        /* MongoDB.deleteOne({ "_id"  : user.id_number });
+         * 
+         */
+        
         //Logout the teller
-        teller.LogOut();
+
+        user.LogOut();
         return !teller.IsAuthenticated();
     }
 }

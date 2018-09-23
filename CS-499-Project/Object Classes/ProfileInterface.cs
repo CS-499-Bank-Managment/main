@@ -50,6 +50,12 @@ namespace CS_499_Project.Object_Classes
                 return false;
         }
 
+        public virtual void LogOut() 
+            {
+            //Clear session info & cookies in DB / server.
+            
+        }                                    
+
         public ProfileInterface()
         {
             
