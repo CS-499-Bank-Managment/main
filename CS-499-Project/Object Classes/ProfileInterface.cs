@@ -50,6 +50,12 @@ namespace CS_499_Project.Object_Classes
                 return false;
         }
 
+        public virtual bool isAuthenticated()
+        {
+            //checks for authentication of users already logged in.
+            return true;
+        }
+
         public virtual void LogOut() 
             {
             //Clear session info & cookies in DB / server.

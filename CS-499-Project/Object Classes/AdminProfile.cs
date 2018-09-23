@@ -39,7 +39,7 @@ namespace CS_499_Project.Object_Classes
         //Logout the teller
 
         user.LogOut();
-        return !teller.IsAuthenticated();
+        return !user.isAuthenticated();
     }
 }
 }
