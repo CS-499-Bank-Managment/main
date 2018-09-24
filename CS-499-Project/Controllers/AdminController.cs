@@ -21,7 +21,7 @@ namespace CS_499_Project.Controllers
         public IActionResult Create(string username, string password, string role)
         {
             AdminProfile foo = new AdminProfile();
-            ViewBag.username = username; ;
+            ViewBag.username = username;
             ViewBag.password = password;
             ViewBag.role = role;
             foo.CreateProfile(username, password, role);
