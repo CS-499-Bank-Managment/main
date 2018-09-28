@@ -26,9 +26,11 @@ namespace CS_499_Project.Object_Classes
     
         public bool CreateProfile(ProfileInterface user)
         {
+            //How to use Forms in ASP.Net Core
+            //https://docs.microsoft.com/en-us/aspnet/core/mvc/views/working-with-forms?view=aspnetcore-2.1
             
             //DELETE THIS LATER. Flatfile for testing.
-            using (StreamWriter w = File.AppendText("./WriteLines.txt"))
+            using (var w = File.AppendText("./WriteLines.txt"))
             {
                 w.WriteLine($"{user.username},{user.temp_password_field},{user.profile_type}");
             }
@@ -53,11 +55,11 @@ namespace CS_499_Project.Object_Classes
         /* MongoDB.deleteOne({ "_id"  : user.id_number });
          * 
          */
-        var tempfile = Path.GetTempFileName();
+        var tempFile = Path.GetTempFileName();
         var temp = File.ReadLines("./WriteLines.txt").Where(l => l.Split(",")[0] != user.username);
-        File.WriteAllLines(tempfile, temp);
+        File.WriteAllLines(tempFile, temp);
         File.Delete("./WriteLines.txt");
-        File.Move(tempfile, "./WriteLines.txt");
+        File.Move(tempFile, "./WriteLines.txt");
         
 
         user.LogOut();
