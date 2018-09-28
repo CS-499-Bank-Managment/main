@@ -53,11 +53,36 @@ namespace CS_499_Project.Object_Classes
         /* MongoDB.deleteOne({ "_id"  : user.id_number });
          * 
          */
+        var tempfile = Path.GetTempFileName();
+        var temp = File.ReadLines("./WriteLines.txt").Where(l => l.Split(",")[0] != user.username);
+        File.WriteAllLines(tempfile, temp);
+        File.Delete("./WriteLines.txt");
+        File.Move(tempfile, "./WriteLines.txt");
         
-        //Logout the teller
 
         user.LogOut();
         return !user.isAuthenticated();
+    }
+    
+    public bool DeleteProfile(string username)
+    {
+        //Lookup the MongoDB and delete the record from the collection.
+        /* MongoDB.deleteOne({ "_id"  : user.id_number });
+         * 
+         */
+        var tempfile = Path.GetTempFileName();
+        var temp = File.ReadLines("./WriteLines.txt").Where(l => l.Split(",")[0] != username);
+        File.WriteAllLines(tempfile, temp);
+        File.Delete("./WriteLines.txt");
+        File.Move(tempfile, "./WriteLines.txt");
+
+        return true;
+    }
+
+    public bool Check(string username)
+    {
+        var temp = File.ReadLines("./WriteLines.txt").Where(l => l.Split(",")[0] == username);
+        return temp.Equals(null);
     }
 }
 }

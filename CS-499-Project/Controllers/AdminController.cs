@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CS_499_Project.Object_Classes;
@@ -25,6 +26,17 @@ namespace CS_499_Project.Controllers
             ViewBag.password = password;
             ViewBag.role = role;
             foo.CreateProfile(username, password, role);
+            return View();
+        }
+
+        public IActionResult Delete(string username)
+        {
+            AdminProfile foo = new AdminProfile();
+            ViewBag.deleting = username;
+            foo.DeleteProfile(username);
+            ViewBag.status = foo.Check(username);
+                
+            
             return View();
         }
     }

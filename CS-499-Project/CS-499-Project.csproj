@@ -7,12 +7,14 @@
   <ItemGroup>
     <PackageReference Include="angularjs" Version="1.7.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.Net.Compilers" Version="2.8.2" />
+    <PackageReference Include="Microsoft.NetCore.Compilers" Version="2.8.2" />
   </ItemGroup>
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\Angular\app.js" />
     <_ContentIncludedByDefault Remove="wwwroot\Angular\controller.js" />
+    <_ContentIncludedByDefault Remove="Views\Admin\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Admin\Index.cshtml" />
   </ItemGroup>
 
 </Project>

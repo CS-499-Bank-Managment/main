@@ -1,2 +1,2 @@
-Jen,foobar,teller
+Clay,foo,admin
 Clay,foo,admin
