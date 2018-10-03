@@ -25,7 +25,7 @@ namespace CS_499_Project.Object_Classes
                 using (SQLiteCommand addUser = login.CreateCommand())
                 {
                     addUser.CommandType = CommandType.Text;
-                    addUser.CommandText = "INSERT INTO admins (username, password) VALUES (USER, PW)";
+                    addUser.CommandText = "INSERT INTO admins (username, password) VALUES (@USER, @PW)";
                     addUser.Parameters.AddWithValue("USER",username);
                     addUser.Parameters.AddWithValue("PW", password);
                     addUser.ExecuteNonQuery();
