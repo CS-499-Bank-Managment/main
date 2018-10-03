@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 using CS_499_Project.Object_Classes;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB;
-using MongoDB.Driver;
-using MongoDB.Bson;
+using System.Data.SQLite;
+
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -44,18 +43,8 @@ namespace CS_499_Project.Controllers
         }
 
         public IActionResult Mongo()
-        {
-            
-            var client = new MongoClient("Hidden Connection String.");
-            var database = client.GetDatabase("test");
-            var info = database.GetCollection<BsonDocument>("test");
-            var bstr = new BsonDocument
-            {
-                {"username", "clay"}
-            };
-
-            ViewBag.db = info.Find(bstr).ToList() ;
-
+        {           
+            //TODO: Figure out how SQLite works
             return View();
         }
     }
