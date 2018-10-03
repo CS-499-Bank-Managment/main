@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using System.Data.SQLite;
 
 namespace CS_499_Project.Object_Classes
 {
@@ -17,10 +19,20 @@ namespace CS_499_Project.Object_Classes
 
         public bool CreateProfile(string username, string password, string role)
         {
-            using (StreamWriter w = File.AppendText("./WriteLines.txt"))
+            using (SQLiteConnection login = new SQLiteConnection("Data Source=Accounts.sqlite;Version=3;"))
             {
-                w.WriteLine($"{username},{password},{role}");
+                login.Open();
+                using (SQLiteCommand addUser = login.CreateCommand())
+                {
+                    addUser.CommandType = CommandType.Text;
+                    addUser.CommandText = "INSERT INTO admins (username, password) VALUES (USER, PW)";
+                    addUser.Parameters.AddWithValue("USER",username);
+                    addUser.Parameters.AddWithValue("PW", password);
+                    addUser.ExecuteNonQuery();
+                }
+
             }
+
             return true;
         }
     

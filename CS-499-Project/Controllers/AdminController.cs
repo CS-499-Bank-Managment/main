@@ -45,6 +45,7 @@ namespace CS_499_Project.Controllers
         public IActionResult Mongo()
         {           
             //TODO: Figure out how SQLite works
+            SQLiteConnection test = new SQLiteConnection("Accounts.sqlite");
             return View();
         }
     }
