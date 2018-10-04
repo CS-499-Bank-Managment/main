@@ -17,7 +17,7 @@ namespace CS_499_Project.Controllers
         }
         //You can set which method to work on by annotating the function with
         //[HttpGet] directly above the function, like this: 
-	//Changing this so i have text for test commit
+	//Last test commit
         [HttpGet]
         public IActionResult Login(string username, string password)
         {
