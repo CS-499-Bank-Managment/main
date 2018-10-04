@@ -19,20 +19,8 @@ namespace CS_499_Project.Object_Classes
 
         public bool CreateProfile(string username, string password, string role)
         {
-            using (SQLiteConnection login = new SQLiteConnection("Data Source=Accounts.sqlite;Version=3;"))
-            {
-                login.Open();
-                using (SQLiteCommand addUser = login.CreateCommand())
-                {
-                    addUser.CommandType = CommandType.Text;
-                    addUser.CommandText = "INSERT INTO admins (username, password) VALUES (@USER, @PW)";
-                    addUser.Parameters.AddWithValue("USER",username);
-                    addUser.Parameters.AddWithValue("PW", password);
-                    addUser.ExecuteNonQuery();
-                }
-
-            }
-
+            Database test = new Database();
+            test.NewUser(username, password, role);
             return true;
         }
     

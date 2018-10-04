@@ -43,9 +43,15 @@ namespace CS_499_Project.Controllers
         }
 
         public IActionResult Mongo()
-        {           
-            //TODO: Figure out how SQLite works
-            SQLiteConnection test = new SQLiteConnection("Accounts.sqlite");
+        {
+            List<string> results = new List<string>();
+            Database test = new Database();
+            results = test.Login("Clay", "foo", "admin");
+            ViewBag.results = results;
+            foreach (var item in results)
+            {
+                Console.WriteLine(item);
+            }
             return View();
         }
     }
