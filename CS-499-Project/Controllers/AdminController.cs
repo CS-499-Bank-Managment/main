@@ -42,11 +42,11 @@ namespace CS_499_Project.Controllers
             return View();
         }
 
-        public IActionResult Mongo()
+        public IActionResult Mongo(string username, string password, string role)
         {
             List<string> results = new List<string>();
             Database test = new Database();
-            results = test.Login("Clay", "foo", "admin");
+            results = test.Login(username, password, role);
             ViewBag.results = results;
             foreach (var item in results)
             {
