@@ -54,5 +54,19 @@ namespace CS_499_Project.Controllers
             }
             return View();
         }
+
+        public IActionResult CustAcct(string username)
+        {
+            AdminProfile creation = new AdminProfile();
+            ViewBag.results = creation.CreateCustAccount(username);
+            return View("Mongo");
+        }
+
+        public IActionResult DeleteCustAcct(string username, string acct_id)
+        {
+            var foo = new Database();
+            foo.DeleteCustAcct(username, Convert.ToInt32(acct_id));
+            return View("Index");
+        }
     }
 }

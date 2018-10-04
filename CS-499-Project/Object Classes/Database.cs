@@ -47,6 +47,70 @@ namespace CS_499_Project.Object_Classes
 
             return temp;
         }
+
+        public List<string> CreateCustAcct(string username)
+        {
+            List<string> results = new List<string>();
+            this.dbcmd.CommandText = "SELECT * from customers where username=@user";
+            this.dbcmd.Parameters.AddWithValue("user", username);
+            var reader = this.dbcmd.ExecuteReader();
+            var userid = "";
+            while(reader.Read())
+            {
+                Console.Out.WriteLine(Convert.ToString(reader["userid"]));
+                userid = Convert.ToString(reader["userid"]);
+            }
+
+            reader.Close();
+            this.dbcmd.CommandText = "INSERT INTO customer_acct (owner_id) VALUES (@user)";
+            this.dbcmd.Parameters.AddWithValue("user", userid);
+            this.dbcmd.ExecuteNonQuery();
+
+            this.dbcmd.CommandText = "SELECT * from customer_acct where owner_id=@owner";
+            this.dbcmd.Parameters.AddWithValue("owner", userid);
+            var reader_debug = this.dbcmd.ExecuteReader();
+            while (reader_debug.Read())
+            {
+                results.Add(reader_debug["owner_id"].ToString());
+                results.Add(reader_debug["acct_id"].ToString());
+                results.Add(reader_debug["balance"].ToString());
+            }
+
+            return results;
+        }
+
+        public bool DeleteCustAcct(string username, int acct_id)
+        {
+            this.dbcmd.CommandText = "Select * from customers where username=@user";
+            this.dbcmd.Parameters.AddWithValue("user", username);
+            var reader = this.dbcmd.ExecuteReader();
+            var userid = "";
+            while (reader.Read())
+            {
+                userid = reader["userid"].ToString();
+            }
+            Console.Out.WriteLine("USER ID!!!" + userid);
+            reader.Close();
+
+            this.dbcmd.CommandText = "DELETE from customer_acct where acct_id=@act";
+            this.dbcmd.Parameters.AddWithValue("act", acct_id);
+            this.dbcmd.ExecuteNonQuery();
+
+            this.dbcmd.CommandText = "Select * from customer_acct where owner_id=@usr";
+            this.dbcmd.Parameters.AddWithValue("usr", userid);
+            var reader_debug = this.dbcmd.ExecuteReader();
+            while (reader_debug.Read())
+            {
+                foreach (var item in reader_debug)
+                {
+                    Console.Out.WriteLine(item.ToString());
+                }
+            }
+
+            return true;
+        }
+        
+        
         
         ~Database()
         {

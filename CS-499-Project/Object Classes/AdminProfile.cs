@@ -86,5 +86,11 @@ namespace CS_499_Project.Object_Classes
         var temp = File.ReadLines("./WriteLines.txt").Where(l => l.Split(",")[0] == username);
         return temp.Equals(null);
     }
+
+    public List<string> CreateCustAccount(string username)
+    {
+        Database MakeAcctDb = new Database();
+        return MakeAcctDb.CreateCustAcct(username);
+    }
 }
 }
