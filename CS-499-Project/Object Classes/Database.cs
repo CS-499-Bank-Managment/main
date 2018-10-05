@@ -165,8 +165,11 @@ namespace CS_499_Project.Object_Classes
                 this.dbcmd.Parameters.AddWithValue("bal", acct_to_balance + amount);
                 this.dbcmd.Parameters.AddWithValue("act", acct_to);
                 this.dbcmd.ExecuteNonQuery();
+                return true;
+                
             }
 
+            return false;
         }
         
         //Destructor for database to make sure nothing stays open.
