@@ -17,7 +17,8 @@ namespace CS_499_Project.Controllers
         public IActionResult Between(string acct_to, string acct_from, string amount)
         {
             TellerProfile foo = new TellerProfile();
-            foo.Transfer(Convert.ToInt32(acct_to), Convert.ToInt32(acct_from), Convert.ToDecimal(amount));
+            ViewBag.ResultDict = foo.Transfer(Convert.ToInt32(acct_to), 
+                Convert.ToInt32(acct_from), Convert.ToDecimal(amount));
             return View("Transaction");
         }
         

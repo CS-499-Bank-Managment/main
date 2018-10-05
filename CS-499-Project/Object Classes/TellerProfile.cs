@@ -24,11 +24,11 @@ namespace CS_499_Project.Object_Classes
             return this._authenticated;
         }
         
-        public bool Transfer(int AcctTo, int AcctFrom, decimal amount)
+        public Dictionary<string, string> Transfer(int AcctTo, int AcctFrom, decimal amount)
         {
             Database DB = new Database();
-            DB.TransferAcct(AcctTo, AcctFrom, amount);
-            return true;
+            Dictionary<string, string> results = DB.TransferAcct(AcctTo, AcctFrom, amount);
+            return results;
         }
         
         

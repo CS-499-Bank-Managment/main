@@ -5,8 +5,14 @@
     <title>title</title>
 </head>
 <body>
-<div>
-      
+
+
+@foreach (KeyValuePair<string, string> item in ViewBag.ResultDict)
+{
+    @item.Key @item.Value <br>
+}
+ <div>
+
 </div>
 </body>
 </html>

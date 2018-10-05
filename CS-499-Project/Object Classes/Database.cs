@@ -130,16 +130,19 @@ namespace CS_499_Project.Object_Classes
         }
 
 
-        public bool TransferAcct(int acct_to, int acct_from, decimal amount)
+        public Dictionary<string, string> TransferAcct(int acct_to, int acct_from, decimal amount)
         {
+            Dictionary<string, string> result_dict = new Dictionary<string, string>();
             this.dbcmd.CommandText = "Select balance from customer_acct where acct_id=@act";
             this.dbcmd.Parameters.AddWithValue("act", acct_to);
             var acct_to_balance_reader = this.dbcmd.ExecuteReader();
             var acct_to_balance = new decimal();
+            result_dict.Add("amount", amount.ToString());
             while (acct_to_balance_reader.Read())
             {
                 acct_to_balance = Convert.ToDecimal(acct_to_balance_reader["balance"]);
             }
+            result_dict.Add("Acct_To_Original", acct_to_balance.ToString());
             acct_to_balance_reader.Close();
 
 
@@ -151,6 +154,7 @@ namespace CS_499_Project.Object_Classes
             {
                 acct_from_balance = Convert.ToDecimal(acct_from_balance_reader["balance"]);
             }
+            result_dict.Add("Acct_From_Original", acct_from_balance.ToString());
 
             acct_from_balance_reader.Close();
 
@@ -161,15 +165,34 @@ namespace CS_499_Project.Object_Classes
                 this.dbcmd.Parameters.AddWithValue("act", acct_from);
                 this.dbcmd.ExecuteNonQuery();
 
+                this.dbcmd.CommandText = "SELECT balance from customer_acct where acct_id=@act";
+                this.dbcmd.Parameters.AddWithValue("act", acct_from);
+                var new_balance_reader = this.dbcmd.ExecuteReader();
+                while (new_balance_reader.Read())
+                {
+                    result_dict.Add("Acct_From_New", new_balance_reader["balance"].ToString());
+                }
+                new_balance_reader.Close();
+
+
                 this.dbcmd.CommandText = "UPDATE customer_acct SET balance=@bal where acct_id=@act";
                 this.dbcmd.Parameters.AddWithValue("bal", acct_to_balance + amount);
                 this.dbcmd.Parameters.AddWithValue("act", acct_to);
                 this.dbcmd.ExecuteNonQuery();
-                return true;
+                
+                
+                this.dbcmd.CommandText = "SELECT balance from customer_acct where acct_id=@act";
+                this.dbcmd.Parameters.AddWithValue("act", acct_to);
+                new_balance_reader = this.dbcmd.ExecuteReader();
+                while (new_balance_reader.Read())
+                {
+                    result_dict.Add("Acct_To_New",new_balance_reader["balance"].ToString());
+                }
+                new_balance_reader.Close();
                 
             }
 
-            return false;
+            return result_dict;
         }
 
         public bool AddAmount(int acct, decimal amount)
