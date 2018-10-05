@@ -7,12 +7,19 @@ using System.Collections.Generic;
 
 namespace CS_499_Project.Object_Classes
 {
+    /*
+     *
+     *Class to abstract the database access
+     * 
+     */
     public class Database
     {
+        //Variables for connection and command string.
         private SQLiteConnection db;
         private SQLiteCommand dbcmd;
         public Database()
         {
+            //Create a connection and open it in the driver
             this.db = new SQLiteConnection("Data Source=Accounts.sqlite;Version=3;");
             this.db.Open();
             this.dbcmd = this.db.CreateCommand();
@@ -22,6 +29,7 @@ namespace CS_499_Project.Object_Classes
 
         public bool NewUser(string username, string password, string role)
         {
+            //Add the username and password into the role diagram. TODO: fix sqli in roles.
             this.dbcmd.CommandText = $"INSERT INTO {role}s (username,password) VALUES (@user, @pwd)";
             this.dbcmd.Parameters.AddWithValue("user", username);
             this.dbcmd.Parameters.AddWithValue("pwd", password);
@@ -33,6 +41,7 @@ namespace CS_499_Project.Object_Classes
 
         public List<string> Login(string username, string password, string role)
         {
+            //Login method, TODO: fix sqli in role
             List<string> temp = new List<string>();
             this.dbcmd.CommandText = $"SELECT * from {role}s where username=@user and password=@pwd";
             this.dbcmd.Parameters.AddWithValue("user", username);
@@ -50,6 +59,12 @@ namespace CS_499_Project.Object_Classes
 
         public List<string> CreateCustAcct(string username)
         {
+            /*
+             * To create a customer account, first you pass their username,
+             * it then pulls the userid from the customer DB
+             *  then, it adds another row into the customer_acct table with a new account
+             *  todo: initial balance?
+             */
             List<string> results = new List<string>();
             this.dbcmd.CommandText = "SELECT * from customers where username=@user";
             this.dbcmd.Parameters.AddWithValue("user", username);
@@ -81,6 +96,9 @@ namespace CS_499_Project.Object_Classes
 
         public bool DeleteCustAcct(string username, int acct_id)
         {
+            /* Method for deleting customer account given username and acct id,
+             first it queries the customer DB for user ID, then it deletes
+             the row in the accounts DB where the account id and customer id match */
             this.dbcmd.CommandText = "Select * from customers where username=@user";
             this.dbcmd.Parameters.AddWithValue("user", username);
             var reader = this.dbcmd.ExecuteReader();
@@ -92,8 +110,9 @@ namespace CS_499_Project.Object_Classes
             Console.Out.WriteLine("USER ID!!!" + userid);
             reader.Close();
 
-            this.dbcmd.CommandText = "DELETE from customer_acct where acct_id=@act";
+            this.dbcmd.CommandText = "DELETE from customer_acct where acct_id=@act and owner_id=@owner";
             this.dbcmd.Parameters.AddWithValue("act", acct_id);
+            this.dbcmd.Parameters.AddWithValue("owner", userid);
             this.dbcmd.ExecuteNonQuery();
 
             this.dbcmd.CommandText = "Select * from customer_acct where owner_id=@usr";
@@ -111,7 +130,7 @@ namespace CS_499_Project.Object_Classes
         }
         
         
-        
+        //Destructor for database to make sure nothing stays open.
         ~Database()
         {
             this.dbcmd = null;

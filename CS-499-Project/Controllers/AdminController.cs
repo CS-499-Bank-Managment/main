@@ -20,19 +20,22 @@ namespace CS_499_Project.Controllers
         {
             return View();
         }
-
+        //Action method for creating an account
         public IActionResult Create(string username, string password, string role)
-        {
+        {   
+            //Create basic admin profile class - later we'll need to verify this with session info.
             AdminProfile foo = new AdminProfile();
             ViewBag.username = username;
             ViewBag.password = password;
             ViewBag.role = role;
+            //Call the create profile method
             foo.CreateProfile(username, password, role);
             return View();
         }
 
         public IActionResult Delete(string username)
         {
+            //Create basic admin profile. and call it's Delete Profile method.
             AdminProfile foo = new AdminProfile();
             ViewBag.deleting = username;
             foo.DeleteProfile(username);
@@ -41,7 +44,8 @@ namespace CS_499_Project.Controllers
             
             return View();
         }
-
+        
+        //Test method to verify dbs
         public IActionResult Mongo(string username, string password, string role)
         {
             List<string> results = new List<string>();
@@ -54,14 +58,16 @@ namespace CS_499_Project.Controllers
             }
             return View();
         }
-
+            
+        //Method to create a customer account
         public IActionResult CustAcct(string username)
         {
             AdminProfile creation = new AdminProfile();
             ViewBag.results = creation.CreateCustAccount(username);
             return View("Mongo");
         }
-
+        
+        //Method to delete an account within a customer profile.
         public IActionResult DeleteCustAcct(string username, string acct_id)
         {
             var foo = new Database();
