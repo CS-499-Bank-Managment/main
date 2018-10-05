@@ -149,7 +149,7 @@ namespace CS_499_Project.Object_Classes
             var acct_from_balance = new decimal();
             while (acct_from_balance_reader.Read())
             {
-                acct_from_balance = Convert.ToDecimal(acct_from_balance_reader["balance"])
+                acct_from_balance = Convert.ToDecimal(acct_from_balance_reader["balance"]);
             }
 
             acct_from_balance_reader.Close();
