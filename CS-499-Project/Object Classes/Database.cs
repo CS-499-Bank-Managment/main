@@ -171,6 +171,29 @@ namespace CS_499_Project.Object_Classes
 
             return false;
         }
+
+        public bool AddAmount(int acct, decimal amount)
+        {
+            this.dbcmd.CommandText = "select balance from customer_acct where acct_id=@act";
+            this.dbcmd.Parameters.AddWithValue("act", acct);
+            var balance_reader = this.dbcmd.ExecuteReader();
+            var balance = new decimal();
+            while (balance_reader.Read())
+            {
+                balance = Convert.ToDecimal(balance_reader["balance"]);
+            }
+            balance_reader.Close();
+            if ((balance + amount) >= 0)
+            {
+                this.dbcmd.CommandText = "UPDATE customer_acct set balance=@bal where acct_id=@act";
+                this.dbcmd.Parameters.AddWithValue("bal", balance + amount);
+                this.dbcmd.ExecuteNonQuery();
+                return true;
+            }
+
+            return false;
+
+        }
         
         //Destructor for database to make sure nothing stays open.
         ~Database()
