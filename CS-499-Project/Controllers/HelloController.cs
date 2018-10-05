@@ -16,7 +16,8 @@ namespace CS_499_Project.Controllers
             return View();
         }
         //You can set which method to work on by annotating the function with
-        //[HttpGet] directly above the function, like this:
+        //[HttpGet] directly above the function, like this: 
+	//Last test commit
         [HttpGet]
         public IActionResult Login(string username, string password)
         {

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using System.Data.SQLite;
 
 namespace CS_499_Project.Object_Classes
 {
@@ -17,10 +19,8 @@ namespace CS_499_Project.Object_Classes
 
         public bool CreateProfile(string username, string password, string role)
         {
-            using (StreamWriter w = File.AppendText("./WriteLines.txt"))
-            {
-                w.WriteLine($"{username},{password},{role}");
-            }
+            Database test = new Database();
+            test.NewUser(username, password, role);
             return true;
         }
     
@@ -85,6 +85,12 @@ namespace CS_499_Project.Object_Classes
     {
         var temp = File.ReadLines("./WriteLines.txt").Where(l => l.Split(",")[0] == username);
         return temp.Equals(null);
+    }
+
+    public List<string> CreateCustAccount(string username)
+    {
+        Database MakeAcctDb = new Database();
+        return MakeAcctDb.CreateCustAcct(username);
     }
 }
 }
