@@ -18,17 +18,49 @@ namespace CS_499_Project.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
+
             return View();
         }
 
-        public IActionResult Create(string username, string password, string role)
+        public IActionResult AccountCreated(string username, string password, string confirm, string role)
         {
             AdminProfile foo = new AdminProfile();
+            if (username == null && ViewBag.username == null)
+            {
+                return View();
+            }
+            ViewBag.username = username;
+            ViewBag.password = password;
+            ViewBag.role = role;
+            if(confirm != password)
+            {
+                ViewBag.confirm = "";
+                throw (new System.FormatException("The Confirm password field does not match the password you entered!"));
+            }
+            foo.CreateProfile(username, password, role);
+            return View();
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        public bool submitForm(string username, string password, string role)
+        {
+            AdminProfile foo = new AdminProfile();
+            if (username == "" && ViewBag.username == null)
+            {
+                return false;
+            }
             ViewBag.username = username;
             ViewBag.password = password;
             ViewBag.role = role;
             foo.CreateProfile(username, password, role);
-            return View();
+
+
+            Index();
+            return true;
         }
 
         public IActionResult Delete(string username)
