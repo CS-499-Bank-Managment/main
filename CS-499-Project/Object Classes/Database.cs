@@ -195,8 +195,10 @@ namespace CS_499_Project.Object_Classes
             return result_dict;
         }
 
-        public bool AddAmount(int acct, decimal amount)
+        public Dictionary<string, string> AddAmount(int acct, decimal amount)
         {
+            Dictionary<string, string> results = new Dictionary<string, string>();
+            results.Add("amount", amount.ToString());
             this.dbcmd.CommandText = "select balance from customer_acct where acct_id=@act";
             this.dbcmd.Parameters.AddWithValue("act", acct);
             var balance_reader = this.dbcmd.ExecuteReader();
@@ -204,6 +206,7 @@ namespace CS_499_Project.Object_Classes
             while (balance_reader.Read())
             {
                 balance = Convert.ToDecimal(balance_reader["balance"]);
+                results.Add("Old Balance", balance.ToString());
             }
             balance_reader.Close();
             if ((balance + amount) >= 0)
@@ -211,10 +214,20 @@ namespace CS_499_Project.Object_Classes
                 this.dbcmd.CommandText = "UPDATE customer_acct set balance=@bal where acct_id=@act";
                 this.dbcmd.Parameters.AddWithValue("bal", balance + amount);
                 this.dbcmd.ExecuteNonQuery();
-                return true;
-            }
 
-            return false;
+                this.dbcmd.CommandText = "SELECT balance from customer_acct where acct_id=@act";
+                this.dbcmd.Parameters.AddWithValue("act", acct);
+                var temporary_reader = dbcmd.ExecuteReader();
+                while (temporary_reader.Read())
+                {
+                    results.Add("New Balance", temporary_reader["balance"].ToString());
+                }
+
+                temporary_reader.Close();
+            }
+            
+
+            return results;
 
         }
         

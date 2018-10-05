@@ -32,12 +32,10 @@ namespace CS_499_Project.Object_Classes
         }
         
         
-        public bool AddAmount(int AcctTo, decimal amount)
+        public Dictionary<string, string> AddAmount(int AcctTo, decimal amount)
         {
             Database DB = new Database();
-            DB.AddAmount(AcctTo, amount);
-            
-            return true;
+            return DB.AddAmount(AcctTo, amount);
         }    
         public bool LogOut()
         {

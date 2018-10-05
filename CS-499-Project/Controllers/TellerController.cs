@@ -10,7 +10,7 @@ namespace CS_499_Project.Controllers
         public IActionResult Transaction(string acct_to, string amount)
         {
             TellerProfile foo = new TellerProfile();
-            foo.AddAmount(Convert.ToInt32(acct_to), Convert.ToDecimal(amount) );
+            ViewBag.ResultDict = foo.AddAmount(Convert.ToInt32(acct_to), Convert.ToDecimal(amount) );
             return View();
         }
 
