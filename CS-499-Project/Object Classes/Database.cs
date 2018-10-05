@@ -128,7 +128,46 @@ namespace CS_499_Project.Object_Classes
 
             return true;
         }
-        
+
+
+        public bool TransferAcct(int acct_to, int acct_from, decimal amount)
+        {
+            this.dbcmd.CommandText = "Select balance from customer_acct where acct_id=@act";
+            this.dbcmd.Parameters.AddWithValue("act", acct_to);
+            var acct_to_balance_reader = this.dbcmd.ExecuteReader();
+            var acct_to_balance = new decimal();
+            while (acct_to_balance_reader.Read())
+            {
+                acct_to_balance = Convert.ToDecimal(acct_to_balance_reader["balance"]);
+            }
+            acct_to_balance_reader.Close();
+
+
+            this.dbcmd.CommandText = "select balance from customer_acct where acct_id=@act";
+            this.dbcmd.Parameters.AddWithValue("act", acct_from);
+            var acct_from_balance_reader = this.dbcmd.ExecuteReader();
+            var acct_from_balance = new decimal();
+            while (acct_from_balance_reader.Read())
+            {
+                acct_from_balance = Convert.ToDecimal(acct_from_balance_reader["balance"])
+            }
+
+            acct_from_balance_reader.Close();
+
+            if (acct_from_balance >= amount)
+            {
+                this.dbcmd.CommandText = "UPDATE customer_acct set balance=@bal where acct_id=@act";
+                this.dbcmd.Parameters.AddWithValue("bal", acct_from_balance - amount);
+                this.dbcmd.Parameters.AddWithValue("act", acct_from);
+                this.dbcmd.ExecuteNonQuery();
+
+                this.dbcmd.CommandText = "UPDATE customer_acct SET balance=@bal where acct_id=@act";
+                this.dbcmd.Parameters.AddWithValue("bal", acct_to_balance + amount);
+                this.dbcmd.Parameters.AddWithValue("act", acct_to);
+                this.dbcmd.ExecuteNonQuery();
+            }
+
+        }
         
         //Destructor for database to make sure nothing stays open.
         ~Database()

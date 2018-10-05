@@ -7,27 +7,34 @@ namespace CS_499_Project.Object_Classes
 {
     public class TellerProfile : ProfileInterface
     {
-        private bool authenticated;
-        private string FullName;
+        private bool _authenticated;
+        private string _FullName;
         public TellerProfile()
         {
-            this.authenticated = false;
+            this._authenticated = false;
         }
 
     public TellerProfile(string name)
     {
-        this.FullName = name;
+        this._FullName = name;
     }
 
     public bool IsAuthenticated()
     {
-        return this.authenticated;
+        return this._authenticated;
+    }
+
+    public bool Transfer(int AcctTo, int AcctFrom, decimal amount)
+    {
+        TellerProfile foo = new TellerProfile();
+        foo.Transfer(AcctTo, AcctFrom, amount);
+        return true;
     }
 
     public bool LogOut()
     {
-        this.authenticated = false;
-        return this.authenticated;
+        this._authenticated = false;
+        return this._authenticated;
     }
 }
 }
