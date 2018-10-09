@@ -22,6 +22,15 @@ namespace CS_499_Project.Controllers
             return View();
         }
 
+        public IActionResult ProfileList()
+        {
+            List<string> results = new List<string>();
+            Database test = new Database();
+            results = test.GetAllProfiles();
+            ViewBag.profiles = results;
+            return View();
+        }
+
         public IActionResult AccountCreated(string username, string password, string confirm, string role)
         {
             AdminProfile foo = new AdminProfile();
@@ -70,8 +79,7 @@ namespace CS_499_Project.Controllers
             ViewBag.deleting = username;
             foo.DeleteProfile(username);
             ViewBag.status = foo.Check(username);
-                
-            
+               
             return View();
         }
         
@@ -89,20 +97,22 @@ namespace CS_499_Project.Controllers
             return View();
         }
             
-        //Method to create a customer account
-        public IActionResult CustAcct(string username)
-        {
-            AdminProfile creation = new AdminProfile();
-            ViewBag.results = creation.CreateCustAccount(username);
-            return View("Mongo");
-        }
+        //Commented because they aren't used and don't use real functions
+
+        ////Method to create a customer account
+        //public IActionResult CustAcct(string username)
+        //{
+        //    AdminProfile creation = new AdminProfile();
+        //    ViewBag.results = creation.CreateCustAccount(username);
+        //    return View("Mongo");
+        //}
         
-        //Method to delete an account within a customer profile.
-        public IActionResult DeleteCustAcct(string username, string acct_id)
-        {
-            var foo = new Database();
-            foo.DeleteCustAcct(username, Convert.ToInt32(acct_id));
-            return View("Index");
-        }
+        ////Method to delete an account within a customer profile.
+        //public IActionResult DeleteCustAcct(string username, string acct_id)
+        //{
+        //    var foo = new Database();
+        //    foo.DeleteCustAcct(username, Convert.ToInt32(acct_id));
+        //    return View("Index");
+        //}
     }
 }

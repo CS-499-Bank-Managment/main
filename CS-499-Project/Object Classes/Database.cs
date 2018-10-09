@@ -31,6 +31,18 @@ namespace CS_499_Project.Object_Classes
 
         }
 
+        public List<String> GetAllProfiles()
+        {
+            List<string> profiles = new List<string>();
+            this.dbcmd.CommandText = $"SELECT * FROM customers UNION SELECT * FROM admins UNION SELECT * FROM tellers";
+            SQLiteDataReader results = this.dbcmd.ExecuteReader();
+            while (results.Read())
+            {
+                profiles.Add(Convert.ToString(results["username"]));
+            }
+            return profiles;
+        }
+
         public List<string> Login(string username, string password, string role)
         {
             List<string> temp = new List<string>();
