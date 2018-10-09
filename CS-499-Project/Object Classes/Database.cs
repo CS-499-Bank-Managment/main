@@ -230,6 +230,23 @@ namespace CS_499_Project.Object_Classes
             return results;
 
         }
+
+        public void LogTransaction(int to_acct, int from_acct, decimal amount, string note = null)
+        {
+            /*
+             *
+             * Logs transactions into the transactions database.
+             * 
+             */
+            this.dbcmd.CommandText =
+                "INSERT into transactions (acct_to, acct_from, amount, note) VALUES (@to, @from, @amount, @note)";
+            this.dbcmd.Parameters.AddWithValue("to", to_acct);
+            this.dbcmd.Parameters.AddWithValue("from", from_acct);
+            this.dbcmd.Parameters.AddWithValue("amount", amount);
+            this.dbcmd.Parameters.AddWithValue("note", note);
+            this.dbcmd.ExecuteNonQuery();
+
+        }
         
         //Destructor for database to make sure nothing stays open.
         ~Database()
