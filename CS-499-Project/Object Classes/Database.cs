@@ -236,6 +236,8 @@ namespace CS_499_Project.Object_Classes
             /*
              *
              * Logs transactions into the transactions database.
+             * TODO: integrate this function with all the above functions.
+             * 
              * 
              */
             this.dbcmd.CommandText =
