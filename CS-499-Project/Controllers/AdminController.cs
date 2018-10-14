@@ -18,19 +18,64 @@ namespace CS_499_Project.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
+
             return View();
         }
+
+        public IActionResult ProfileList()
+        {
+            List<string> results = new List<string>();
+            Database test = new Database();
+            results = test.GetAllProfiles();
+            ViewBag.profiles = results;
+            return View();
+        }
+
         //Action method for creating an account
-        public IActionResult Create(string username, string password, string role)
-        {   
+        public IActionResult AccountCreated(string username, string password, string confirm, string role)
+        {
             //Create basic admin profile class - later we'll need to verify this with session info.
+            
             AdminProfile foo = new AdminProfile();
+            if (username == null && ViewBag.username == null)
+            {
+                return View();
+            }
             ViewBag.username = username;
             ViewBag.password = password;
             ViewBag.role = role;
+
+            if(confirm != password)
+            {
+                ViewBag.confirm = "";
+                throw (new System.FormatException("The Confirm password field does not match the password you entered!"));
+            }
+
             //Call the create profile method
             foo.CreateProfile(username, password, role);
             return View();
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        public bool submitForm(string username, string password, string role)
+        {
+            AdminProfile foo = new AdminProfile();
+            if (username == "" && ViewBag.username == null)
+            {
+                return false;
+            }
+            ViewBag.username = username;
+            ViewBag.password = password;
+            ViewBag.role = role;
+            foo.CreateProfile(username, password, role);
+
+
+            Index();
+            return true;
         }
 
         public IActionResult Delete(string username)
@@ -40,8 +85,7 @@ namespace CS_499_Project.Controllers
             ViewBag.deleting = username;
             foo.DeleteProfile(username);
             ViewBag.status = foo.Check(username);
-                
-            
+               
             return View();
         }
         
@@ -59,20 +103,22 @@ namespace CS_499_Project.Controllers
             return View();
         }
             
-        //Method to create a customer account
-        public IActionResult CustAcct(string username)
-        {
-            AdminProfile creation = new AdminProfile();
-            ViewBag.results = creation.CreateCustAccount(username);
-            return View("Mongo");
-        }
+        //Commented because they aren't used and don't use real functions
+
+        ////Method to create a customer account
+        //public IActionResult CustAcct(string username)
+        //{
+        //    AdminProfile creation = new AdminProfile();
+        //    ViewBag.results = creation.CreateCustAccount(username);
+        //    return View("Mongo");
+        //}
         
-        //Method to delete an account within a customer profile.
-        public IActionResult DeleteCustAcct(string username, string acct_id)
-        {
-            var foo = new Database();
-            foo.DeleteCustAcct(username, Convert.ToInt32(acct_id));
-            return View("Index");
-        }
+        ////Method to delete an account within a customer profile.
+        //public IActionResult DeleteCustAcct(string username, string acct_id)
+        //{
+        //    var foo = new Database();
+        //    foo.DeleteCustAcct(username, Convert.ToInt32(acct_id));
+        //    return View("Index");
+        //}
     }
 }

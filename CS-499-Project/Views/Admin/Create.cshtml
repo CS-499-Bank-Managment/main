@@ -2,15 +2,24 @@
 
 <html>
 <head>
-    <title>title</title>
+    <title>Create Profile</title>
 </head>
 <body>
+    <h1>Create a New Profile</h1>
 
-Username: @ViewBag.username <br/>
-Password: @ViewBag.password <br/>
-Role: @ViewBag.role <br/>
-<div>
+    <form action="./AccountCreated" method="post">
+        <p>USERNAME:         <input type="text" name="username" value="@ViewBag.username" required /> </p>
+        <p>PASSWORD:         <input type="text" name="password" value="@ViewBag.password" required /> </p>
+        <p>CONFIRM PASSWORD: <input type="text" name="confirm" value="@ViewBag.confirm" required /> </p>
+        <div>ROLE:          
+            <select name="role" value=@ViewBag.role>
+                <option value="admin">ADMIN</option>
+                <option value="teller">TELLER</option>
+                <option value="customer">CUSTOMER</option>
+            </select>
+        </div>
+        <p><input type="submit" value="Create" /></p>
+    </form>
 
-</div>
 </body>
 </html>

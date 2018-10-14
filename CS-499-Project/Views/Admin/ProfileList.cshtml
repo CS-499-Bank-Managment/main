@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+
+</head>
+<body>
+    <form action="./Delete" method="post">
+        User to delete: <select name="username">
+    @foreach (var item in ViewBag.profiles)
+    {
+         <option value="@item">@item</option>
+    }
+</select>
+        <br /><br />
+        <input type="submit" value="Delete"/>
+    </form>
+</body>
+</html>
