@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Create Profile</title>
+</head>
+<body>
+    <h1>Create a New Profile</h1>
+
+    <form action="./NewAccount" method="post">
+        User to add account to: <select name="username">
+            @foreach (var item in ViewBag.users)
+            {
+                <option value="@item">@item</option>
+            }
+        </select>
+        <p>USERNAME:         <input type="text" name="username" value="@ViewBag.username" required /> </p>
+        <p>PASSWORD:         <input type="text" name="password" value="@ViewBag.password" required /> </p>
+        <p>CONFIRM PASSWORD: <input type="text" name="confirm" value="@ViewBag.confirm" required /> </p>
+        <div>
+            ROLE:
+            <select name="type">
+                <option value="">ADMIN</option>
+                <option value="teller">TELLER</option>
+                <option value="customer">CUSTOMER</option>
+            </select>
+        </div>
+        <p><input type="submit" value="Create" /></p>
+    </form>
+
+</body>
+</html>
