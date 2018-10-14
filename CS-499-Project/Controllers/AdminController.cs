@@ -31,6 +31,7 @@ namespace CS_499_Project.Controllers
             return View();
         }
 
+
         public IActionResult AddAccount()
         {
             List<string> results = new List<string>();
@@ -40,8 +41,11 @@ namespace CS_499_Project.Controllers
             return View();
         }
 
+        //Action method for creating an account
         public IActionResult AccountCreated(string username, string password, string confirm, string role)
         {
+            //Create basic admin profile class - later we'll need to verify this with session info.
+            
             AdminProfile foo = new AdminProfile();
             if (username == null && ViewBag.username == null)
             {
@@ -50,11 +54,14 @@ namespace CS_499_Project.Controllers
             ViewBag.username = username;
             ViewBag.password = password;
             ViewBag.role = role;
+
             if(confirm != password)
             {
                 ViewBag.confirm = "";
                 throw (new System.FormatException("The Confirm password field does not match the password you entered!"));
             }
+
+            //Call the create profile method
             foo.CreateProfile(username, password, role);
             return View();
         }

@@ -30,9 +30,21 @@ namespace CS_499_Project
             }
             app.UseMvc(routes =>
                 {
-                routes.MapRoute("admin", "{controller}/{action}/{username?}/{password?}/{role?}");
-                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                routes.MapRoute("index page", "/", new {controller = "User", action = "Index"});
+                    routes.MapRoute("Teller-Test", "/Transaction/{acct_to}/{amount}", new
+                    {
+                        controller = "Teller",
+                        Action = "Transaction"
+                    });
+
+                    routes.MapRoute("Teller-TransferTest", "/Transfer/{acct_to}/{acct_from}/{amount}",
+                        new {controller = "Teller", action = "Between"});
+                    routes.MapRoute("creation", "/Admin/CustAcct/{username}",
+                        new {controller = "Admin", action = "CustAcct"});
+                    routes.MapRoute("acct_del", "/Admin/Del/{username}/{acct_id}",
+                        new {controller = "Admin", action = "DeleteCustAcct"});
+                    routes.MapRoute("admin", "{controller}/{action}/{username?}/{password?}/{role?}");
+                    routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                    routes.MapRoute("index page", "/", new {controller = "User", action = "Index"});
                 //https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/routing?view=aspnetcore-2.1
                 //https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/introduction/adding-a-view
                 //https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/introduction/adding-a-controller
