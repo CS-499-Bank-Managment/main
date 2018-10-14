@@ -43,6 +43,18 @@ namespace CS_499_Project.Object_Classes
             return profiles;
         }
 
+        public List<String> GetCustomers()
+        {
+            List<string> profiles = new List<string>();
+            this.dbcmd.CommandText = $"SELECT * FROM customers";
+            SQLiteDataReader results = this.dbcmd.ExecuteReader();
+            while (results.Read())
+            {
+                profiles.Add(Convert.ToString(results["username"]));
+            }
+            return profiles;
+        }
+
         public List<string> Login(string username, string password, string role)
         {
             List<string> temp = new List<string>();

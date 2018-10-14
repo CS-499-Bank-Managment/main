@@ -31,6 +31,15 @@ namespace CS_499_Project.Controllers
             return View();
         }
 
+        public IActionResult AddAccount()
+        {
+            List<string> results = new List<string>();
+            Database test = new Database();
+            results = test.GetCustomers();
+            ViewBag.users = results;
+            return View();
+        }
+
         public IActionResult AccountCreated(string username, string password, string confirm, string role)
         {
             AdminProfile foo = new AdminProfile();
