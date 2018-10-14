@@ -15,11 +15,11 @@ namespace CS_499_Project.Object_Classes
         }
 
         // Also referred to as username. The alias a customer, teller, or admin may enter to login 
-        protected string username { get; set; }
+        public string username { get; set; }
 
         // TODO: This should be replaced with some sort of authentication token.
         // for now, this field will take care of basic login until authentication functionality is added.
-        private string temp_password_field { get; set; }
+        public string temp_password_field { get; set; }
 
         // The ID associated with the profile. For use with database
         private int id_number { get; set; }
@@ -50,10 +50,31 @@ namespace CS_499_Project.Object_Classes
                 return false;
         }
 
+        public virtual bool isAuthenticated()
+        {
+            //checks for authentication of users already logged in.
+            return true;
+        }
+
+        public virtual void LogOut() 
+            {
+            //Clear session info & cookies in DB / server.
+            
+        }                                    
+
         public ProfileInterface()
         {
             
         }
+
+        public ProfileInterface(string username, string password, string role)
+        {
+        }
+        public ProfileInterface(string username, string password)
+            {
+            //Constructor that can be used to login.
+}           //MongoDB.FineOne({"username" : username, "password" : password})
+            //Construct object based on role record.
 
     }
 }

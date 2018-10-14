@@ -5,11 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <PackageReference Include="angularjs" Version="1.7.2" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.Net.Compilers" Version="2.8.2" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.109.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <_ContentIncludedByDefault Remove="wwwroot\Angular\app.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\Angular\controller.js" />
+    <_ContentIncludedByDefault Remove="Views\Admin\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Admin\Index.cshtml" />
   </ItemGroup>
 
 </Project>

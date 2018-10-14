@@ -2,22 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.DateTime;
+//using System.DateTime;
 
 namespace CS_499_Project.Object_Classes
 {
-    public abstract class AccountInterface
+    //an enum to make account types simple
+    enum AccountType
     {
-        //an enum to make account types simple
-        enum AccountType
-        {
-            CHECKING,
-            SAVINGS,
-            MONEY_MARKET,
-            MORTGAGE,
-            CREDIT
-        }
+        CHECKING,
+        SAVINGS,
+        MONEY_MARKET,
+        MORTGAGE,
+        CREDIT
+    }
 
+    public class AccountInterface
+    {
         //How much is in the account
         protected decimal balance;
         //Account number, whatever we use internally for that
@@ -45,10 +45,12 @@ namespace CS_499_Project.Object_Classes
         //set for balance
         public void changeAccountBalance(decimal bal) { this.balance = bal; }
 
+        public long accountNumber() { return this.account_number; }
+
         //add transaction to the list
         public void addTransaction(Transaction transaction)
         {
-            transactionList.add(transaction);
+            transactionList.Add(transaction);
         }
 
         public AccountInterface(decimal initial_amount, 
