@@ -14,18 +14,18 @@
                 <option value="@item">@item</option>
             }
         </select>
-        <p>USERNAME:         <input type="text" name="username" value="@ViewBag.username" required /> </p>
-        <p>PASSWORD:         <input type="text" name="password" value="@ViewBag.password" required /> </p>
-        <p>CONFIRM PASSWORD: <input type="text" name="confirm" value="@ViewBag.confirm" required /> </p>
+        <p>Account Display Name: <input type="text" name="name" /> </p>
+        <p>Initial Deposit: <input type="number" name="deposit" step="0.01" /> </p>
         <div>
-            ROLE:
+            Account Type:
             <select name="type">
-                <option value="">ADMIN</option>
-                <option value="teller">TELLER</option>
-                <option value="customer">CUSTOMER</option>
+                @foreach (int value in Enum.GetValues(typeof(CS_499_Project.Object_Classes.AccountType)))
+                {
+                    <option value="@value">@Enum.GetName(typeof(CS_499_Project.Object_Classes.AccountType), value)</option>
+                }
             </select>
         </div>
-        <p><input type="submit" value="Create" /></p>
+        <p><input type="submit" value="Add Account" /></p>
     </form>
 
 </body>

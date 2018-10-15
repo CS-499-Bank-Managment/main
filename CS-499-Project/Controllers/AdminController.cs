@@ -41,6 +41,19 @@ namespace CS_499_Project.Controllers
             return View();
         }
 
+        public IActionResult NewAccount(string username, string name, decimal deposit, int type)
+        {
+            List<string> results = new List<string>();
+            Database test = new Database();
+            results = test.CreateCustAcct(username, deposit, type, name);
+            ViewBag.acct_user = results[0];
+            ViewBag.acct_num  = results[1];
+            ViewBag.acct_dep  = results[2];
+            ViewBag.acct_type = results[3];
+            ViewBag.acct_name = results[4];
+            return View();
+        }
+
         //Action method for creating an account
         public IActionResult AccountCreated(string username, string password, string confirm, string role)
         {

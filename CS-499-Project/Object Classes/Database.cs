@@ -81,7 +81,7 @@ namespace CS_499_Project.Object_Classes
             return temp;
         }
 
-        public List<string> CreateCustAcct(string username)
+        public List<string> CreateCustAcct(string username, decimal balance, int type, string name)
         {
             /*
              * To create a customer account, first you pass their username,
@@ -101,18 +101,26 @@ namespace CS_499_Project.Object_Classes
             }
 
             reader.Close();
-            this.dbcmd.CommandText = "INSERT INTO customer_acct (owner_id) VALUES (@user)";
+            this.dbcmd.CommandText = "INSERT INTO customer_acct (owner_id, balance, type, name) VALUES (@user, @balance, @type, @name)";
             this.dbcmd.Parameters.AddWithValue("user", userid);
+            this.dbcmd.Parameters.AddWithValue("balance", balance);
+            this.dbcmd.Parameters.AddWithValue("type", type);
+            this.dbcmd.Parameters.AddWithValue("name", name);
             this.dbcmd.ExecuteNonQuery();
 
-            this.dbcmd.CommandText = "SELECT * from customer_acct where owner_id=@owner";
-            this.dbcmd.Parameters.AddWithValue("owner", userid);
+            this.dbcmd.CommandText = "SELECT last_insert_rowid()";
+            var id = this.dbcmd.ExecuteScalar();
+
+            this.dbcmd.CommandText = "SELECT * from customer_acct where acct_id=@id";
+            this.dbcmd.Parameters.AddWithValue("id", id);
             var reader_debug = this.dbcmd.ExecuteReader();
             while (reader_debug.Read())
             {
                 results.Add(reader_debug["owner_id"].ToString());
                 results.Add(reader_debug["acct_id"].ToString());
                 results.Add(reader_debug["balance"].ToString());
+                results.Add(reader_debug["type"].ToString());
+                results.Add(reader_debug["name"].ToString());
             }
 
             return results;

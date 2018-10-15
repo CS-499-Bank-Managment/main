@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CS_499_Project.Object_Classes
 {
     //an enum to make account types simple
-    enum AccountType
+    public enum AccountType
     {
         CHECKING,
         SAVINGS,

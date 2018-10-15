@@ -87,10 +87,11 @@ namespace CS_499_Project.Object_Classes
         return temp.Equals(null);
     }
 
-    public List<string> CreateCustAccount(string username)
-    {
-        Database MakeAcctDb = new Database();
-        return MakeAcctDb.CreateCustAcct(username);
-    }
+    //commented because it is no longer needed
+    //public List<string> CreateCustAccount(string username)
+    //{
+    //    Database MakeAcctDb = new Database();
+    //    return MakeAcctDb.CreateCustAcct(username);
+    //}
 }
 }
