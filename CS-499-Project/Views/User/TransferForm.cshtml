@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript">
+        $document.ready(function()
+        {
+            
+        });
+    </script>
+</head>
+<body>
+    <h1>Transfer Funds</h1>
+    <br><br><br>
+    User: <select name="username">
+                @foreach (var item in ViewBag.users)
+                {
+                    <option value="@item">@item</option>
+                }
+            </select>
+    <br />
+    From Account:
+    <br />
+    To Account:
+    <br />
+    Amount to Transfer:
+    <br /><br />
+    <input type="submit" value="Transfer Funds" />
+</body>
+</html>

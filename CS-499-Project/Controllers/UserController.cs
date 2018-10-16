@@ -1,6 +1,7 @@
 using CS_499_Project.Object_Classes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using System.Collections.Generic;
 
 namespace CS_499_Project.Controllers
 {
@@ -11,6 +12,15 @@ namespace CS_499_Project.Controllers
             return View();
         }
         
+        public IActionResult TransferForm()
+        {
+            List<string> results = new List<string>();
+            Database test = new Database();
+            results = test.GetCustomers();
+            ViewBag.users = results;
+            return View();
+        }
+
         // GET
         public IActionResult Login(string username, string password)
         {
