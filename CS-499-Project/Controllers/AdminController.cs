@@ -79,6 +79,35 @@ namespace CS_499_Project.Controllers
             return View();
         }
 
+        public IActionResult myAccounts(string username)
+        {
+            Dictionary<long, string> results = new Dictionary<long, string>();
+            Database test = new Database();
+            results = test.GetMyAccounts(username);
+            ViewBag.accounts = results;
+            ViewBag.username = username;
+            return View();
+        }
+
+        public IActionResult DeleteAccount(string username)
+        {
+            Database test = new Database();
+            Dictionary<long, string> accounts = new Dictionary<long, string>();
+            accounts = test.GetMyAccounts(username);
+            ViewBag.accounts = accounts;
+            ViewBag.username = username;
+            return View();
+        }
+
+        public IActionResult AccountDeleted(string username, long acct_id)
+        {
+            ViewBag.username = username;
+            ViewBag.acct_id = acct_id;
+            Database test = new Database();
+            test.DeleteCustAcct(username, (int)acct_id);
+            return View();
+        }
+
         public IActionResult Create()
         {
             return View();

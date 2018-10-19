@@ -1,0 +1,30 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DeleteAccount</title>
+
+    <h1>Delete an Account</h1>
+
+    <form action="../AccountDeleted" method="post">
+
+        Logged in as:<input type="text" name="username" value=@ViewBag.username> </input>
+
+        <select name="acct_id">
+            @foreach (KeyValuePair<long, string> entry in ViewBag.accounts)
+            {
+                <option value="@entry.Key">@entry.Value</option>
+            }
+        </select>
+        <input type="submit" value="Delete" />
+    </form>
+</head>
+<body>
+</body>
+</html>

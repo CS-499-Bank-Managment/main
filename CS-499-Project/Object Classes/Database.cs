@@ -51,6 +51,35 @@ namespace CS_499_Project.Object_Classes
             return profiles;
         }
 
+        public Dictionary<long, string> GetMyAccounts(string username)
+        {
+            /*
+             * uses the username parameter to find the user_id associated with that user.
+             * finds all accounts associated with that user_id and returns a dictionary
+             * where the key is the account id (acct_id) and the vaue is the account name (name)
+             */
+            Dictionary<long, string> accounts = new Dictionary<long, string>();
+            this.dbcmd.CommandText = "SELECT * from customers where username=@user";
+            this.dbcmd.Parameters.AddWithValue("user", username);
+            SQLiteDataReader reader = this.dbcmd.ExecuteReader();
+            var userid = "";
+            while (reader.Read())
+            {
+                userid = reader["userid"].ToString();
+            }
+
+            reader.Close();
+ 
+            this.dbcmd.CommandText = "SELECT * from customer_acct where owner_id=@user";
+            this.dbcmd.Parameters.AddWithValue("user", userid);
+            reader = this.dbcmd.ExecuteReader();
+            while (reader.Read())
+            {
+                accounts.Add((long)reader["acct_id"], reader["name"].ToString());
+            }
+            return accounts;
+        }
+
         public List<String> GetCustomers()
         {
             List<string> profiles = new List<string>();

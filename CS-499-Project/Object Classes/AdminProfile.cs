@@ -24,30 +24,30 @@ namespace CS_499_Project.Object_Classes
             return true;
         }
     
-        public bool CreateProfile(ProfileInterface user)
-        {
-            //How to use Forms in ASP.Net Core
-            //https://docs.microsoft.com/en-us/aspnet/core/mvc/views/working-with-forms?view=aspnetcore-2.1
+        //public bool CreateProfile(ProfileInterface user)
+        //{
+        //    //How to use Forms in ASP.Net Core
+        //    //https://docs.microsoft.com/en-us/aspnet/core/mvc/views/working-with-forms?view=aspnetcore-2.1
             
-            //DELETE THIS LATER. Flatfile for testing.
-            using (var w = File.AppendText("./WriteLines.txt"))
-            {
-                w.WriteLine($"{user.username},{user.temp_password_field},{user.profile_type}");
-            }
+        //    //DELETE THIS LATER. Flatfile for testing.
+        //    using (var w = File.AppendText("./WriteLines.txt"))
+        //    {
+        //        w.WriteLine($"{user.username},{user.temp_password_field},{user.profile_type}");
+        //    }
             
             
-            //TODO: input the new teller into MongoDB.
-            //MongoDB.Insert, Collection = Accounts.
-            /* Mongo Json:
-             * { "_id" : getNextSequenceValue("id"),
-             * "username" : user.username,
-             * "password" : user.password,
-             * "fullname" : user.user_firstname + user.user_surname,
-             * "role" : user.profile_type
-             * }
-             */
-            return true;
-        }
+        //    //TODO: input the new teller into MongoDB.
+        //    //MongoDB.Insert, Collection = Accounts.
+        //    /* Mongo Json:
+        //     * { "_id" : getNextSequenceValue("id"),
+        //     * "username" : user.username,
+        //     * "password" : user.password,
+        //     * "fullname" : user.user_firstname + user.user_surname,
+        //     * "role" : user.profile_type
+        //     * }
+        //     */
+        //    return true;
+        //}
 
     public bool DeleteProfile(ProfileInterface user)
     {
