@@ -314,11 +314,11 @@ namespace CS_499_Project.Object_Classes
             var user = this.dbcmd.ExecuteReader();
             ProfileInterface returning = null;
             while (user.Read())
+            {
                 foreach (var v in user)
                 {
                     Console.WriteLine(v);
                 }
-            {
                 switch (user["role"])
                 {
                     case "admin":
