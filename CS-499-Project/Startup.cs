@@ -41,6 +41,9 @@ namespace CS_499_Project
                         controller = "Login", action = "Index"
                     });
 
+                    routes.MapRoute("Testing", "/Test", new
+                        {controller = "Login", action = "Test"});
+
                     routes.MapRoute("Teller-TransferTest", "/Transfer/{acct_to}/{acct_from}/{amount}",
                         new {controller = "Teller", action = "Between"});
                     routes.MapRoute("creation", "/Admin/CustAcct/{username}",

@@ -30,7 +30,8 @@ namespace CS_499_Project.Object_Classes
         public bool NewUser(string username, string password, string role)
         {
             //Add the username and password into the role diagram. TODO: fix sqli in roles.
-            this.dbcmd.CommandText = $"INSERT INTO {role}s (username,password) VALUES (@user, @pwd)";
+            this.dbcmd.CommandText = "INSERT INTO @role (username,password) VALUES (@user, @pwd)";
+            this.dbcmd.Parameters.AddWithValue("role", $"{role}s");
             this.dbcmd.Parameters.AddWithValue("user", username);
             this.dbcmd.Parameters.AddWithValue("pwd", password);
             this.dbcmd.ExecuteNonQuery();
@@ -67,7 +68,20 @@ namespace CS_499_Project.Object_Classes
         {
             //Login method, TODO: fix sqli in role
             List<string> temp = new List<string>();
-            this.dbcmd.CommandText = $"SELECT * from {role}s where username=@user and password=@pwd";
+            switch (role)
+            {
+                case "admin":
+                    this.dbcmd.CommandText = $"SELECT * from admins where username=@user and password=@pwd";
+                    break;
+                case "user":
+                    this.dbcmd.CommandText = $"SELECT * from users where username=@user and password=@pwd";
+                    break;
+                case "teller":
+                    this.dbcmd.CommandText = $"SELECT * from tellers where username=@user and password=@pwd";
+                    break;
+                    
+            }
+            this.dbcmd.Parameters.AddWithValue("user_role", $"{role}s");
             this.dbcmd.Parameters.AddWithValue("user", username);
             this.dbcmd.Parameters.AddWithValue("pwd", password);
             SQLiteDataReader results = this.dbcmd.ExecuteReader();
@@ -77,7 +91,7 @@ namespace CS_499_Project.Object_Classes
                 temp.Add(Convert.ToString(results["password"]));
                 temp.Add(Convert.ToString(results["userid"]));             
             }
-
+            results.Close();
             return temp;
         }
 
@@ -281,7 +295,46 @@ namespace CS_499_Project.Object_Classes
             this.dbcmd.ExecuteNonQuery();
 
         }
-        
+
+
+        public void LogSessionID(string Session_ID, string username, string role)
+        {
+            this.dbcmd.CommandText = "INSERT into sessions (ID, username, role) VALUES (@Sess_ID, @user, @roll)";
+            this.dbcmd.Parameters.AddWithValue("user", username);
+            this.dbcmd.Parameters.AddWithValue("roll", role);
+            this.dbcmd.Parameters.AddWithValue("Sess_ID", Session_ID);
+            this.dbcmd.ExecuteNonQuery();
+        }
+
+
+        public ProfileInterface VerifySession(string sessionID)
+        {
+            this.dbcmd.CommandText = $"SELECT * FROM sessions WHERE ID=@session_variable";
+            this.dbcmd.Parameters.AddWithValue("session_variable", sessionID);
+            var user = this.dbcmd.ExecuteReader();
+            ProfileInterface returning = null;
+            while (user.Read())
+                foreach (var v in user)
+                {
+                    Console.WriteLine(v);
+                }
+            {
+                switch (user["role"])
+                {
+                    case "admin":
+                        returning  = new AdminProfile();
+                        break;
+                    case "teller":
+                        returning = new TellerProfile();
+                        break;
+                    case "customer":
+                        returning = new CustomerProfile();
+                        break;
+                }
+            }
+            user.Close();
+            return returning;
+        }
         //Destructor for database to make sure nothing stays open.
         ~Database()
         {
