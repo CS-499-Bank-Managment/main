@@ -36,6 +36,11 @@ namespace CS_499_Project
                         Action = "Transaction"
                     });
 
+                    routes.MapRoute("Login-Test", "/Login/", new
+                    {
+                        controller = "Login", action = "Index"
+                    });
+
                     routes.MapRoute("Teller-TransferTest", "/Transfer/{acct_to}/{acct_from}/{amount}",
                         new {controller = "Teller", action = "Between"});
                     routes.MapRoute("creation", "/Admin/CustAcct/{username}",
@@ -53,7 +58,7 @@ namespace CS_499_Project
 
             app.Run(async (context) =>
             {
-                await context.Response.WriteAsync("Hello World!");
+                
             });
         }
     }
