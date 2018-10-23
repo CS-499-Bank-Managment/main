@@ -309,30 +309,59 @@ namespace CS_499_Project.Object_Classes
 
         public ProfileInterface VerifySession(string sessionID)
         {
-            this.dbcmd.CommandText = $"SELECT * FROM sessions WHERE ID=@session_variable";
-            this.dbcmd.Parameters.AddWithValue("session_variable", sessionID);
+            this.dbcmd.CommandText = $"SELECT * FROM sessions";
+//            this.dbcmd.Parameters.AddWithValue("session_variable", sessionID);
+            Console.WriteLine(this.dbcmd.CommandText);
             var user = this.dbcmd.ExecuteReader();
             ProfileInterface returning = null;
             while (user.Read())
             {
-                foreach (var v in user)
+                if (user["ID"].ToString() == sessionID)
                 {
-                    Console.WriteLine(v);
-                }
-                switch (user["role"])
-                {
-                    case "admin":
-                        returning  = new AdminProfile();
-                        break;
-                    case "teller":
-                        returning = new TellerProfile();
-                        break;
-                    case "customer":
-                        returning = new CustomerProfile();
-                        break;
+                    switch (user["role"].ToString())
+                    {
+                        case "admin":
+                            returning = new AdminProfile(user["username"].ToString());
+                            break;
+                        case "teller":
+                            returning = new TellerProfile(user["username"].ToString());
+                            break;
+                        case "customer":
+                            returning = new CustomerProfile(user["username"].ToString());
+                            break;
+                    }
                 }
             }
             user.Close();
+            return returning;
+        }
+
+        public Dictionary<string, string> Login(string username, string profileType)
+        {
+            var returning = new Dictionary<string, string>();
+            switch (profileType)
+            {
+                case "admins":
+                    this.dbcmd.CommandText = "SELECT * FROM admins where username=@USR";
+                    break;
+                case "teller":
+                    this.dbcmd.CommandText = "SELECT * FROM tellers where username=@USR";
+                    break;
+                case "customer":
+                    this.dbcmd.CommandText = "SELECT * FROM customers where username=@USR";
+                    break;
+            }
+            this.dbcmd.Parameters.AddWithValue("USR", username);
+
+            var login_reader = this.dbcmd.ExecuteReader();
+            while (login_reader.Read())
+            {
+                returning.Add("username", login_reader["username"].ToString());
+                returning.Add("password", login_reader["password"].ToString());
+                returning.Add("userid", login_reader["userid"].ToString());
+                
+            }
+
             return returning;
         }
         //Destructor for database to make sure nothing stays open.

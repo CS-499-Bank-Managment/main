@@ -12,6 +12,8 @@ namespace CS_499_Project.Object_Classes
             AccountInterface account1 = new AccountInterface(100.00m, 123456, (int)AccountType.CHECKING, "my_user", "Checking Account");
             this.accounts.Add(account1);
         }
+        
+        public CustomerProfile(string username) {}
 
         private List<AccountInterface> accounts;
 

@@ -17,6 +17,15 @@ namespace CS_499_Project.Object_Classes
             this.profile_type = ProfileType.ADMIN;
         }
 
+    public AdminProfile(string username)
+    {
+        Database loginDB = new Database();
+        var query_results = loginDB.Login(username, "admins");
+        this.username = query_results["username"];
+        this.profile_type = ProfileType.ADMIN;
+
+    }
+
         public bool CreateProfile(string username, string password, string role)
         {
             Database test = new Database();

@@ -14,6 +14,7 @@ namespace CS_499_Project.Object_Classes
             this._authenticated = false;
         }
 
+
         public TellerProfile(string name)
         {
             this._FullName = name;
