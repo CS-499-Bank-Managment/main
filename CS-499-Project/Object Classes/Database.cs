@@ -364,6 +364,38 @@ namespace CS_499_Project.Object_Classes
 
             return returning;
         }
+
+        public List<AccountInterface> CustomerAcctList(string username)
+        {
+            /*
+             * Returns the customer accounts that match the owner_id column as a list of lists,
+             * where list[0] is the first account, list[0][0] is owner_id, and so forth.
+             */
+
+            List<AccountInterface> acctList = new List<AccountInterface>();
+            //select the username from customer DB such that we have the user's ID.
+            dbcmd.CommandText = "SELECT userid from customers where username=@user";
+            dbcmd.Parameters.AddWithValue("user", username);
+            var reader = dbcmd.ExecuteScalar().ToString();
+                        
+            dbcmd.CommandText = "SELECT * from customer_acct where owner_id=@owner";
+            dbcmd.Parameters.AddWithValue("owner", reader);
+            var acctReader = dbcmd.ExecuteReader();
+            while (acctReader.Read())
+            {
+                acctList.Add(
+                    new AccountInterface(Convert.ToDecimal(acctReader["balance"]),
+                        (long) acctReader["acct_id"],
+                        (int) Enum.Parse<AccountType>(acctReader["type"].ToString()),
+                        username,
+                        acctReader["name"].ToString()
+                    )
+                );
+
+            }
+            acctReader.Close();
+            return acctList;
+        }
         //Destructor for database to make sure nothing stays open.
         ~Database()
         {
