@@ -21,7 +21,10 @@ namespace CS_499_Project.Object_Classes
             var acct_results = acctVerify.Login(username, "customer");
             this.username = acct_results["username"];
             this.profile_type = ProfileType.CUSTOMER;
-            this.accounts.Add(acctVerify.CustomerAcctList(username));
+            foreach(var acct in acctVerify.CustomerAcctList(username))
+            {
+                this.accounts.Add(acct);
+            }
         }
 
         private List<AccountInterface> accounts;
