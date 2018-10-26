@@ -9,6 +9,7 @@ namespace CS_499_Project.Object_Classes
 {
     public class CustomerProfile : ProfileInterface
     {
+        private List<AccountInterface> accounts;
         public CustomerProfile()
         {
             AccountInterface account1 = new AccountInterface(100.00m, 123456, (int)AccountType.CHECKING, "my_user", "Checking Account");
@@ -17,22 +18,40 @@ namespace CS_499_Project.Object_Classes
 
         public CustomerProfile(string username)
         {
+            this.accounts = new List<AccountInterface>();
             Database acctVerify = new Database();
             var acct_results = acctVerify.Login(username, "customer");
             this.username = acct_results["username"];
             this.profile_type = ProfileType.CUSTOMER;
-            foreach(var acct in acctVerify.CustomerAcctList(username))
+            var temp_accounts = acctVerify.CustomerAcctList(username);
+            foreach(var acct in temp_accounts)
             {
-                this.accounts.Add(acct);
+                try
+                {
+                    Console.WriteLine(acct.ToString());
+                    this.accounts.Add(acct);
+                }
+                catch (System.NullReferenceException)
+                {
+                    //Do nothing to debug
+                }
+            }
+
+            foreach (var acct in this.accounts)
+            {
+                Console.WriteLine(acct.ToString());
             }
         }
-
-        private List<AccountInterface> accounts;
 
         public void addAccount(decimal amount, long number, int type, string username, string name)
         {
             AccountInterface account = new AccountInterface(amount, number, type, username, name);
             this.accounts.Add(account);
+        }
+
+        public List<AccountInterface> ListAccounts()
+        {
+            return this.accounts;
         }
 
         public void removeAccount(long account_number)

@@ -73,15 +73,14 @@ namespace CS_499_Project.Object_Classes
                 case "admin":
                     this.dbcmd.CommandText = $"SELECT * from admins where username=@user and password=@pwd";
                     break;
-                case "user":
-                    this.dbcmd.CommandText = $"SELECT * from users where username=@user and password=@pwd";
+                case "customer":
+                    this.dbcmd.CommandText = $"SELECT * from customers where username=@user and password=@pwd";
                     break;
                 case "teller":
                     this.dbcmd.CommandText = $"SELECT * from tellers where username=@user and password=@pwd";
                     break;
                     
             }
-            this.dbcmd.Parameters.AddWithValue("user_role", $"{role}s");
             this.dbcmd.Parameters.AddWithValue("user", username);
             this.dbcmd.Parameters.AddWithValue("pwd", password);
             SQLiteDataReader results = this.dbcmd.ExecuteReader();
@@ -361,7 +360,7 @@ namespace CS_499_Project.Object_Classes
                 returning.Add("userid", login_reader["userid"].ToString());
                 
             }
-
+            login_reader.Close();
             return returning;
         }
 
@@ -377,24 +376,35 @@ namespace CS_499_Project.Object_Classes
             dbcmd.CommandText = "SELECT userid from customers where username=@user";
             dbcmd.Parameters.AddWithValue("user", username);
             var reader = dbcmd.ExecuteScalar().ToString();
-                        
+            
             dbcmd.CommandText = "SELECT * from customer_acct where owner_id=@owner";
             dbcmd.Parameters.AddWithValue("owner", reader);
             var acctReader = dbcmd.ExecuteReader();
             while (acctReader.Read())
             {
+                Console.WriteLine(
+                    acctReader["balance"].ToString() + acctReader["acct_id"].ToString() 
+                  + acctReader["type"].ToString() + acctReader["name"].ToString() );
                 acctList.Add(
                     new AccountInterface(Convert.ToDecimal(acctReader["balance"]),
                         (long) acctReader["acct_id"],
-                        (int) Enum.Parse<AccountType>(acctReader["type"].ToString()),
+                        Convert.ToInt32(acctReader["type"]),
                         username,
                         acctReader["name"].ToString()
                     )
                 );
 
             }
+
             acctReader.Close();
             return acctList;
+        }
+
+        public void Logout(string session)
+        {
+            dbcmd.CommandText = "DELETE FROM sessions WHERE ID=@sess";
+            dbcmd.Parameters.AddWithValue("sess", session);
+            dbcmd.ExecuteNonQuery();
         }
         //Destructor for database to make sure nothing stays open.
         ~Database()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using CS_499_Project.Object_Classes;
 using Microsoft.AspNetCore.Authentication;
@@ -7,6 +8,8 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web.Http;
+using Microsoft.AspNetCore.Http;
 
 namespace CS_499_Project.Controllers
 {
@@ -24,7 +27,7 @@ namespace CS_499_Project.Controllers
 
 
             var LoginDB = new Database();
-            if (LoginDB.Login(User, Password, "admin") != null)
+            if (LoginDB.Login(User, Password, "customer") != null)
             {
                 ViewBag.Status = "Yes";
                 using (SHA256 SessionAlgorithm = SHA256.Create())
@@ -39,7 +42,7 @@ namespace CS_499_Project.Controllers
                     session_id = Hash_Builder.ToString();
                     ViewBag.Sess = session_id;
                 }
-                LoginDB.LogSessionID(session_id, User, "admin");
+                LoginDB.LogSessionID(session_id, User, "customer");
                 Response.Cookies.Append("SESSION_ID", session_id);
             }
             
@@ -58,8 +61,20 @@ namespace CS_499_Project.Controllers
             Console.WriteLine("Calling Verify with parameter " + session);
             var my_interface = Test_Auth.VerifySession(session);
             ViewBag.User = my_interface.username;
+            ViewBag.Accounts = Test_Auth.CustomerAcctList(my_interface.username);
+            return View();
+        }
 
-            return View("Index");
+        public IActionResult Logout()
+        {
+            var session = Request.Cookies["SESSION_ID"];
+            Database Logout_DB = new Database();
+            
+            Response.Cookies.Delete("SESSION_ID");
+            return View();
+
+
+
         }
     }
     

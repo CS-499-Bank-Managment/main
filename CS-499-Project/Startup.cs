@@ -41,6 +41,12 @@ namespace CS_499_Project
                         controller = "Login", action = "Index"
                     });
 
+                    routes.MapRoute("Logout-Test", "/Logout", new
+                    {
+                        controller = "Login",
+                        Action = "Logout",
+                    });
+
                     routes.MapRoute("Testing", "/Test", new
                         {controller = "Login", action = "Test"});
 

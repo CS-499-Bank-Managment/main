@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Formatters;
+
 //using System.DateTime;
 
 namespace CS_499_Project.Object_Classes
@@ -65,6 +67,32 @@ namespace CS_499_Project.Object_Classes
             this.user = user_name;
             this.display_name = account_name;
             this.account_number = number;
+        }
+
+        
+        public override string ToString()
+        {
+            return $"Account name: {this.display_name} Balance: {this.balance} Number: {this.account_number} " +
+                   $"owner: {this.user} type: {this.account_type}";
+        }
+        public static int ParseAccount(string input)
+        {
+            string func_inp = input.ToUpper();
+            switch (func_inp)
+            {
+                case "CHECKING":
+                    return 1;
+                case "SAVINGS":
+                    return 2;
+                case "MONEY_MARKET":
+                    return 3;
+                case "MORTGAGE":
+                    return 4;
+                case "CREDIT":
+                    return 5;
+            }
+
+            return -1;
         }
     }
 }

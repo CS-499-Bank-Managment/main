@@ -6,11 +6,9 @@
     <title>title</title>
 </head>
 <body>
+@foreach (var act in ViewBag.Accounts)
+{ @act <br> }
 <div>
-    @ViewBag.User <br>
-    @ViewBag.Pass <br>
-    @ViewBag.Status </br>
-
 
 </div>
 </body>
