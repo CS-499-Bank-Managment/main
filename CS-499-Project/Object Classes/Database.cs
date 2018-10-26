@@ -35,7 +35,7 @@ namespace CS_499_Project.Object_Classes
             this.dbcmd.CommandText = "INSERT INTO @role (username,password) VALUES (@user, @pwd)";
             this.dbcmd.Parameters.AddWithValue("role", $"{role}s");
             this.dbcmd.Parameters.AddWithValue("user", username);
-            this.dbcmd.Parameters.AddWithValue("pwd", SHA512.Create(password).Hash.ToString());
+            this.dbcmd.Parameters.AddWithValue("pwd", Database.PasswordHash(password));
             this.dbcmd.ExecuteNonQuery();
 
             return true; //TODO: check for success inputting.
@@ -84,7 +84,7 @@ namespace CS_499_Project.Object_Classes
                     
             }
             this.dbcmd.Parameters.AddWithValue("user", username);
-            this.dbcmd.Parameters.AddWithValue("pwd", password);
+            this.dbcmd.Parameters.AddWithValue("pwd", Database.PasswordHash(password));
             SQLiteDataReader results = this.dbcmd.ExecuteReader();
             while (results.Read())
             {
