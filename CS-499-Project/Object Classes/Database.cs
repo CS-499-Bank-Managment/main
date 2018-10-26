@@ -4,6 +4,8 @@ using System.Data.SQLite;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace CS_499_Project.Object_Classes
 {
@@ -33,7 +35,7 @@ namespace CS_499_Project.Object_Classes
             this.dbcmd.CommandText = "INSERT INTO @role (username,password) VALUES (@user, @pwd)";
             this.dbcmd.Parameters.AddWithValue("role", $"{role}s");
             this.dbcmd.Parameters.AddWithValue("user", username);
-            this.dbcmd.Parameters.AddWithValue("pwd", password);
+            this.dbcmd.Parameters.AddWithValue("pwd", SHA512.Create(password).Hash.ToString());
             this.dbcmd.ExecuteNonQuery();
 
             return true; //TODO: check for success inputting.
@@ -177,7 +179,18 @@ namespace CS_499_Project.Object_Classes
 
         public Dictionary<string, string> TransferAcct(int acct_to, int acct_from, decimal amount)
         {
+            /*
+             * This method transfers money from one account to another account.
+             * Input parameters: AccountNumber to transfer to,
+             * Account number to transfer from,
+             * decimal amount.
+             *
+             * It will return a dictionary with the keys of the pre transfer and post transfer balance
+             * of both accounts
+             */
             Dictionary<string, string> result_dict = new Dictionary<string, string>();
+            //Get the balance from the account where the ID matches the to account.
+            //Add it to the dictionary
             this.dbcmd.CommandText = "Select balance from customer_acct where acct_id=@act";
             this.dbcmd.Parameters.AddWithValue("act", acct_to);
             var acct_to_balance_reader = this.dbcmd.ExecuteReader();
@@ -190,7 +203,7 @@ namespace CS_499_Project.Object_Classes
             result_dict.Add("Acct_To_Original", acct_to_balance.ToString());
             acct_to_balance_reader.Close();
 
-
+            //Get the original balance of the account_from and add it to the dictionary
             this.dbcmd.CommandText = "select balance from customer_acct where acct_id=@act";
             this.dbcmd.Parameters.AddWithValue("act", acct_from);
             var acct_from_balance_reader = this.dbcmd.ExecuteReader();
@@ -202,9 +215,11 @@ namespace CS_499_Project.Object_Classes
             result_dict.Add("Acct_From_Original", acct_from_balance.ToString());
 
             acct_from_balance_reader.Close();
-
+            //Make sure the transfer won't put the account_from below zero.
             if (acct_from_balance >= amount)
             {
+                //If it doesn't, update both columns with the amount being removed
+                //Or added respectively
                 this.dbcmd.CommandText = "UPDATE customer_acct set balance=@bal where acct_id=@act";
                 this.dbcmd.Parameters.AddWithValue("bal", acct_from_balance - amount);
                 this.dbcmd.Parameters.AddWithValue("act", acct_from);
@@ -242,8 +257,14 @@ namespace CS_499_Project.Object_Classes
 
         public Dictionary<string, string> AddAmount(int acct, decimal amount)
         {
+            /*
+             * This method adds the amount into an account. Pass it the account number and the amount
+             * Returns a dictionary with old balance and new balance as keys
+             */
+            
             Dictionary<string, string> results = new Dictionary<string, string>();
             results.Add("amount", amount.ToString());
+            //Get the balance from the user act
             this.dbcmd.CommandText = "select balance from customer_acct where acct_id=@act";
             this.dbcmd.Parameters.AddWithValue("act", acct);
             var balance_reader = this.dbcmd.ExecuteReader();
@@ -253,6 +274,9 @@ namespace CS_499_Project.Object_Classes
                 balance = Convert.ToDecimal(balance_reader["balance"]);
                 results.Add("Old Balance", balance.ToString());
             }
+            //Make sure that withdrawing the money from the account will not put it in the negative.
+            //This is important because a deposit and a withdraw are the same operation with 
+            //a different sign.
             balance_reader.Close();
             if ((balance + amount) >= 0)
             {
@@ -298,6 +322,7 @@ namespace CS_499_Project.Object_Classes
 
         public void LogSessionID(string Session_ID, string username, string role)
         {
+            //This is a helper function to log the session into the Sessions table.
             this.dbcmd.CommandText = "INSERT into sessions (ID, username, role) VALUES (@Sess_ID, @user, @roll)";
             this.dbcmd.Parameters.AddWithValue("user", username);
             this.dbcmd.Parameters.AddWithValue("roll", role);
@@ -308,8 +333,13 @@ namespace CS_499_Project.Object_Classes
 
         public ProfileInterface VerifySession(string sessionID)
         {
+            /*
+             * This method is called with SessionID, which is the cookie under the key
+             * SESSION_ID, it will look up the sessions table, find a user with a corresponding value
+             * then create a profile interface of that user.
+             * TODO: Make profile types more distinguishable somehow?
+             */
             this.dbcmd.CommandText = $"SELECT * FROM sessions";
-//            this.dbcmd.Parameters.AddWithValue("session_variable", sessionID);
             Console.WriteLine(this.dbcmd.CommandText);
             var user = this.dbcmd.ExecuteReader();
             ProfileInterface returning = null;
@@ -337,6 +367,10 @@ namespace CS_499_Project.Object_Classes
 
         public Dictionary<string, string> Login(string username, string profileType)
         {
+            /*
+             * Returns a Dictionary of all the rows columns and their names from the DB
+             * given a users username and profileType.
+             */
             var returning = new Dictionary<string, string>();
             switch (profileType)
             {
@@ -377,14 +411,14 @@ namespace CS_499_Project.Object_Classes
             dbcmd.Parameters.AddWithValue("user", username);
             var reader = dbcmd.ExecuteScalar().ToString();
             
+            //Select all the accounts the user owns
+            //Add them to a list
+            //return that list of accountinterface()
             dbcmd.CommandText = "SELECT * from customer_acct where owner_id=@owner";
             dbcmd.Parameters.AddWithValue("owner", reader);
             var acctReader = dbcmd.ExecuteReader();
             while (acctReader.Read())
             {
-                Console.WriteLine(
-                    acctReader["balance"].ToString() + acctReader["acct_id"].ToString() 
-                  + acctReader["type"].ToString() + acctReader["name"].ToString() );
                 acctList.Add(
                     new AccountInterface(Convert.ToDecimal(acctReader["balance"]),
                         (long) acctReader["acct_id"],
@@ -402,9 +436,31 @@ namespace CS_499_Project.Object_Classes
 
         public void Logout(string session)
         {
+            /*
+             * Deletes the given session from the sessions DB for logging out.
+             */
             dbcmd.CommandText = "DELETE FROM sessions WHERE ID=@sess";
             dbcmd.Parameters.AddWithValue("sess", session);
             dbcmd.ExecuteNonQuery();
+        }
+
+        public static string PasswordHash(string password)
+        {
+            /*
+             * Static method that returns the SHA 512 hash of the given string.
+             */
+            StringBuilder pwdhash_builder = new StringBuilder();
+            using (SHA512 PDWHash = SHA512.Create())
+            {
+                byte[] PWD_Hash = PDWHash.ComputeHash(Encoding.UTF8.GetBytes(password));
+                for (int i = 0; i < PWD_Hash.Length; i++)
+                {
+                    pwdhash_builder.Append(PWD_Hash[i].ToString("x2"));
+                }
+            }
+
+            return pwdhash_builder.ToString();
+
         }
         //Destructor for database to make sure nothing stays open.
         ~Database()

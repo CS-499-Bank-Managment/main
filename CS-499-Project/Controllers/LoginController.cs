@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web.Http;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 
 namespace CS_499_Project.Controllers
 {
@@ -25,9 +26,8 @@ namespace CS_499_Project.Controllers
             ViewBag.User = User;
             ViewBag.Pass = Password;
 
-
             var LoginDB = new Database();
-            if (LoginDB.Login(User, Password, "customer") != null)
+            if (LoginDB.Login(User, Database.PasswordHash(Password), "customer") != null)
             {
                 ViewBag.Status = "Yes";
                 using (SHA256 SessionAlgorithm = SHA256.Create())
