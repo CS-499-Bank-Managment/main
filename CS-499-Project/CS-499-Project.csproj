@@ -18,4 +18,8 @@
     <_ContentIncludedByDefault Remove="Views\Admin\Index.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Uploads\" />
+  </ItemGroup>
+
 </Project>
