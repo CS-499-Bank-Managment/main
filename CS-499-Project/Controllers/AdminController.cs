@@ -18,12 +18,25 @@ namespace CS_499_Project.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-
+            //This method shows the Default index page for the Admin Dashboard.
+            ProfileInterface current_user = (new Database().VerifySession(Request.Cookies["SESSION_ID"]));
+            ViewBag.username = current_user.username;
+            ViewBag.role = current_user.profile_type;
+            Console.WriteLine( current_user.GetType() == typeof(AdminProfile));
+            if (current_user.GetType() != typeof(AdminProfile))
+            {
+                return View("Denied");
+            }
             return View();
         }
 
         public IActionResult ProfileList()
         {
+            var current_user = new Database().VerifySession(Request.Cookies["SESSION_ID"]);
+            if (current_user.profile_type != ProfileInterface.ProfileType.ADMIN)
+            {
+                return View("Denied");
+            }
             List<string> results = new List<string>();
             Database test = new Database();
             results = test.GetAllProfiles();
@@ -34,6 +47,11 @@ namespace CS_499_Project.Controllers
 
         public IActionResult AddAccount()
         {
+            var current_user = new Database().VerifySession(Request.Cookies["SESSION_ID"]);
+            if (current_user.profile_type != ProfileInterface.ProfileType.ADMIN)
+            {
+                return View("Denied");
+            }
             List<string> results = new List<string>();
             Database test = new Database();
             results = test.GetCustomers();
@@ -43,9 +61,13 @@ namespace CS_499_Project.Controllers
 
         public IActionResult NewAccount(string username, string name, decimal deposit, int type)
         {
+            var current_user = new Database().VerifySession(Request.Cookies["SESSION_ID"]);
+            if (current_user.profile_type != ProfileInterface.ProfileType.ADMIN)
+            {
+                return View("Denied");
+            }
+            ((AdminProfile)current_user).CreateCustAccount(username, deposit, type, name);
             List<string> results = new List<string>();
-            Database test = new Database();
-            results = test.CreateCustAcct(username, deposit, type, name);
             ViewBag.acct_user = results[0];
             ViewBag.acct_num  = results[1];
             ViewBag.acct_dep  = results[2];
@@ -58,8 +80,13 @@ namespace CS_499_Project.Controllers
         public IActionResult AccountCreated(string username, string password, string confirm, string role)
         {
             //Create basic admin profile class - later we'll need to verify this with session info.
-            
-            AdminProfile foo = new AdminProfile();
+/*            
+            var current_user = new Database().VerifySession(Request.Cookies["SESSION_ID"]);
+            if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
+            {
+                return View("Denied");
+            }
+*/            
             if (username == null && ViewBag.username == null)
             {
                 return View();
@@ -75,39 +102,30 @@ namespace CS_499_Project.Controllers
             }
 
             //Call the create profile method
-            foo.CreateProfile(username, password, role);
+            (new AdminProfile()).CreateProfile(username, password, role);
             return View();
         }
 
         public IActionResult Create()
         {
+            //TODO: FIX THIS LATER, THE FORM USES POST AUTHENTICATION BUT THE ACCOUNTCREATED METHOD DOES NOT
+            //TODO: PROCESS THAT INFORMATION IT EXPECTS IT IN THE FORM /USER/PASS/ETC RATHER THAN
+            //TODO: ACCOUNTCREATED?USER=*PASS=* ...
             return View();
         }
 
-        public bool submitForm(string username, string password, string role)
-        {
-            AdminProfile foo = new AdminProfile();
-            if (username == "" && ViewBag.username == null)
-            {
-                return false;
-            }
-            ViewBag.username = username;
-            ViewBag.password = password;
-            ViewBag.role = role;
-            foo.CreateProfile(username, password, role);
-
-
-            Index();
-            return true;
-        }
 
         public IActionResult Delete(string username)
         {
+            var current_user = new Database().VerifySession(Request.Cookies["SESSION_ID"]);
+            if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
+            {
+                return View("Denied");
+            }
             //Create basic admin profile. and call it's Delete Profile method.
-            AdminProfile foo = new AdminProfile();
             ViewBag.deleting = username;
-            foo.DeleteProfile(username);
-            ViewBag.status = foo.Check(username);
+            ((AdminProfile)current_user).DeleteProfile(username);
+            ViewBag.status = ((AdminProfile)current_user).Check(username);
                
             return View();
         }

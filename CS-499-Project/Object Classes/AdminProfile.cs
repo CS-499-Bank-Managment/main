@@ -26,6 +26,12 @@ namespace CS_499_Project.Object_Classes
 
     }
 
+    public bool CreateCustAccount(string acct_owner, decimal balance, int type, string acct_name)
+    {
+        new Database().CreateCustAcct(acct_owner, balance, type, acct_name);
+        return true;
+    }
+
         public bool CreateProfile(string username, string password, string role)
         {
             Database test = new Database();

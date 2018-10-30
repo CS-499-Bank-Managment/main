@@ -22,6 +22,7 @@ namespace CS_499_Project.Controllers
         {
             string User = Request.Query["username"];
             string Password = Request.Query["password"];
+            string role = Request.Query["role"];
             string session_id;
             ViewBag.User = User;
             ViewBag.Pass = Password;
@@ -42,7 +43,7 @@ namespace CS_499_Project.Controllers
                     session_id = Hash_Builder.ToString();
                     ViewBag.Sess = session_id;
                 }
-                LoginDB.LogSessionID(session_id, User, "teller");
+                LoginDB.LogSessionID(session_id, User, role);
                 Response.Cookies.Append("SESSION_ID", session_id);
             }
             
@@ -56,7 +57,7 @@ namespace CS_499_Project.Controllers
         {
             var session = Request.Cookies["SESSION_ID"];
             Database Logout_DB = new Database();
-            
+            Logout_DB.Logout(session);
             Response.Cookies.Delete("SESSION_ID");
             return View();
 
