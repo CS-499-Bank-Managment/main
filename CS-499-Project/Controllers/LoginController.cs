@@ -52,19 +52,6 @@ namespace CS_499_Project.Controllers
             return View();
         }
 
-        public IActionResult Test()
-        {
-            var session = Request.Cookies["SESSION_ID"].Trim();
-            ViewBag.Sess = session;
-
-            Database Test_Auth = new Database();
-            Console.WriteLine("Calling Verify with parameter " + session);
-            var my_interface = Test_Auth.VerifySession(session);
-            ViewBag.User = my_interface.username;
-            ViewBag.Accounts = Test_Auth.CustomerAcctList(my_interface.username);
-            return View();
-        }
-
         public IActionResult Logout()
         {
             var session = Request.Cookies["SESSION_ID"];

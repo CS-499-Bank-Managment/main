@@ -49,6 +49,8 @@ namespace CS_499_Project.Object_Classes
 
         public long accountNumber() { return this.account_number; }
 
+        public string DisplayName => display_name;
+
         //add transaction to the list
         public void addTransaction(Transaction transaction)
         {

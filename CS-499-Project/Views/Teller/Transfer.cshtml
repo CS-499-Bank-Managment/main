@@ -25,16 +25,16 @@
 </head>
 <body>
 <form method="post">
-Transfer From Account:
-<select id="selectFrom" name="acctFrom" onchange="JSRemove()">
-    @foreach (AccountInterface act in ViewBag.Accounts)
-    {
-        <option value="@act.accountNumber()"> @act.DisplayName </option>
-    }
-</select>
-<br/>
+    Transfer From Account:
+    <select id="selectFrom" name="acctFrom" onchange="JSRemove()">
+        @foreach (AccountInterface act in ViewBag.Accounts)
+        {
+            <option value="@act.accountNumber()"> @act.DisplayName </option>
+        }
+    </select>
+    <br/>
 
-Transfer To Account:
+    Transfer To Account:
     <select id="selectTo" name="acctTo">
         @foreach (AccountInterface act in ViewBag.Accounts)
         {
@@ -45,7 +45,7 @@ Transfer To Account:
     Amount: <input type="text" id="amount" name="amount" value=""/>
     <br/>
     <button type="submit">Transfer!</button>
-    </form>
+</form>
 <div>
 
 </div>
