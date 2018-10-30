@@ -32,8 +32,20 @@ namespace CS_499_Project.Object_Classes
         public bool NewUser(string username, string password, string role)
         {
             //Add the username and password into the role diagram. TODO: fix sqli in roles.
-            this.dbcmd.CommandText = "INSERT INTO @role (username,password) VALUES (@user, @pwd)";
-            this.dbcmd.Parameters.AddWithValue("role", $"{role}s");
+            switch (role)
+            {
+                case ("admin"):
+                    this.dbcmd.CommandText = "INSERT INTO admins (username,password) VALUES (@user, @pwd)";
+                    break;
+                
+                case "teller":
+                    this.dbcmd.CommandText = "INSERT INTO tellers (username,password) VALUES (@user, @pwd)";
+                    break;
+                
+                case "customer":
+                    this.dbcmd.CommandText = "INSERT INTO customers (username,password) VALUES (@user, @pwd)";
+                    break;
+            }
             this.dbcmd.Parameters.AddWithValue("user", username);
             this.dbcmd.Parameters.AddWithValue("pwd", Database.PasswordHash(password));
             this.dbcmd.ExecuteNonQuery();

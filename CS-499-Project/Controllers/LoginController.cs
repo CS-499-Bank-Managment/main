@@ -27,7 +27,7 @@ namespace CS_499_Project.Controllers
             ViewBag.Pass = Password;
 
             var LoginDB = new Database();
-            if (LoginDB.Login(User, Database.PasswordHash(Password), "customer") != null)
+            if (LoginDB.Login(User, Database.PasswordHash(Password), "teller") != null)
             {
                 ViewBag.Status = "Yes";
                 using (SHA256 SessionAlgorithm = SHA256.Create())
@@ -42,7 +42,7 @@ namespace CS_499_Project.Controllers
                     session_id = Hash_Builder.ToString();
                     ViewBag.Sess = session_id;
                 }
-                LoginDB.LogSessionID(session_id, User, "customer");
+                LoginDB.LogSessionID(session_id, User, "teller");
                 Response.Cookies.Append("SESSION_ID", session_id);
             }
             

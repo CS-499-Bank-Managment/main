@@ -7,6 +7,20 @@ namespace CS_499_Project.Controllers
     public class TellerController : Controller
     {
         // GET
+
+        public IActionResult Index()
+        {
+            var session = Request.Cookies["SESSION_ID"];
+            ProfileInterface Verified = new Database().VerifySession(session);
+            //Check if Verified is a TellerProfile type object, this means the session is valid
+            if (Verified is TellerProfile)
+            {
+                ViewBag.User = Verified.username;
+                return View();
+            }
+
+            return View("Denied");
+        }
         public IActionResult Transaction(string acct_to, string amount)
         {
             TellerProfile foo = new TellerProfile();
@@ -36,8 +50,7 @@ namespace CS_499_Project.Controllers
             {
                 //At this point there should be an acctFrom in the title. this is just a sanity check
                 //To make sure we don't run this on page load.
-                TellerProfile fakeTeller = new TellerProfile();
-                fakeTeller.Transfer( Convert.ToInt32(Request.Form["acctTo"]),
+                ((TellerProfile)my_interface)?.Transfer( Convert.ToInt32(Request.Form["acctTo"]),
                     Convert.ToInt32(Request.Form["acctFrom"]), Convert.ToDecimal(Request.Form["amount"]));
             } 
             
