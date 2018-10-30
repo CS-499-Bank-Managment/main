@@ -22,7 +22,7 @@ namespace CS_499_Project.Controllers
             return View();
         }
 
-        public IActionResult ProfileList()
+        public IActionResult DeleteProfileForm()
         {
             List<string> results = new List<string>();
             Database test = new Database();
@@ -32,7 +32,7 @@ namespace CS_499_Project.Controllers
         }
 
 
-        public IActionResult AddAccount()
+        public IActionResult CreateAccountForm()
         {
             List<string> results = new List<string>();
             Database test = new Database();
@@ -41,7 +41,7 @@ namespace CS_499_Project.Controllers
             return View();
         }
 
-        public IActionResult NewAccount(string username, string name, decimal deposit, int type)
+        public IActionResult CreateAccountConfirmation(string username, string name, decimal deposit, int type)
         {
             List<string> results = new List<string>();
             Database test = new Database();
@@ -55,7 +55,7 @@ namespace CS_499_Project.Controllers
         }
 
         //Action method for creating an account
-        public IActionResult AccountCreated(string username, string password, string confirm, string role)
+        public IActionResult CreateProfileConfirmation(string username, string password, string confirm, string role)
         {
             //Create basic admin profile class - later we'll need to verify this with session info.
             
@@ -79,7 +79,7 @@ namespace CS_499_Project.Controllers
             return View();
         }
 
-        public IActionResult Create()
+        public IActionResult CreateProfileForm()
         {
             return View();
         }
@@ -101,7 +101,7 @@ namespace CS_499_Project.Controllers
             return true;
         }
 
-        public IActionResult Delete(string username)
+        public IActionResult DeleteProfileConfirmation(string username)
         {
             //Create basic admin profile. and call it's Delete Profile method.
             AdminProfile foo = new AdminProfile();

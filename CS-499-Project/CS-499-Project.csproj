@@ -14,7 +14,6 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\Angular\app.js" />
     <_ContentIncludedByDefault Remove="wwwroot\Angular\controller.js" />
-    <_ContentIncludedByDefault Remove="Views\Admin\Create.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Admin\Index.cshtml" />
   </ItemGroup>
 
