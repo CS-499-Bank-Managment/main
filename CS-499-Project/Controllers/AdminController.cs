@@ -130,19 +130,7 @@ namespace CS_499_Project.Controllers
             return View();
         }
         
-        //Test method to verify dbs
-        public IActionResult Mongo(string username, string password, string role)
-        {
-            List<string> results = new List<string>();
-            Database test = new Database();
-            results = test.Login(username, password, role);
-            ViewBag.results = results;
-            foreach (var item in results)
-            {
-                Console.WriteLine(item);
-            }
-            return View();
-        }
+        
             
         //Commented because they aren't used and don't use real functions
 

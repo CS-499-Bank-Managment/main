@@ -4,6 +4,7 @@ using System.Data.SQLite;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -78,9 +79,8 @@ namespace CS_499_Project.Object_Classes
             return profiles;
         }
 
-        public List<string> Login(string username, string password, string role)
+        public string Login(string username, string password, string role)
         {
-            //Login method, TODO: fix sqli in role
             List<string> temp = new List<string>();
             switch (role)
             {
@@ -97,15 +97,28 @@ namespace CS_499_Project.Object_Classes
             }
             this.dbcmd.Parameters.AddWithValue("user", username);
             this.dbcmd.Parameters.AddWithValue("pwd", Database.PasswordHash(password));
-            SQLiteDataReader results = this.dbcmd.ExecuteReader();
-            while (results.Read())
+            Console.WriteLine(Database.PasswordHash(password));
+            SQLiteDataReader results = dbcmd.ExecuteReader();
+            if (!results.HasRows)
             {
-                temp.Add(Convert.ToString(results["username"]));
-                temp.Add(Convert.ToString(results["password"]));
-                temp.Add(Convert.ToString(results["userid"]));             
+                throw new UnauthorizedAccessException();
             }
             results.Close();
-            return temp;
+            
+            string session_id;
+            using (SHA256 SessionAlgorithm = SHA256.Create())
+            {
+                byte[] Hash_Bytes = SessionAlgorithm.ComputeHash(Encoding.UTF8.GetBytes(username + "Salt"));
+                StringBuilder Hash_Builder = new StringBuilder();
+                for (int i = 0; i < Hash_Bytes.Length; i++)
+                {
+                    Hash_Builder.Append(Hash_Bytes[i].ToString("x2"));
+                }
+
+                session_id = Hash_Builder.ToString();
+                LogSessionID(session_id, username, role);
+            }
+            return session_id;
         }
 
         public List<string> CreateCustAcct(string username, decimal balance, int type, string name)

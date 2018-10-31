@@ -28,22 +28,10 @@ namespace CS_499_Project.Controllers
             ViewBag.Pass = Password;
 
             var LoginDB = new Database();
-            if (LoginDB.Login(User, Database.PasswordHash(Password), "teller") != null)
+            session_id = LoginDB.Login(User, Password, role);
+            if (session_id != null)
             {
                 ViewBag.Status = "Yes";
-                using (SHA256 SessionAlgorithm = SHA256.Create())
-                {
-                    byte[] Hash_Bytes = SessionAlgorithm.ComputeHash(Encoding.UTF8.GetBytes(User + "Salt"));
-                    StringBuilder Hash_Builder = new StringBuilder();
-                    for (int i = 0; i < Hash_Bytes.Length; i++)
-                    {
-                        Hash_Builder.Append(Hash_Bytes[i].ToString("x2"));
-                    }
-
-                    session_id = Hash_Builder.ToString();
-                    ViewBag.Sess = session_id;
-                }
-                LoginDB.LogSessionID(session_id, User, role);
                 Response.Cookies.Append("SESSION_ID", session_id);
             }
             
