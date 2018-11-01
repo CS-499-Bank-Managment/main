@@ -19,6 +19,7 @@ namespace CS_499_Project.Object_Classes
         public TellerProfile(string name)
         {
             this._FullName = name;
+            this.username = name;
             this.profile_type = ProfileType.TELLER;
         }
         

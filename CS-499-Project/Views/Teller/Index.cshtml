@@ -23,7 +23,7 @@
 <table>
     @if (ViewBag.info != null)
      {
-	  @foreach(KeyValuePair<string, string> dict_item in ViewBag.info)
+	  foreach(KeyValuePair<string, string> dict_item in ViewBag.info)
       {
           <thead>@dict_item.Key </thead>
       }

@@ -34,6 +34,7 @@ namespace CS_499_Project.Controllers
             {
                 ViewBag.Status = "Yes";
                 Response.Cookies.Append("SESSION_ID", session_id);
+                ViewBag.redirect = LoginController.RoleIndex(role);
             }
             
             //https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication?view=aspnetcore-2.1
@@ -42,6 +43,21 @@ namespace CS_499_Project.Controllers
             return View();
         }
 
+        public static string RoleIndex(string role)
+        {
+            //Function that returns the index page for the specified role.
+            switch (role.ToLower())
+            {
+                case "admin":
+                    return "./Admin/";
+                case "teller":
+                    return "./Teller/";
+                case "customer":
+                    return "./Customer/";
+            }
+
+            return "";
+        }
         public IActionResult Logout()
         {
             var session = Request.Cookies["SESSION_ID"];
