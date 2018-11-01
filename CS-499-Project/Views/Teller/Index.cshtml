@@ -24,5 +24,20 @@ Find a customer:&nbsp;&nbsp;<input type="text"/>
 		<td><button>SELECT</button></td>
 	</tr>
 </table>
+
+
+
+<br/><br/>
+<form method="post">
+	Find a customer by username: <input name="username" type="text"/>
+	<input type="submit"/>	
+</form>
+
+<table>
+	@foreach (KeyValuePair<string,string> pair in ViewBag?.results)
+	{
+	String.Format("<tr><td>{0}</td><td>{1}</td></tr>", pair.Key, pair.Value.ToString());
+	}
+ </table>
 </body>
 </html>

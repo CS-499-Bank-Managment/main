@@ -487,6 +487,22 @@ namespace CS_499_Project.Object_Classes
             return pwdhash_builder.ToString();
 
         }
+
+        public Dictionary<string, string> CustomerLookup(string username)
+        {
+            Dictionary<string, string> info_dict = new Dictionary<string, string>();
+            dbcmd.CommandText = "SELECT * from customers where username=@user";
+            dbcmd.Parameters.AddWithValue("user", username);
+            var reader = dbcmd.ExecuteReader();
+            while (reader.Read())
+            {
+                for( int lp = 0 ; lp < reader.FieldCount ; lp++ ) {
+                    info_dict.Add(reader.GetName(lp), reader.GetValue(lp).ToString());
+                }
+            }
+
+            return info_dict;
+        }
         //Destructor for database to make sure nothing stays open.
         ~Database()
         {

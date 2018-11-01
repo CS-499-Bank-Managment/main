@@ -13,13 +13,17 @@ namespace CS_499_Project.Controllers
             var session = Request.Cookies["SESSION_ID"];
             ProfileInterface Verified = new Database().VerifySession(session);
             //Check if Verified is a TellerProfile type object, this means the session is valid
-            if (Verified is TellerProfile)
+            if (Verified.profile_type != ProfileInterface.ProfileType.TELLER)
             {
-                ViewBag.User = Verified.username;
-                return View();
+                return View("Denied");
             }
 
-            return View("Denied");
+            if (Request.HasFormContentType)
+            {
+                var lookup_db = new Database();
+                ViewBag.info = lookup_db.CustomerLookup(Request.Form["username"]);
+            }
+            return View();
         }
         public IActionResult Transaction(string acct_to, string amount)
         {
