@@ -24,6 +24,14 @@
     <title>title</title>
 </head>
 <body>
+
+<form method="post">
+    Customer username to search:
+    <input type="text" name="username" id="username" />
+    <input type="submit" />
+</form>
+@if (!String.IsNullOrEmpty(ViewBag.searched) && (ViewBag.Accounts != null))
+{
 <form method="post">
     Transfer From Account:
     <select id="selectFrom" name="acctFrom" onchange="JSRemove()">
@@ -46,6 +54,7 @@
     <br/>
     <button type="submit">Transfer!</button>
 </form>
+}
 <div>
 
 </div>

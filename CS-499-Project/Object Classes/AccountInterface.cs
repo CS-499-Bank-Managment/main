@@ -77,6 +77,18 @@ namespace CS_499_Project.Object_Classes
             return $"Account name: {this.display_name} Balance: {this.balance} Number: {this.account_number} " +
                    $"owner: {this.user} type: {this.account_type}";
         }
+
+        public Dictionary<string, string> toDict()
+        {
+            Dictionary<string, string> return_dict = new Dictionary<string, string>();
+            return_dict["name"] = this.display_name;
+            return_dict["balance"] = this.balance.ToString();
+            return_dict["number"] = this.account_number.ToString();
+            return_dict["owner"] = this.user;
+            return_dict["type"] = ((AccountType)this.account_type).ToString();
+            return return_dict;
+
+        }
         public static int ParseAccount(string input)
         {
             string func_inp = input.ToUpper();

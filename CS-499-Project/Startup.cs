@@ -30,7 +30,7 @@ namespace CS_499_Project
             }
             app.UseMvc(routes =>
                 {
-                    routes.MapRoute("Teller-Test", "/Transaction/{acct_to}/{amount}", new
+                    routes.MapRoute("Teller-Test", "/Teller/Transaction/{acct_to}/{amount}", new
                     {
                         controller = "Teller",
                         Action = "Transaction"

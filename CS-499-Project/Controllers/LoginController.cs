@@ -28,7 +28,8 @@ namespace CS_499_Project.Controllers
             ViewBag.Pass = Password;
 
             var LoginDB = new Database();
-            session_id = LoginDB.Login(User, Password, role);
+            var sessionID = Request.Cookies["SESSION_ID"] != null;
+            session_id = LoginDB.Login(User, Password, role, sessionID);
             if (session_id != null)
             {
                 ViewBag.Status = "Yes";

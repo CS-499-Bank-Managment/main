@@ -79,8 +79,13 @@ namespace CS_499_Project.Object_Classes
             return profiles;
         }
 
-        public string Login(string username, string password, string role)
+        public string Login(string username, string password, string role, bool session)
         {
+
+            dbcmd.CommandText = "DELETE FROM sessions WHERE username=@user";
+            dbcmd.Parameters.AddWithValue("user", username);
+            dbcmd.ExecuteNonQuery();
+
             List<string> temp = new List<string>();
             switch (role)
             {
@@ -499,16 +504,15 @@ namespace CS_499_Project.Object_Classes
                 for( int lp = 0 ; lp < reader.FieldCount ; lp++ ) {
                     info_dict.Add(reader.GetName(lp), reader.GetValue(lp).ToString());
                 }
+                info_dict.Remove("password");
             }
-
+            reader.Close();
             return info_dict;
         }
         //Destructor for database to make sure nothing stays open.
         ~Database()
         {
             this.dbcmd = null;
-            this.db.Close();
-            this.db = null;
         }
     }
 }

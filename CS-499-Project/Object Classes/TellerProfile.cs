@@ -33,8 +33,13 @@ namespace CS_499_Project.Object_Classes
             Dictionary<string, string> results = DB.TransferAcct(AcctTo, AcctFrom, amount);
             return results;
         }
-        
-        
+
+        public List<AccountInterface> ListAccounts(string username)
+        {
+            var customer = new CustomerProfile(username);
+            return customer.ListAccounts();
+        }
+
         public Dictionary<string, string> AddAmount(int AcctTo, decimal amount)
         {
             Database DB = new Database();

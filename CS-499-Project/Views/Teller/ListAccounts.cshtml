@@ -1,0 +1,33 @@
+﻿<script>
+    function edit(acct_num) {
+        location.href = "./Edit?acct=" + acct_num.trim();
+    }
+</script>
+
+<html>
+Showing Accounts for @ViewBag.lookup <br>
+<body>
+    <table>
+
+        @foreach (KeyValuePair<string, string> acct_label in ViewBag.accounts[0])
+        {
+            <thead> @acct_label.Key </thead>
+
+        }
+        @foreach (var account in ViewBag.accounts)
+        {
+            <tr>
+                @foreach (KeyValuePair<string, string> acct_dict in account)
+                {
+
+                    <td> @acct_dict.Value </td>
+                }
+                <td>
+                    <input type="button" value="Edit Acct." onclick="edit('@account["number"]')" />
+                </td>
+            </tr>
+        }
+
+    </table>
+</body>
+</html>

@@ -1,0 +1,14 @@
+﻿<script>
+    function transfer(acct) {
+        location.href = "./Transaction/" + acct.trim() + "/" + document.getElementById('amtbox').value;
+    }
+</script>
+<html>
+
+<input type="text" name="amount" id="amtbox" />
+<input type="button" name="submit" value="confirm" onclick="transfer('@ViewBag.num')" /> </br> </br> </br></br>
+
+<body>
+    Maybe List Transactions down here?
+</body>
+</html>
