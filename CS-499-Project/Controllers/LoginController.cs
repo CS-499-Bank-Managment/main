@@ -17,26 +17,48 @@ namespace CS_499_Project.Controllers
     public class LoginController : Controller
     {
         // GET
-        [HttpGet]
         public IActionResult Index()
         {
-            string User = Request.Query["username"];
-            string Password = Request.Query["password"];
-            string role = Request.Query["role"];
-            string session_id;
-            ViewBag.User = User;
-            ViewBag.Pass = Password;
-
-            var LoginDB = new Database();
-            var sessionID = Request.Cookies["SESSION_ID"] != null;
-            session_id = LoginDB.Login(User, Password, role, sessionID);
-            if (session_id != null)
+            if (!String.IsNullOrEmpty(Request.Cookies["SESSION_ID"]))
             {
-                ViewBag.Status = "Yes";
-                Response.Cookies.Append("SESSION_ID", session_id);
-                ViewBag.redirect = LoginController.RoleIndex(role);
+                Database Redirect = new Database();
+                var type = Redirect.VerifySession(Request.Cookies["SESSION_ID"]).profile_type;
+                if (type == ProfileInterface.ProfileType.ADMIN)
+                {
+                    ViewBag.redirect = "./Admin/";
+                }
+
+                if (type == ProfileInterface.ProfileType.TELLER)
+                {
+                    ViewBag.redirect = "./Teller/";
+                }
+
+                if (type == ProfileInterface.ProfileType.CUSTOMER)
+                {
+                    ViewBag.redirect = "./User/";
+                }
             }
-            
+            ViewBag.Form = false;
+            if (Request.HasFormContentType)
+            {
+                ViewBag.Form = true;
+                string User = Request.Form["username"];
+                string Password = Request.Form["password"];
+                string role = Request.Form["role"];
+                ViewBag.User = User;
+                ViewBag.Pass = Password;
+
+                var LoginDB = new Database();
+                var sessionID = Request.Cookies["SESSION_ID"] != null;
+                var session_id = LoginDB.Login(User, Password, role, sessionID);
+                if (session_id != null)
+                {
+                    ViewBag.Status = "Yes";
+                    Response.Cookies.Append("SESSION_ID", session_id);
+                    ViewBag.redirect = LoginController.RoleIndex(role);
+                }
+            }
+
             //https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication?view=aspnetcore-2.1
             //Read this later future me
             
