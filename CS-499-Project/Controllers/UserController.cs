@@ -11,6 +11,11 @@ namespace CS_499_Project.Controllers
             return View();
         }
         
+        public IActionResult AccountDashboard()
+        {
+            return View();
+        }
+
         // GET
         public IActionResult Login(string username, string password)
         {
@@ -21,8 +26,9 @@ namespace CS_499_Project.Controllers
 
             // Read the file and display it line by line.  
             System.IO.StreamReader file =   
-                new System.IO.StreamReader(@"./WriteLines.txt");  
-            while((line = file.ReadLine()) != null)
+                new System.IO.StreamReader(@"./WriteLines.txt");
+
+            while ((line = file.ReadLine()) != null)
             {
                 string[] tempstr = line.Split(",");
                 if (username == tempstr[0])
