@@ -30,11 +30,23 @@ namespace CS_499_Project
             }
             app.UseMvc(routes =>
                 {
-                    routes.MapRoute("Teller-Test", "/Transaction/{acct_to}/{amount}", new
+                    routes.MapRoute("Teller-Test", "/Teller/Transaction/{acct_to}/{amount}", new
                     {
                         controller = "Teller",
                         Action = "Transaction"
                     });
+
+                    routes.MapRoute("Login-Test", "/Login/", new
+                    {
+                        controller = "Login", action = "Index"
+                    });
+
+                    routes.MapRoute("Logout-Test", "/Logout", new
+                    {
+                        controller = "Login",
+                        Action = "Logout",
+                    });
+
 
                     routes.MapRoute("Teller-TransferTest", "/Transfer/{acct_to}/{acct_from}/{amount}",
                         new {controller = "Teller", action = "Between"});
@@ -44,7 +56,7 @@ namespace CS_499_Project
                         new {controller = "Admin", action = "DeleteCustAcct"});
                     routes.MapRoute("admin", "{controller}/{action}/{username?}/{password?}/{role?}");
                     routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                    routes.MapRoute("index page", "/", new {controller = "User", action = "Index"});
+                    routes.MapRoute("index page", "/", new {controller = "Login", action = "Index"});
                 //https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/routing?view=aspnetcore-2.1
                 //https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/introduction/adding-a-view
                 //https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/introduction/adding-a-controller
@@ -53,7 +65,7 @@ namespace CS_499_Project
 
             app.Run(async (context) =>
             {
-                await context.Response.WriteAsync("Hello World!");
+                
             });
         }
     }

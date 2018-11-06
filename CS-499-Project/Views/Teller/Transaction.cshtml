@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+
+    To: @ViewBag.To <br>
+    Amt: @ViewBag.amt <br>
+
+@foreach (KeyValuePair<string, string> item in @ViewBag.ResultDict)
+{
+    @item.Key @item.Value <br>
+}
+ <div>
+
+</div>
+</body>
+</html>

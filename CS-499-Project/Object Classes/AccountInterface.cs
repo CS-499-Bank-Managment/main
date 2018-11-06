@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Formatters;
+
 //using System.DateTime;
 
 namespace CS_499_Project.Object_Classes
@@ -47,6 +49,8 @@ namespace CS_499_Project.Object_Classes
 
         public long accountNumber() { return this.account_number; }
 
+        public string DisplayName => display_name;
+
         //add transaction to the list
         public void addTransaction(Transaction transaction)
         {
@@ -65,6 +69,44 @@ namespace CS_499_Project.Object_Classes
             this.user = user_name;
             this.display_name = account_name;
             this.account_number = number;
+        }
+
+        
+        public override string ToString()
+        {
+            return $"Account name: {this.display_name} Balance: {this.balance} Number: {this.account_number} " +
+                   $"owner: {this.user} type: {this.account_type}";
+        }
+
+        public Dictionary<string, string> toDict()
+        {
+            Dictionary<string, string> return_dict = new Dictionary<string, string>();
+            return_dict["name"] = this.display_name;
+            return_dict["balance"] = this.balance.ToString();
+            return_dict["number"] = this.account_number.ToString();
+            return_dict["owner"] = this.user;
+            return_dict["type"] = ((AccountType)this.account_type).ToString();
+            return return_dict;
+
+        }
+        public static int ParseAccount(string input)
+        {
+            string func_inp = input.ToUpper();
+            switch (func_inp)
+            {
+                case "CHECKING":
+                    return 1;
+                case "SAVINGS":
+                    return 2;
+                case "MONEY_MARKET":
+                    return 3;
+                case "MORTGAGE":
+                    return 4;
+                case "CREDIT":
+                    return 5;
+            }
+
+            return -1;
         }
     }
 }

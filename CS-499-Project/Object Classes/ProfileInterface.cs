@@ -67,6 +67,12 @@ namespace CS_499_Project.Object_Classes
             
         }
 
+        public ProfileInterface(string username)
+        {
+            this.username = username;
+
+        }
+
         public ProfileInterface(string username, string password, string role)
         {
         }

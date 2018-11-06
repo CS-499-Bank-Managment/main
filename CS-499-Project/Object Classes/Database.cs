@@ -4,6 +4,9 @@ using System.Data.SQLite;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Drawing.Printing;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace CS_499_Project.Object_Classes
 {
@@ -30,9 +33,22 @@ namespace CS_499_Project.Object_Classes
         public bool NewUser(string username, string password, string role)
         {
             //Add the username and password into the role diagram. TODO: fix sqli in roles.
-            this.dbcmd.CommandText = $"INSERT INTO {role}s (username,password) VALUES (@user, @pwd)";
+            switch (role)
+            {
+                case ("admin"):
+                    this.dbcmd.CommandText = "INSERT INTO admins (username,password) VALUES (@user, @pwd)";
+                    break;
+                
+                case "teller":
+                    this.dbcmd.CommandText = "INSERT INTO tellers (username,password) VALUES (@user, @pwd)";
+                    break;
+                
+                case "customer":
+                    this.dbcmd.CommandText = "INSERT INTO customers (username,password) VALUES (@user, @pwd)";
+                    break;
+            }
             this.dbcmd.Parameters.AddWithValue("user", username);
-            this.dbcmd.Parameters.AddWithValue("pwd", password);
+            this.dbcmd.Parameters.AddWithValue("pwd", Database.PasswordHash(password));
             this.dbcmd.ExecuteNonQuery();
 
             return true; //TODO: check for success inputting.
@@ -63,22 +79,51 @@ namespace CS_499_Project.Object_Classes
             return profiles;
         }
 
-        public List<string> Login(string username, string password, string role)
+        public string Login(string username, string password, string role, bool session)
         {
-            //Login method, TODO: fix sqli in role
-            List<string> temp = new List<string>();
-            this.dbcmd.CommandText = $"SELECT * from {role}s where username=@user and password=@pwd";
-            this.dbcmd.Parameters.AddWithValue("user", username);
-            this.dbcmd.Parameters.AddWithValue("pwd", password);
-            SQLiteDataReader results = this.dbcmd.ExecuteReader();
-            while (results.Read())
-            {
-                temp.Add(Convert.ToString(results["username"]));
-                temp.Add(Convert.ToString(results["password"]));
-                temp.Add(Convert.ToString(results["userid"]));             
-            }
 
-            return temp;
+            dbcmd.CommandText = "DELETE FROM sessions WHERE username=@user";
+            dbcmd.Parameters.AddWithValue("user", username);
+            dbcmd.ExecuteNonQuery();
+
+            List<string> temp = new List<string>();
+            switch (role)
+            {
+                case "admin":
+                    this.dbcmd.CommandText = $"SELECT * from admins where username=@user and password=@pwd";
+                    break;
+                case "customer":
+                    this.dbcmd.CommandText = $"SELECT * from customers where username=@user and password=@pwd";
+                    break;
+                case "teller":
+                    this.dbcmd.CommandText = $"SELECT * from tellers where username=@user and password=@pwd";
+                    break;
+                    
+            }
+            this.dbcmd.Parameters.AddWithValue("user", username);
+            this.dbcmd.Parameters.AddWithValue("pwd", Database.PasswordHash(password));
+            Console.WriteLine(Database.PasswordHash(password));
+            SQLiteDataReader results = dbcmd.ExecuteReader();
+            if (!results.HasRows)
+            {
+                throw new UnauthorizedAccessException();
+            }
+            results.Close();
+            
+            string session_id;
+            using (SHA256 SessionAlgorithm = SHA256.Create())
+            {
+                byte[] Hash_Bytes = SessionAlgorithm.ComputeHash(Encoding.UTF8.GetBytes(username + "Salt"));
+                StringBuilder Hash_Builder = new StringBuilder();
+                for (int i = 0; i < Hash_Bytes.Length; i++)
+                {
+                    Hash_Builder.Append(Hash_Bytes[i].ToString("x2"));
+                }
+
+                session_id = Hash_Builder.ToString();
+                LogSessionID(session_id, username, role);
+            }
+            return session_id;
         }
 
         public List<string> CreateCustAcct(string username, decimal balance, int type, string name)
@@ -164,7 +209,18 @@ namespace CS_499_Project.Object_Classes
 
         public Dictionary<string, string> TransferAcct(int acct_to, int acct_from, decimal amount)
         {
+            /*
+             * This method transfers money from one account to another account.
+             * Input parameters: AccountNumber to transfer to,
+             * Account number to transfer from,
+             * decimal amount.
+             *
+             * It will return a dictionary with the keys of the pre transfer and post transfer balance
+             * of both accounts
+             */
             Dictionary<string, string> result_dict = new Dictionary<string, string>();
+            //Get the balance from the account where the ID matches the to account.
+            //Add it to the dictionary
             this.dbcmd.CommandText = "Select balance from customer_acct where acct_id=@act";
             this.dbcmd.Parameters.AddWithValue("act", acct_to);
             var acct_to_balance_reader = this.dbcmd.ExecuteReader();
@@ -177,7 +233,7 @@ namespace CS_499_Project.Object_Classes
             result_dict.Add("Acct_To_Original", acct_to_balance.ToString());
             acct_to_balance_reader.Close();
 
-
+            //Get the original balance of the account_from and add it to the dictionary
             this.dbcmd.CommandText = "select balance from customer_acct where acct_id=@act";
             this.dbcmd.Parameters.AddWithValue("act", acct_from);
             var acct_from_balance_reader = this.dbcmd.ExecuteReader();
@@ -189,9 +245,11 @@ namespace CS_499_Project.Object_Classes
             result_dict.Add("Acct_From_Original", acct_from_balance.ToString());
 
             acct_from_balance_reader.Close();
-
+            //Make sure the transfer won't put the account_from below zero.
             if (acct_from_balance >= amount)
             {
+                //If it doesn't, update both columns with the amount being removed
+                //Or added respectively
                 this.dbcmd.CommandText = "UPDATE customer_acct set balance=@bal where acct_id=@act";
                 this.dbcmd.Parameters.AddWithValue("bal", acct_from_balance - amount);
                 this.dbcmd.Parameters.AddWithValue("act", acct_from);
@@ -229,8 +287,14 @@ namespace CS_499_Project.Object_Classes
 
         public Dictionary<string, string> AddAmount(int acct, decimal amount)
         {
+            /*
+             * This method adds the amount into an account. Pass it the account number and the amount
+             * Returns a dictionary with old balance and new balance as keys
+             */
+            
             Dictionary<string, string> results = new Dictionary<string, string>();
             results.Add("amount", amount.ToString());
+            //Get the balance from the user act
             this.dbcmd.CommandText = "select balance from customer_acct where acct_id=@act";
             this.dbcmd.Parameters.AddWithValue("act", acct);
             var balance_reader = this.dbcmd.ExecuteReader();
@@ -240,6 +304,9 @@ namespace CS_499_Project.Object_Classes
                 balance = Convert.ToDecimal(balance_reader["balance"]);
                 results.Add("Old Balance", balance.ToString());
             }
+            //Make sure that withdrawing the money from the account will not put it in the negative.
+            //This is important because a deposit and a withdraw are the same operation with 
+            //a different sign.
             balance_reader.Close();
             if ((balance + amount) >= 0)
             {
@@ -281,13 +348,171 @@ namespace CS_499_Project.Object_Classes
             this.dbcmd.ExecuteNonQuery();
 
         }
-        
+
+
+        public void LogSessionID(string Session_ID, string username, string role)
+        {
+            //This is a helper function to log the session into the Sessions table.
+            this.dbcmd.CommandText = "INSERT into sessions (ID, username, role) VALUES (@Sess_ID, @user, @roll)";
+            this.dbcmd.Parameters.AddWithValue("user", username);
+            this.dbcmd.Parameters.AddWithValue("roll", role);
+            this.dbcmd.Parameters.AddWithValue("Sess_ID", Session_ID);
+            this.dbcmd.ExecuteNonQuery();
+        }
+
+
+        public ProfileInterface VerifySession(string sessionID)
+        {
+            /*
+             * This method is called with SessionID, which is the cookie under the key
+             * SESSION_ID, it will look up the sessions table, find a user with a corresponding value
+             * then create a profile interface of that user.
+             * TODO: Make profile types more distinguishable somehow?
+             */
+            this.dbcmd.CommandText = $"SELECT * FROM sessions";
+            Console.WriteLine(this.dbcmd.CommandText);
+            var user = this.dbcmd.ExecuteReader();
+            ProfileInterface returning = null;
+            while (user.Read())
+            {
+                if (user["ID"].ToString() == sessionID)
+                {
+                    switch (user["role"].ToString())
+                    {
+                        case "admin":
+                            returning = new AdminProfile(user["username"].ToString());
+                            break;
+                        case "teller":
+                            returning = new TellerProfile(user["username"].ToString());
+                            break;
+                        case "customer":
+                            returning = new CustomerProfile(user["username"].ToString());
+                            break;
+                    }
+                }
+            }
+            user.Close();
+            return returning;
+        }
+
+        public Dictionary<string, string> Login(string username, string profileType)
+        {
+            /*
+             * Returns a Dictionary of all the rows columns and their names from the DB
+             * given a users username and profileType.
+             */
+            var returning = new Dictionary<string, string>();
+            switch (profileType)
+            {
+                case "admins":
+                    this.dbcmd.CommandText = "SELECT * FROM admins where username=@USR";
+                    break;
+                case "teller":
+                    this.dbcmd.CommandText = "SELECT * FROM tellers where username=@USR";
+                    break;
+                case "customer":
+                    this.dbcmd.CommandText = "SELECT * FROM customers where username=@USR";
+                    break;
+            }
+            this.dbcmd.Parameters.AddWithValue("USR", username);
+
+            var login_reader = this.dbcmd.ExecuteReader();
+            while (login_reader.Read())
+            {
+                returning.Add("username", login_reader["username"].ToString());
+                returning.Add("password", login_reader["password"].ToString());
+                returning.Add("userid", login_reader["userid"].ToString());
+                
+            }
+            login_reader.Close();
+            return returning;
+        }
+
+        public List<AccountInterface> CustomerAcctList(string username)
+        {
+            /*
+             * Returns the customer accounts that match the owner_id column as a list of lists,
+             * where list[0] is the first account, list[0][0] is owner_id, and so forth.
+             */
+
+            List<AccountInterface> acctList = new List<AccountInterface>();
+            //select the username from customer DB such that we have the user's ID.
+            dbcmd.CommandText = "SELECT userid from customers where username=@user";
+            dbcmd.Parameters.AddWithValue("user", username);
+            var reader = dbcmd.ExecuteScalar().ToString();
+            
+            //Select all the accounts the user owns
+            //Add them to a list
+            //return that list of accountinterface()
+            dbcmd.CommandText = "SELECT * from customer_acct where owner_id=@owner";
+            dbcmd.Parameters.AddWithValue("owner", reader);
+            var acctReader = dbcmd.ExecuteReader();
+            while (acctReader.Read())
+            {
+                acctList.Add(
+                    new AccountInterface(Convert.ToDecimal(acctReader["balance"]),
+                        (long) acctReader["acct_id"],
+                        Convert.ToInt32(acctReader["type"]),
+                        username,
+                        acctReader["name"].ToString()
+                    )
+                );
+
+            }
+
+            acctReader.Close();
+            return acctList;
+        }
+
+        public void Logout(string session)
+        {
+            /*
+             * Deletes the given session from the sessions DB for logging out.
+             */
+            dbcmd.CommandText = "DELETE FROM sessions WHERE ID=@sess";
+            dbcmd.Parameters.AddWithValue("sess", session);
+            dbcmd.ExecuteNonQuery();
+        }
+
+        public static string PasswordHash(string password)
+        {
+            /*
+             * Static method that returns the SHA 512 hash of the given string.
+             */
+            StringBuilder pwdhash_builder = new StringBuilder();
+            using (SHA512 PDWHash = SHA512.Create())
+            {
+                byte[] PWD_Hash = PDWHash.ComputeHash(Encoding.UTF8.GetBytes(password));
+                for (int i = 0; i < PWD_Hash.Length; i++)
+                {
+                    pwdhash_builder.Append(PWD_Hash[i].ToString("x2"));
+                }
+            }
+
+            return pwdhash_builder.ToString();
+
+        }
+
+        public Dictionary<string, string> CustomerLookup(string username)
+        {
+            Dictionary<string, string> info_dict = new Dictionary<string, string>();
+            dbcmd.CommandText = "SELECT * from customers where username=@user";
+            dbcmd.Parameters.AddWithValue("user", username);
+            var reader = dbcmd.ExecuteReader();
+            while (reader.Read())
+            {
+                for( int lp = 0 ; lp < reader.FieldCount ; lp++ ) {
+                    info_dict.Add(reader.GetName(lp), reader.GetValue(lp).ToString());
+                }
+                info_dict.Remove("password");
+            }
+            reader.Close();
+            return info_dict;
+        }
         //Destructor for database to make sure nothing stays open.
         ~Database()
         {
             this.dbcmd = null;
-            this.db.Close();
-            this.db = null;
         }
     }
 }

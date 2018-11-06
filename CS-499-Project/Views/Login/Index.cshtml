@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @if (ViewBag.redirect != null)
+    {
+        <meta http-equiv="refresh" content="0; URL='@ViewBag.redirect'"/>
+    }
+    <title>title</title>
+</head>
+<body>
+@if (!ViewBag.Form)
+{
+    <form method="post">
+    <input type="text" name="username"/> <br>
+        <input type="text" name="password"/> <br>
+        <select name="role">
+            <option value="customer"> Customer </option>
+            <option value="teller"> Teller </option>
+            <option value="admin"> Admin </option>
+        </select>
+        <input type="submit"/>
+    </form>
+}
+<div>
+
+
+
+</div>
+</body>
+</html>
