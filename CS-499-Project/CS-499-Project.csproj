@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\css\materialize.css" />
+    <None Remove="Views\css\materialize.css.map" />
+    <None Remove="Views\css\materialize.scss" />
+    <None Remove="Views\js\materialize.js" />
+    <None Remove="Views\js\materialize.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="angularjs" Version="1.7.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.Net.Compilers" Version="2.8.2" />
@@ -15,6 +23,24 @@
     <_ContentIncludedByDefault Remove="wwwroot\Angular\app.js" />
     <_ContentIncludedByDefault Remove="wwwroot\Angular\controller.js" />
     <_ContentIncludedByDefault Remove="Views\Admin\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\css\materialize.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Views\css\materialize.css.map">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Views\css\materialize.scss">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Views\js\materialize.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Views\js\materialize.min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

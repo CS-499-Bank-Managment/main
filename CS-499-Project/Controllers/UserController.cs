@@ -11,6 +11,11 @@ namespace CS_499_Project.Controllers
             return View();
         }
         
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
+
         public IActionResult AccountDashboard()
         {
             return View();
