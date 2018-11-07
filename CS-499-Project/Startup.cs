@@ -20,10 +20,22 @@ namespace CS_499_Project
         {
             services.AddMvc();
         }
+        /*
+        public Startup(IConfigure configuration) {
+            Configuration = configuration;
+        }
 
+        public IConfiguration Configuration { get; }
+        */
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            /*
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+            */
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
