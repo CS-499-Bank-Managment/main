@@ -1,10 +1,67 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+    Layout = "~/Views/Shared/_HeaderLayout.cshtml";
+}
 
-<html>
-<head>
-    <title>Dashboard</title>
-</head>
-<body>
-    Dashboard!
-</body>
-</html>
+<header>
+    <div id="logo">
+        <img src="~/images/aspire_logo_reverse.png" width="65px" height="65px;" id="logo-image">
+        <div id="aspire-words">Aspire Financial Services</div>
+    </div>
+    <div id="user-header">
+        <div id="hello-words">Hello, username<br />Role: <b>Teller</b></div>
+        <img src="~/images/3244.jfif" width="40px" height="40px" id="user-image">
+    </div>
+</header>
+<div id="main-content">
+    <h1>Customer Name</h1>
+    <center>
+        <div id="action-row">
+            <div class="action-box">
+                <img class="action-icon" src="~/images/bill-64.png" height="64px" width="64px">
+                <div class="action-text">Pay Bill</div>
+            </div>
+            <div class="action-box">
+                <img class="action-icon" src="~/images/check-icon.png" height="64px" width="64px">
+                <div class="action-text">Check</div>
+            </div>
+            <div class="action-box">
+                <img class="action-icon" src="~/images/banknotes-64.gif" height="64px" width="64px">
+                <div class="action-text">Cash</div>
+            </div>
+            <div class="action-box">
+                <img class="action-icon" src="~/images/settings-64.png" height="64px" width="64px">
+                <div class="action-text">Settings</div>
+            </div>
+            <div class="action-box">
+                <img class="action-icon" src="~/images/info-2-64.png" height="64px" width="64px">
+                <div class="action-text">Help</div>
+            </div>
+        </div>
+    </center>
+    <h2>Accounts</h2>
+    <div id="accounts-wrapper">
+        <h3>Checking</h3>
+        <table class="account-table">
+            <tr>
+                <th class="table-main-header">RECENT TRANSACTIONS</th>
+                <th class="table-sub-header">Amount</th>
+                <th class="table-sub-header">Date</th>
+            </tr>
+            <tr class="main-row">
+                <td>TARGET - Huntsville</td>
+                <td>$19.86</td>
+                <td>10/24/18</td>
+            </tr>
+            <tr class="main-row">
+                <td>PAYPAL INSTANT X-FER - Ebay</td>
+                <td>$10.23</td>
+                <td>10/23/18</td>
+            </tr>
+            <tr class="main-row">
+                <td>CHASE CREDIT - Payment</td>
+                <td>$169.74</td>
+                <td>10/21/18</td>
+            </tr>
+        </table>
+    </div>
+</div>

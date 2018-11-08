@@ -10,6 +10,12 @@ namespace CS_499_Project.Controllers
         {
             return View();
         }
+
+        public IActionResult Dashboard()
+        {
+            ViewBag.Title = "Dashboard";
+            return View();
+        }
         
         // GET
         public IActionResult Login(string username, string password)

@@ -5,8 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\css\font-css\**" />
+    <Content Remove="wwwroot\css\font-css\**" />
+    <EmbeddedResource Remove="wwwroot\css\font-css\**" />
+    <None Remove="wwwroot\css\font-css\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="angularjs" Version="1.7.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.1" />
     <PackageReference Include="Microsoft.Net.Compilers" Version="2.8.2" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.109.2" />
   </ItemGroup>
@@ -18,7 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Uploads\" />
+    <Folder Include="wwwroot\css\materialize\" />
+    <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\js\materialize\" />
+    <Folder Include="wwwroot\fonts\" />
   </ItemGroup>
 
 </Project>

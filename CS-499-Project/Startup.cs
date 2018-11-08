@@ -40,6 +40,9 @@ namespace CS_499_Project
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseStaticFiles();
+
             app.UseMvc(routes =>
                 {
                     routes.MapRoute("Teller-Test", "/Teller/Transaction/{acct_to}/{amount}", new
