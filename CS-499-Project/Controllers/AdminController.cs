@@ -18,6 +18,7 @@ namespace CS_499_Project.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
+            
             //This method shows the Default index page for the Admin Dashboard.
             ProfileInterface current_user = (new Database().VerifySession(Request.Cookies["SESSION_ID"]));
             ViewBag.username = current_user.username;

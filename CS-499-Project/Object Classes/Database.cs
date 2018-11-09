@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
 namespace CS_499_Project.Object_Classes
 {
@@ -106,6 +107,7 @@ namespace CS_499_Project.Object_Classes
             SQLiteDataReader results = dbcmd.ExecuteReader();
             if (!results.HasRows)
             {
+                results.Close();
                 throw new UnauthorizedAccessException();
             }
             results.Close();
@@ -279,6 +281,7 @@ namespace CS_499_Project.Object_Classes
                     result_dict.Add("Acct_To_New",new_balance_reader["balance"].ToString());
                 }
                 new_balance_reader.Close();
+                LogTransaction(acct_to, acct_from, amount, "Transfer");
                 
             }
 
@@ -323,6 +326,7 @@ namespace CS_499_Project.Object_Classes
                 }
 
                 temporary_reader.Close();
+                LogTransaction(acct, acct, amount, "Deposit.");
             }
             
 
@@ -508,6 +512,23 @@ namespace CS_499_Project.Object_Classes
             }
             reader.Close();
             return info_dict;
+        }
+
+        public List<TransactionInterface> ListTransactions(int acct_id)
+        {
+            List<TransactionInterface> transaction_list = new List<TransactionInterface>();
+            dbcmd.CommandText = "SELECT * from transactions where acct_to=@id OR acct_from=@id";
+            dbcmd.Parameters.AddWithValue("id", acct_id);
+            var reader = dbcmd.ExecuteReader();
+            while (reader.Read())
+            {
+                TransactionInterface temp = new TransactionInterface(Convert.ToInt32(reader["acct_to"]),
+                    Convert.ToInt32(reader["acct_from"]),
+                    Convert.ToDecimal(reader["amount"]), reader["note"].ToString());
+                transaction_list.Add(temp);
+            }
+
+            return transaction_list;
         }
         //Destructor for database to make sure nothing stays open.
         ~Database()

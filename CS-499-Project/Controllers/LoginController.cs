@@ -22,7 +22,7 @@ namespace CS_499_Project.Controllers
             if (!String.IsNullOrEmpty(Request.Cookies["SESSION_ID"]))
             {
                 Database Redirect = new Database();
-                var type = Redirect.VerifySession(Request.Cookies["SESSION_ID"]).profile_type;
+                var type = Redirect.VerifySession(Request.Cookies["SESSION_ID"])?.profile_type;
                 if (type == ProfileInterface.ProfileType.ADMIN)
                 {
                     ViewBag.redirect = "./Admin/";
