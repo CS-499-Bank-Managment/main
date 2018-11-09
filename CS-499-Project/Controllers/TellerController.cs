@@ -71,6 +71,7 @@ namespace CS_499_Project.Controllers
             }
             var acct = Request.Query["acct"];
             ViewBag.num = acct;
+            ViewBag.transactions = (new Database()).ListTransactions(Convert.ToInt32(acct));
             return View();
         }
 

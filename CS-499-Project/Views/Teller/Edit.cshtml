@@ -1,4 +1,6 @@
-﻿<script>
+﻿@using CS_499_Project.Object_Classes
+@using Microsoft.CodeAnalysis.CSharp.Syntax
+<script>
     function transfer(acct) {
         location.href = "./Transaction/" + acct.trim() + "/" + document.getElementById('amtbox').value;
     }
@@ -10,6 +12,30 @@
 <br> <br> <br><br>
 
 <body>
-    Maybe List Transactions down here?
+    @if (ViewBag.transactions.Count > 0)
+    {
+        <b>Transaction List </b> <br>
+        <table>
+            <tr>
+                <th>Acct To </th>
+                <th>Acct From</th>
+                <th>Amount</th>
+                <th>Note</th>
+            </tr>
+            @foreach (TransactionInterface record in ViewBag.transactions)
+            {
+            <tr>
+                <td> @record.acct_to </td>
+                <td> @record.acct_from </td>
+                <td> @record.amount </td>
+                <td> @record.note </td>
+            </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <b>No Transactions to Display!</b>
+    }
 </body>
 </html>
