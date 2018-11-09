@@ -38,10 +38,7 @@ namespace CS_499_Project.Controllers
             {
                 return View("Denied");
             }
-            List<string> results = new List<string>();
-            Database test = new Database();
-            results = test.GetAllProfiles();
-            ViewBag.profiles = results;
+            ViewBag.profiles = (new Database()).GetAllProfiles();
             return View();
         }
 
