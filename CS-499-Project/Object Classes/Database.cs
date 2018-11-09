@@ -128,7 +128,8 @@ namespace CS_499_Project.Object_Classes
             return session_id;
         }
 
-        public List<string> CreateCustAcct(string username, decimal balance, int type, string name)
+        public List<string> CreateCustAcct(string username, decimal balance, int type, string name, 
+            decimal interest=0.00m)
         {
             /*
              * To create a customer account, first you pass their username,
@@ -148,11 +149,12 @@ namespace CS_499_Project.Object_Classes
             }
 
             reader.Close();
-            this.dbcmd.CommandText = "INSERT INTO customer_acct (owner_id, balance, type, name) VALUES (@user, @balance, @type, @name)";
+            this.dbcmd.CommandText = "INSERT INTO customer_acct (owner_id, balance, type, name) VALUES (@user, @balance, @type, @name, @interest)";
             this.dbcmd.Parameters.AddWithValue("user", userid);
             this.dbcmd.Parameters.AddWithValue("balance", balance);
             this.dbcmd.Parameters.AddWithValue("type", type);
             this.dbcmd.Parameters.AddWithValue("name", name);
+            this.dbcmd.Parameters.AddWithValue("interest", interest);
             this.dbcmd.ExecuteNonQuery();
 
             this.dbcmd.CommandText = "SELECT last_insert_rowid()";
@@ -458,7 +460,8 @@ namespace CS_499_Project.Object_Classes
                         (long) acctReader["acct_id"],
                         Convert.ToInt32(acctReader["type"]),
                         username,
-                        acctReader["name"].ToString()
+                        acctReader["name"].ToString(),
+                        Convert.ToDecimal(acctReader["interest"])
                     )
                 );
 

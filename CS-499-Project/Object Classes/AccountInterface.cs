@@ -61,7 +61,7 @@ namespace CS_499_Project.Object_Classes
                                 long number, 
                                 int type, 
                                 string user_name,
-                                string account_name)
+                                string account_name, decimal interestRate)
         {
             //TODO: define the interest rate and date based on the account type
             this.balance = initial_amount;
@@ -69,6 +69,7 @@ namespace CS_499_Project.Object_Classes
             this.user = user_name;
             this.display_name = account_name;
             this.account_number = number;
+            this.interest_rate = interestRate;
         }
 
         
@@ -86,6 +87,7 @@ namespace CS_499_Project.Object_Classes
             return_dict["number"] = this.account_number.ToString();
             return_dict["owner"] = this.user;
             return_dict["type"] = ((AccountType)this.account_type).ToString();
+            return_dict["interest rate"] = this.interest_rate.ToString();
             return return_dict;
 
         }
