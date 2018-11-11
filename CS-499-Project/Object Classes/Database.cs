@@ -386,13 +386,13 @@ namespace CS_499_Project.Object_Classes
                     switch (user["role"].ToString())
                     {
                         case "admin":
-                            returning = new AdminProfile(user["username"].ToString());
+                            returning = new AdminProfile(user["username"].ToString(), user["name"].ToString());
                             break;
                         case "teller":
-                            returning = new TellerProfile(user["username"].ToString());
+                            returning = new TellerProfile(user["username"].ToString(), user["name"].ToString());
                             break;
                         case "customer":
-                            returning = new CustomerProfile(user["username"].ToString());
+                            returning = new CustomerProfile(user["username"].ToString(), user["name"].ToString());
                             break;
                     }
                 }
@@ -517,20 +517,19 @@ namespace CS_499_Project.Object_Classes
             return info_dict;
         }
 
-        public List<TransactionInterface> ListTransactions(int acct_id)
+        public List<Transaction> ListTransactions(long acct_id)
         {
-            List<TransactionInterface> transaction_list = new List<TransactionInterface>();
+            List<Transaction> transaction_list = new List<Transaction>();
             dbcmd.CommandText = "SELECT * from transactions where acct_to=@id OR acct_from=@id";
             dbcmd.Parameters.AddWithValue("id", acct_id);
             var reader = dbcmd.ExecuteReader();
             while (reader.Read())
             {
-                TransactionInterface temp = new TransactionInterface(Convert.ToInt32(reader["acct_to"]),
-                    Convert.ToInt32(reader["acct_from"]),
-                    Convert.ToDecimal(reader["amount"]), reader["note"].ToString());
+                Transaction temp = new Transaction(Convert.ToDecimal(reader["amount"]), 
+                    reader["note"].ToString(), reader["date"].ToString());
                 transaction_list.Add(temp);
             }
-
+      
             return transaction_list;
         }
         //Destructor for database to make sure nothing stays open.

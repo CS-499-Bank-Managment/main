@@ -25,6 +25,33 @@ namespace CS_499_Project.Object_Classes
             this.username = acct_results["username"];
             this.profile_type = ProfileType.CUSTOMER;
             var temp_accounts = acctVerify.CustomerAcctList(username);
+            foreach (var acct in temp_accounts)
+            {
+                try
+                {
+                    Console.WriteLine(acct.ToString());
+                    this.accounts.Add(acct);
+                }
+                catch (System.NullReferenceException)
+                {
+                    //Do nothing to debug
+                }
+            }
+
+            foreach (var acct in this.accounts)
+            {
+                Console.WriteLine(acct.ToString());
+            }
+        }
+
+        public CustomerProfile(string username, string name)
+        {
+            this.accounts = new List<AccountInterface>();
+            Database acctVerify = new Database();
+            var acct_results = acctVerify.Login(username, "customer");
+            this.username = acct_results["username"];
+            this.profile_type = ProfileType.CUSTOMER;
+            var temp_accounts = acctVerify.CustomerAcctList(username);
             foreach(var acct in temp_accounts)
             {
                 try
@@ -42,6 +69,8 @@ namespace CS_499_Project.Object_Classes
             {
                 Console.WriteLine(acct.ToString());
             }
+
+            this.full_name = name;
         }
 
         public void addAccount(decimal amount, long number, int type, string username, string name)

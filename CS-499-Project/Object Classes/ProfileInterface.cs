@@ -28,9 +28,8 @@ namespace CS_499_Project.Object_Classes
         private string email_address { get; set; }
         private string phone_number { get; set; }
 
-        // The first and last name associated with the profile.
-        private string user_firstname { get; set; }
-        private string user_surname { get; set; }
+        // The full name
+        public string full_name { get; set; }
 
         // explains whether the profile is an ADMIN, TELLER, or CUSTOMER type
         public ProfileType profile_type { get; set; }

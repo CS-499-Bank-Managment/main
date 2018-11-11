@@ -14,10 +14,11 @@ body {
 #aspire-words {
   text-align: left;
   font-size: 17px;
+  line-height: 21px;
   width: 100px;
   display: inline-block;
   vertical-align: top;
-  padding-top: 2px;
+  padding-top: 4px;
 }
 
 #logo-image {
@@ -29,6 +30,24 @@ body {
   float: right;
   display: inline-block;
   padding-right: 20px;
+  cursor: pointer;
+}
+
+#user-menu {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    padding: 20px;
+    padding-top: 15px;
+    border: 1px solid #A8E070;
+    background-color: white;
+    height: 50px;
+}
+
+.user-menu-item {
+    color: #525252;
+    font-size: 17px;
+    margin: 0px;
 }
 
 #logo {
@@ -37,7 +56,6 @@ body {
 
 #user-image {
   display: inline-block;
-  padding-top: 15px;
 }
 
 #hello-words {
@@ -57,7 +75,7 @@ h1 {
 .action-box {
   background-color: #52ba16;
   color: white;
-  height: 120px;
+  height: 160px;
   width: 160px;
   display: inline-block;
   text-transform: uppercase;
@@ -80,7 +98,8 @@ h2 {
   border: 1px solid #525252;
   padding-left: 30px;
   margin-right: 30px;
-  padding-bottom: 30px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .account-table {

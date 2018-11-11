@@ -57,6 +57,11 @@ namespace CS_499_Project.Object_Classes
             transactionList.Add(transaction);
         }
 
+        public List<Transaction> getTransactions()
+        {
+            return transactionList;
+        }
+
         public AccountInterface(decimal initial_amount, 
                                 long number, 
                                 int type, 
@@ -70,6 +75,7 @@ namespace CS_499_Project.Object_Classes
             this.display_name = account_name;
             this.account_number = number;
             this.interest_rate = interestRate;
+            this.transactionList = new List<Transaction>();
         }
 
         
