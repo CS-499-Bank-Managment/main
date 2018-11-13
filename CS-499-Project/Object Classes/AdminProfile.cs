@@ -32,11 +32,11 @@ namespace CS_499_Project.Object_Classes
         return true;
     }
 
-        public bool CreateProfile(string username, string password, string role)
+        public bool CreateProfile(string username, string password, string role, string name, string email)
         {
             Database test = new Database();
-            test.NewUser(username, password, role);
-            return true;
+            bool created = test.NewUser(username, password, role, name, email);
+            return created;
         }
     
         public bool CreateProfile(ProfileInterface user)

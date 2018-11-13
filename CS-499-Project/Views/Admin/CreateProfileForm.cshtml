@@ -1,25 +1,60 @@
-<!DOCTYPE html>
+@{
+    ViewBag.title = "Create A Profile";
+    ViewBag.FormTitle = "Create a New Profile";
+    Layout = "/Views/Shared/_FormLayout.cshtml";
+}
 
-<html>
-<head>
-    <title>Create Profile</title>
-</head>
-<body>
-    <h1>Create a New Profile</h1>
 
-    <form action="./CreateProfileConfirmation" method="post">
-        <p>USERNAME:         <input type="text" name="username" value="@ViewBag.username" required /> </p>
-        <p>PASSWORD:         <input type="text" name="password" value="@ViewBag.password" required /> </p>
-        <p>CONFIRM PASSWORD: <input type="text" name="confirm" value="@ViewBag.confirm" required /> </p>
-        <div>ROLE:          
-            <select name="role" value=@ViewBag.role>
-                <option value="admin">ADMIN</option>
-                <option value="teller">TELLER</option>
-                <option value="customer">CUSTOMER</option>
-            </select>
-        </div>
-        <p><input type="submit" value="Create" /></p>
-    </form>
+@if (!ViewBag.Form)
+{
+    @if (ViewBag.errorMessage != null)
+    {
+        <p class="warn-message">@ViewBag.errorMessage</p>
+    }
+        <form action="./CreateProfileConfirmation" method="post">
+            <div class="input-field col s12 field">
+                <input id="name" type="text" name="name" required />
+                <label for="name">Full Name</label>
+            </div>
+            <div class="input-field col s12 field">
+                <input id="email" type="email" name="email" required />
+                <label for="email">Email Address</label>
+            </div>
+            <div class="input-field col s12 field">
+                <input id="username" type="text" name="username" required />
+                <label for="username">Username</label>
+            </div>
+            <div class="input-field col s12 field">
+                <input id="password"type="password" name="password" required />
+                <label for="password">Password</label>
+            </div>
+            <div class="input-field col s12 field">
+                <input id="confirm" type="password" label="Confirm Password" name="confirm" required />
+                <label for="confirm">Confirm Password</label>
+            </div>
+            <div class="input-field col s12">
+                <p>
+                    <label>
+                        <input name="role" type="radio" value="admin" />
+                        <span>Admin</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input name="role" value="teller" type="radio" />
+                        <span>Teller</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input name="role" value="customer" type="radio" />
+                        <span>Customer</span>
+                    </label>
+                </p>
+            </div>
+            <div class="sumbit-button waves-effect waves-light btn">
+                <input type="submit" value="Create" />
+            </div>
 
-</body>
-</html>
+        </form>
+}

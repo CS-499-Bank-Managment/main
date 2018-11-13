@@ -1,32 +1,36 @@
-﻿<!DOCTYPE html>
+﻿@{
+    ViewBag.title = "Create A Profile";
+    ViewBag.FormTitle = "Create a New Account";
+    Layout = "/Views/Shared/_FormLayout.cshtml";
+}
 
-<html>
-<head>
-    <title>Create Profile</title>
-</head>
-<body>
-    <h1>Create a New Profile</h1>
 
-    <form action="./CreateAccountConfirmation" method="post">
-        User to add account to: <select name="username">
-            @foreach (var item in ViewBag.users)
-            {
-                <option value="@item">@item</option>
-            }
-        </select>
-        <p>Account Display Name: <input type="text" name="name" /> </p>
-        <p>Initial Deposit: <input type="number" name="deposit" step="0.01" /> </p>
-        <div>
-            Account Type:
-            <select name="type">
-                @foreach (int value in Enum.GetValues(typeof(CS_499_Project.Object_Classes.AccountType)))
-                {
-                    <option value="@value">@Enum.GetName(typeof(CS_499_Project.Object_Classes.AccountType), value)</option>
-                }
-            </select>
-        </div>
-        <p><input type="submit" value="Add Account" /></p>
-    </form>
+        <form action="./CreateAccountConfirmation" method="post">
+            <div class="input-field col s12">
+                <div><label for="user">User Profile to add an Account to</label></div>
+                <select id="user" name="username" class="select">
+                    @foreach (var item in ViewBag.users)
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </select>
+            </div>
+            <div class="input-field col s12">
+                <input class="field" type="text" name="name" placeholder="Account Display Name" />
+            </div>
+            <div class="input-field col s12">
+                <div><label for="init_val">Initial Deposit</label></div>
+                <input class="select" id="init_val" type="number" name="deposit" step="0.01" />
+            </div>
+            <div class="input-field col s12">
+                <div><label for="type">Account Type</label></div>
+                <select name="type" class="select">
+                    @foreach (int value in Enum.GetValues(typeof(CS_499_Project.Object_Classes.AccountType)))
+                    {
+                        <option value="@value">@Enum.GetName(typeof(CS_499_Project.Object_Classes.AccountType), value)</option>
+                    }
+                </select>
+            </div>
+            <div class="sumbit-button waves-effect waves-light btn"><input type="submit" value="Add Account" /></div>
+        </form>
 
-</body>
-</html>

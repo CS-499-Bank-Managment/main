@@ -1,14 +1,32 @@
-﻿
+﻿@{
+    ViewBag.title = "Sucess";
+    ViewBag.FormTitle = "Your Account was sucessfully created";
+    Layout = "/Views/Shared/_HeaderLayout.cshtml";
+    Layout = "/Views/Shared/_FormLayout.cshtml";
+}
 <html>
 <head>
     <title>Account Created</title>
+    <style>
+        body {
+            background-image: url(https://c.pxhere.com/images/ba/5e/bb6ad01036a58dcee444dba6bb41-1438091.jpg!d);
+            background-repeat: no-repeat;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
-<body>
-    <h1>Your Account was sucessfully created</h1>
 
-    Username: @ViewBag.username <br />
-    Password: @ViewBag.password <br />
-    Role: @ViewBag.role <br />
+        Username: @ViewBag.username <br />
+        Password: @ViewBag.password <br />
+        Role: @ViewBag.role <br />
+        @{
+            if (ViewBag.role == "customer")
+            {
+                <a class="link" href="./CreateAccountForm">Create an Account!</a>
+            }
+        }
 
-</body>
 </html>
