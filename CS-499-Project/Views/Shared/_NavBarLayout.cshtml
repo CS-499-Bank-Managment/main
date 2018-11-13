@@ -1,0 +1,22 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_HeaderLayout.cshtml";
+}
+
+<script type="text/javascript" src="~/js/aspire_header.js"></script>
+<header>
+    <a href="@Url.Action("Dashboard", (string) ViewBag.user_role)">
+        <div id="logo">
+            <img src="~/images/aspire_logo_reverse.png" alt="aspire logo" width="65" height="65" id="logo-image">
+            <div id="aspire-words">Aspire Financial Services</div>
+        </div>
+    </a>
+    <div id="user-header">
+        <div id="hello-words">Hello, @ViewBag.user_header<br />Role: <b>@ViewBag.user_role</b></div>
+        <img src="~/images/3244.jfif" width="40" height="40" alt="user icon" id="user-image">
+    </div>
+</header>
+<div id="user-menu">
+    <a href="@Url.Action("Logout", "Login")"><p class="user-menu-item">Log out</p></a>
+</div>
+
+@RenderBody()

@@ -34,26 +34,41 @@ namespace CS_499_Project.Controllers
                 ViewBag.allowed = false;
             }
 
+            if(Verified.profile_type == ProfileInterface.ProfileType.ADMIN)
+            {
+                ViewBag.isAdmin = true;
+            }
+            else
+            {
+                ViewBag.isAdmin = false;
+            }
+
             switch (Verified.profile_type)
             {
                 case ProfileInterface.ProfileType.ADMIN: ViewBag.user_role = "Admin"; break;
                 case ProfileInterface.ProfileType.TELLER: ViewBag.user_role = "Teller"; break;
-                case ProfileInterface.ProfileType.CUSTOMER: ViewBag.user_role = "customer"; break;
+                case ProfileInterface.ProfileType.CUSTOMER: ViewBag.user_role = "User"; break;
             }
 
             ViewBag.accounts = new Database().CustomerAcctList(customer_served);
             ViewBag.full_name = Verified.full_name;
             foreach (AccountInterface account in ViewBag.accounts)
             {
-                List<Transaction> transactions = new Database().ListTransactions(account.accountNumber());
-                foreach(Transaction transaction in transactions)
+                List<TransactionInterface> transactions = new Database().ListTransactions(account.accountNumber());
+                foreach(TransactionInterface transaction in transactions)
                 {
                     account.addTransaction(transaction);
                 }
             }
             return View();
         }
-        
+
+        public IActionResult Denied()
+        {
+            ViewBag.title = "Access Denied";
+            return View();
+        }
+
         // GET
         public IActionResult Login(string username, string password)
         {

@@ -37,7 +37,7 @@ namespace CS_499_Project.Object_Classes
         //The balance after pending transactions, such as transfers or payments
         protected decimal pending_balance;
         //The list of all transactions under this account
-        protected List<Transaction> transactionList;
+        protected List<TransactionInterface> transactionList;
 
         //TODO: May add extra data that other banks have, but for now, this is the minimum
 
@@ -52,12 +52,12 @@ namespace CS_499_Project.Object_Classes
         public string DisplayName => display_name;
 
         //add transaction to the list
-        public void addTransaction(Transaction transaction)
+        public void addTransaction(TransactionInterface transaction)
         {
             transactionList.Add(transaction);
         }
 
-        public List<Transaction> getTransactions()
+        public List<TransactionInterface> getTransactions()
         {
             return transactionList;
         }
@@ -75,7 +75,7 @@ namespace CS_499_Project.Object_Classes
             this.display_name = account_name;
             this.account_number = number;
             this.interest_rate = interestRate;
-            this.transactionList = new List<Transaction>();
+            this.transactionList = new List<TransactionInterface>();
         }
 
         

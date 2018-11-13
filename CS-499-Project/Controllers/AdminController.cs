@@ -112,6 +112,11 @@ namespace CS_499_Project.Controllers
             return View();
         }
 
+        public IActionResult Denied()
+        {
+            ViewBag.title = "Access Denied";
+            return View();
+        }
 
         public IActionResult DeleteProfileConfirmation(string username)
         {
@@ -128,7 +133,17 @@ namespace CS_499_Project.Controllers
             return View();
         }
         
-        
+        public IActionResult DeleteUser(string username)
+        {
+            var current_user = new Database().VerifySession(Request.Cookies["SESSION_ID"]);
+            if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
+            {
+                return View("Denied");
+            }
+            //Create basic admin profile. and call it's Delete Profile method.
+            ((AdminProfile)current_user).DeleteProfile(username);
+            return View("~/Teller/Dashboard");
+        }
             
         //Commented because they aren't used and don't use real functions
 

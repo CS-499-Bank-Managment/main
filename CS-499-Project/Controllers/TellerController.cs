@@ -37,6 +37,12 @@ namespace CS_499_Project.Controllers
             return View();
         }
 
+        public IActionResult Denied()
+        {
+            ViewBag.title = "Access Denied";
+            return View();
+        }
+
         public IActionResult ListAccounts()
         {
             var session = Request.Cookies["SESSION_ID"];

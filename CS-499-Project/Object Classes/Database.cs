@@ -110,6 +110,13 @@ namespace CS_499_Project.Object_Classes
                 results.Close();
                 throw new UnauthorizedAccessException();
             }
+
+            var name = "";
+            while(results.Read())
+            {
+                name = Convert.ToString(results["name"]);
+            }
+
             results.Close();
             
             string session_id;
@@ -123,7 +130,7 @@ namespace CS_499_Project.Object_Classes
                 }
 
                 session_id = Hash_Builder.ToString();
-                LogSessionID(session_id, username, role);
+                LogSessionID(session_id, username, role, name);
             }
             return session_id;
         }
@@ -356,13 +363,14 @@ namespace CS_499_Project.Object_Classes
         }
 
 
-        public void LogSessionID(string Session_ID, string username, string role)
+        public void LogSessionID(string Session_ID, string username, string role, string name)
         {
             //This is a helper function to log the session into the Sessions table.
-            this.dbcmd.CommandText = "INSERT into sessions (ID, username, role) VALUES (@Sess_ID, @user, @roll)";
+            this.dbcmd.CommandText = "INSERT into sessions (ID, username, role, name) VALUES (@Sess_ID, @user, @roll, @name)";
             this.dbcmd.Parameters.AddWithValue("user", username);
             this.dbcmd.Parameters.AddWithValue("roll", role);
             this.dbcmd.Parameters.AddWithValue("Sess_ID", Session_ID);
+            this.dbcmd.Parameters.AddWithValue("name", name);
             this.dbcmd.ExecuteNonQuery();
         }
 
@@ -428,7 +436,7 @@ namespace CS_499_Project.Object_Classes
                 returning.Add("username", login_reader["username"].ToString());
                 returning.Add("password", login_reader["password"].ToString());
                 returning.Add("userid", login_reader["userid"].ToString());
-                
+                returning.Add("name", login_reader["name"].ToString());
             }
             login_reader.Close();
             return returning;
@@ -517,15 +525,16 @@ namespace CS_499_Project.Object_Classes
             return info_dict;
         }
 
-        public List<Transaction> ListTransactions(long acct_id)
+        public List<TransactionInterface> ListTransactions(long acct_id)
         {
-            List<Transaction> transaction_list = new List<Transaction>();
+            List<TransactionInterface> transaction_list = new List<TransactionInterface>();
             dbcmd.CommandText = "SELECT * from transactions where acct_to=@id OR acct_from=@id";
             dbcmd.Parameters.AddWithValue("id", acct_id);
             var reader = dbcmd.ExecuteReader();
             while (reader.Read())
             {
-                Transaction temp = new Transaction(Convert.ToDecimal(reader["amount"]), 
+                TransactionInterface temp = new TransactionInterface((int) reader["acct_to"], (int)reader["acct_from"], 
+                    Convert.ToDecimal(reader["amount"]), 
                     reader["note"].ToString(), reader["date"].ToString());
                 transaction_list.Add(temp);
             }

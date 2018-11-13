@@ -1,3 +1,5 @@
+using System;
+
 namespace CS_499_Project.Object_Classes
 {
     public class TransactionInterface
@@ -6,12 +8,21 @@ namespace CS_499_Project.Object_Classes
         public int acct_from { get; }
         public decimal amount { get; }
         public string note { get; }
-        public TransactionInterface(int to, int from, decimal amount, string note)
+        public DateTime transaction_time { get; }
+        public TransactionInterface(int to, int from, decimal amount, string note, string date)
         {
             this.acct_to = to;
             this.acct_from = from;
             this.amount = amount;
             this.note = note;
+            try
+            {
+                transaction_time = DateTime.Parse(date);
+            }
+            catch (FormatException)
+            {
+                transaction_time = DateTime.Now;
+            }
         }        
     }
 }
