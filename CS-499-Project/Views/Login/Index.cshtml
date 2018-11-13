@@ -6,7 +6,7 @@
 
     @if (!ViewBag.Form)
     {
-            @if(ViewBag.errorMessage != null)
+            if(ViewBag.errorMessage != null)
             {
                 <p class="warn-message" >@ViewBag.errorMessage</p>
             }

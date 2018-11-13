@@ -33,10 +33,11 @@ namespace CS_499_Project.Object_Classes
 
         public bool NewUser(string username, string password, string role, string name, string email)
         {
+            Console.WriteLine($"Function called with {username} {password} {role} {name} {email}");
             //Add the username and password into the role diagram. TODO: fix sqli in roles.
             switch (role)
             {
-                case ("admin"):
+                case "admin":
                     this.dbcmd.CommandText = "INSERT INTO admins (username,password,name,email) VALUES (@user, @pwd, @nm, @eml)";
                     break;
                 

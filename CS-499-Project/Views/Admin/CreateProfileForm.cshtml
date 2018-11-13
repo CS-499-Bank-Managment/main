@@ -7,11 +7,11 @@
 
 @if (!ViewBag.Form)
 {
-    @if (ViewBag.errorMessage != null)
+    if (ViewBag.errorMessage != null)
     {
         <p class="warn-message">@ViewBag.errorMessage</p>
     }
-        <form action="./CreateProfileConfirmation" method="post">
+        <form method="post">
             <div class="input-field col s12 field">
                 <input id="name" type="text" name="name" required />
                 <label for="name">Full Name</label>
