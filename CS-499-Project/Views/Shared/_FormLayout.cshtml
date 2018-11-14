@@ -3,6 +3,12 @@
 }
 
 <script type="text/javascript" src="~/js/aspire-forms.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('select').formSelect();
+    });
+</script>
+<script type="text/javascript" src="~/js/materialize/forms.js"></script>
 @RenderSection("scripts", required: false)
 
 <div class="layer"></div>

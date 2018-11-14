@@ -57,17 +57,29 @@ namespace CS_499_Project.Object_Classes
 
 
             Dictionary<string, string> info_dict = new Dictionary<string, string>();
-            dbcmd.CommandText = "SELECT * from admins where username=@user";
+            switch (role)
+            {
+                case "admin":
+                    this.dbcmd.CommandText = "SELECT * from admins where username=@user";
+                    break;
+
+                case "teller":
+                    this.dbcmd.CommandText = "SELECT * from tellers where username=@user";
+                    break;
+
+                case "customer":
+                    this.dbcmd.CommandText = "SELECT * from customers where username=@user";
+                    break;
+            }
             dbcmd.Parameters.AddWithValue("user", username);
             SQLiteDataReader results = dbcmd.ExecuteReader();
+            results.Close();
             if (!results.HasRows)
             {
-                results.Close();
                 return false;
             }
             else
             {
-                results.Close();
                 return true;
             }
 
