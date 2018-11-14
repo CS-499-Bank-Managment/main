@@ -4,7 +4,10 @@
     Layout = "/Views/Shared/_FormLayout.cshtml";
 }
 
-
+@if (ViewBag.redirect != null)
+{
+    <meta http-equiv="refresh" content="0; URL='@ViewBag.redirect'" />
+}
 @if (!ViewBag.Form)
 {
     if (ViewBag.errorMessage != null)
