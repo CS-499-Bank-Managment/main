@@ -125,8 +125,13 @@ namespace CS_499_Project.Controllers
                 }
 
                 //Call the create profile method
-                if (((AdminProfile)current_user).CreateProfile(User, Password, role, name, email)){
-                    ViewBag.redirect = $"./CreateProfileConfirmation/{User}/{Password}/{role}";
+                if (((AdminProfile)current_user).CreateProfile(User, Password, role, name, email))
+                {
+                    ViewBag.User = User;
+                    ViewBag.role = role;
+                    ViewBag.name = name;
+                    ViewBag.email = email;
+                    return View("CreateProfileConfirmation");
                 }
                 else
                 {

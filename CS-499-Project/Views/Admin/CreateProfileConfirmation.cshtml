@@ -19,9 +19,10 @@
     </style>
 </head>
 
-        Username: @ViewBag.username <br />
-        Password: @ViewBag.password <br />
+        Username: @ViewBag.User <br />
+        Full Name: @ViewBag.name <br />
         Role: @ViewBag.role <br />
+        E-Mail: @ViewBag.email
         @{
             if (ViewBag.role == "customer")
             {
