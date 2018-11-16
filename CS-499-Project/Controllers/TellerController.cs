@@ -22,7 +22,7 @@ namespace CS_499_Project.Controllers
             }
             var type = "";
             var session = Request.Cookies["SESSION_ID"];
-            ProfileInterface Verified = new Database().VerifySession(session);
+            ProfileInterface Verified = (new Database()).VerifySession(session);
             if (Verified.profile_type == ProfileInterface.ProfileType.CUSTOMER)
             {
                 return View("Denied");

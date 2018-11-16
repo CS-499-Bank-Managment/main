@@ -8,6 +8,7 @@ using System.Drawing.Printing;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CS_499_Project.Object_Classes
 {
@@ -21,6 +22,7 @@ namespace CS_499_Project.Object_Classes
         //Variables for connection and command string.
         private SQLiteConnection db;
         private SQLiteCommand dbcmd;
+
         public Database()
         {
             //Create a connection and open it in the driver
@@ -30,6 +32,19 @@ namespace CS_499_Project.Object_Classes
             this.dbcmd.CommandType = CommandType.Text;
         }
 
+        public string getCurrentCustomer(string session)
+        {
+            this.dbcmd.CommandText = "SELECT customer FROM sessions WHERE ID=@session";
+            this.dbcmd.Parameters.AddWithValue("session", session);
+            return this.dbcmd.ExecuteScalar().ToString();
+        }
+
+        public void setCurrentCustomer(string customer, string session)
+        {
+            this.dbcmd.CommandText = "UPDATE sessions SET customer=@customer WHERE ID=@session";
+            this.dbcmd.Parameters.AddWithValue("customer", customer);
+            this.dbcmd.Parameters.AddWithValue("session", session);
+        }
 
         public bool NewUser(string username, string password, string role, string name, string email)
         {
@@ -340,8 +355,8 @@ namespace CS_499_Project.Object_Classes
                     Convert.ToInt32(balance_reader["type"]),
                     customer, 
                     balance_reader["name"].ToString(),
-                    Convert.ToDecimal(balance_reader["interest"])
-                    );
+                    Convert.ToDecimal(balance_reader["interest"]),
+                    DateTime.Parse(balance_reader["date"].ToString()));
             }
             return account;
         }
@@ -572,24 +587,17 @@ namespace CS_499_Project.Object_Classes
             reader.Close();
             if(type == "Admin")
             {
-                dbcmd.CommandText = "SELECT * from tellers where username LIKE @user1 OR name LIKE @user2";
+                dbcmd.CommandText = "SELECT * from tellers where username LIKE @user1 OR name LIKE @user2 UNION SELECT * from admins where username LIKE @user3 OR name LIKE @user4";
                 dbcmd.Parameters.AddWithValue("user1", "%" + username + "%");
                 dbcmd.Parameters.AddWithValue("user2", "%" + username + "%");
+                dbcmd.Parameters.AddWithValue("user3", "%" + username + "%");
+                dbcmd.Parameters.AddWithValue("user4", "%" + username + "%");
                 var reader2 = dbcmd.ExecuteReader();
                 while (reader2.Read())
                 {
                     profile_list.Add(new TellerProfile(reader2["username"].ToString(), reader2["name"].ToString(), reader2["email"].ToString()));
                 }
                 reader2.Close();
-                dbcmd.CommandText = "SELECT * from admins where username LIKE @user1 OR name LIKE @user2";
-                dbcmd.Parameters.AddWithValue("user1", "%" + username + "%");
-                dbcmd.Parameters.AddWithValue("user2", "%" + username + "%");
-                var reader3 = dbcmd.ExecuteReader();
-                while (reader3.Read())
-                {
-                    profile_list.Add(new AdminProfile(reader3["username"].ToString(), reader3["name"].ToString(), reader3["email"].ToString()));
-                }
-                reader3.Close();
             }
             return profile_list;
         }

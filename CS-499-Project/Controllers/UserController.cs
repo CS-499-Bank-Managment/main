@@ -131,7 +131,7 @@ namespace CS_499_Project.Controllers
         public IActionResult Login(string username, string password)
         {
             
-            int counter = 0;  
+            //int counter = 0;  
             string line;
             ViewBag.status = "no";
 
