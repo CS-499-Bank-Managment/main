@@ -6,8 +6,8 @@
 <script src="~/js/aspire_dashboards.js"></script>
 <div id="main-content">
     <div id="title-div"><h1>
-    @ViewBag.full_name@if (ViewBag.isAdmin)
-    {<div class="trash-icon" id="user-trash" data-url="@Url.Action("DeleteUser","Admin", new { username = (string) ViewBag.user_header })"><img id="trash-img" src="~/images/trash.png" alt="delete user icon" height="40" width="40" /></div>}
+    @ViewBag.full_name@if ( (bool) ViewBag.isAdmin)
+    {<div class="trash-icon" id="user-trash" data-url="@Url.Action("DeleteUser","Admin", new { username = (string) ViewBag.current_customer })"><img id="trash-img" src="~/images/trash.png" alt="delete user icon" height="40" width="40" /></div>}
 </h1></div>
     <br />
     <center>
@@ -24,7 +24,7 @@
                     <div class="action-text">Transfer</div>
                 </div>
             </a>
-            @if (ViewBag.allowed)
+            @if ( (bool) ViewBag.allowed)
             {
                 <a href="@Url.Action("Check", "Teller")">
                     <div class="action-box">
@@ -47,11 +47,14 @@
             </a>
         </div>
     </center>
-    <h2>Accounts @if (ViewBag.isAdmin) {<a href="@Url.Action("CreateProfile", "Admin", new { username = (string) ViewBag.user_header })"><div class="add-icon"><img id="add-img" src="~/images/plus-48.png" width="30" height="30" alt="add account" /></div></a>}</h2>
+    <h2>Accounts @if ( (bool) ViewBag.isAdmin) {<a href="@Url.Action("CreateAccount", "Admin", new { username = (string) ViewBag.current_customer })"><div class="add-icon"><img id="add-img" src="~/images/plus-48.png" width="30" height="30" alt="add account" /></div></a>}</h2>
     <div id="accounts-wrapper">
         @foreach (AccountInterface account in ViewBag.accounts)
         {
-            <h3>@account.DisplayName</h3>
+        <h3>
+            @account.DisplayName@if ( (bool) ViewBag.isAdmin)
+                    {<div class="trash-icon-small" data-url="@Url.Action("DeleteAccount","Admin", new { username = (string) ViewBag.current_customer, account_id = (int) account.accountNumber() })"><img class="trash-img-small" src="~/images/trash.png" alt="delete account icon for @account.DisplayName" height="30" width="30" /></div>}
+        </h3>
             <p>Balance: $@account.accountBalance().ToString("0.00")</p>
             @if (account.getTransactions().Count > 0)
             {

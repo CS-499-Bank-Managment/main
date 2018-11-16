@@ -297,6 +297,26 @@ namespace CS_499_Project.Object_Classes
             return result_dict;
         }
 
+        public AccountInterface getAccount(int account_number, string customer)
+        {
+            AccountInterface account = null;
+            this.dbcmd.CommandText = "select * from customer_acct where acct_id=@act";
+            this.dbcmd.Parameters.AddWithValue("act", account_number);
+            var balance_reader = this.dbcmd.ExecuteReader();
+            while (balance_reader.Read())
+            {
+                account = new AccountInterface(
+                    Convert.ToDecimal(balance_reader["balance"]),
+                    Convert.ToInt32(account_number),
+                    Convert.ToInt32(balance_reader["type"]),
+                    customer, 
+                    balance_reader["name"].ToString(),
+                    Convert.ToDecimal(balance_reader["interest"])
+                    );
+            }
+            return account;
+        }
+
         public Dictionary<string, string> AddAmount(int acct, decimal amount)
         {
             /*
@@ -385,27 +405,27 @@ namespace CS_499_Project.Object_Classes
              */
             this.dbcmd.CommandText = $"SELECT * FROM sessions";
             Console.WriteLine(this.dbcmd.CommandText);
-            var user = this.dbcmd.ExecuteReader();
+            var session= this.dbcmd.ExecuteReader();
             ProfileInterface returning = null;
-            while (user.Read())
+            while (session.Read())
             {
-                if (user["ID"].ToString() == sessionID)
+                if (session["ID"].ToString() == sessionID)
                 {
-                    switch (user["role"].ToString())
+                    switch (session["role"].ToString())
                     {
                         case "admin":
-                            returning = new AdminProfile(user["username"].ToString(), user["name"].ToString());
+                            returning = new AdminProfile(session["username"].ToString(), session["name"].ToString());
                             break;
                         case "teller":
-                            returning = new TellerProfile(user["username"].ToString(), user["name"].ToString());
+                            returning = new TellerProfile(session["username"].ToString(), session["name"].ToString());
                             break;
                         case "customer":
-                            returning = new CustomerProfile(user["username"].ToString(), user["name"].ToString());
+                            returning = new CustomerProfile(session["username"].ToString(), session["name"].ToString());
                             break;
                     }
                 }
             }
-            user.Close();
+            session.Close();
             return returning;
         }
 
@@ -523,6 +543,20 @@ namespace CS_499_Project.Object_Classes
             }
             reader.Close();
             return info_dict;
+        }
+
+        public string GetUsername(int account_id)
+        {
+            string username = "";
+            dbcmd.CommandText = "SELECT * from customers where userid=@id";
+            dbcmd.Parameters.AddWithValue("id", account_id);
+            var reader = dbcmd.ExecuteReader();
+            while (reader.Read())
+            {
+                username = reader["username"].ToString();
+            }
+            reader.Close();
+            return username;
         }
 
         public List<TransactionInterface> ListTransactions(long acct_id)
