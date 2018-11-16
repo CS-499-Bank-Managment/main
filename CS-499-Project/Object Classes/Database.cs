@@ -498,7 +498,8 @@ namespace CS_499_Project.Object_Classes
                         Convert.ToInt32(acctReader["type"]),
                         username,
                         acctReader["name"].ToString(),
-                        Convert.ToDecimal(acctReader["interest"])
+                        Convert.ToDecimal(acctReader["interest"]),
+                        Convert.ToDateTime(acctReader["created"])
                     )
                 );
 

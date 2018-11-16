@@ -13,7 +13,7 @@ namespace CS_499_Project.Object_Classes
         public CustomerProfile()
         {
             AccountInterface account1 = new AccountInterface(100.00m, 123456, (int)AccountType.CHECKING, "my_user",
-                "Checking Account", (decimal)0.00);
+                "Checking Account", (decimal)0.00, DateTime.Now);
             this.accounts.Add(account1);
         }
 
@@ -75,13 +75,13 @@ namespace CS_499_Project.Object_Classes
 
         public void addAccount(decimal amount, long number, int type, string username, string name)
         {
-            AccountInterface account = new AccountInterface(amount, number, type, username, name, (decimal)0.00);
+            AccountInterface account = new AccountInterface(amount, number, type, username, name, (decimal)0.00, DateTime.Now);
             this.accounts.Add(account);
         }
 
         public void addAccount(decimal amount, long number, int type, string username, string name, decimal interest)
         {
-            AccountInterface account = new AccountInterface(amount, number, type, username, name, interest);
+            AccountInterface account = new AccountInterface(amount, number, type, username, name, interest, DateTime.Now);
             this.accounts.Add(account);
         }
 
