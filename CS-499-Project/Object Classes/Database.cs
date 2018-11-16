@@ -356,8 +356,8 @@ namespace CS_499_Project.Object_Classes
                     customer, 
                     balance_reader["name"].ToString(),
                     Convert.ToDecimal(balance_reader["interest"]),
-                    DateTime.Parse(balance_reader["date"].ToString()));
-            }
+                    DateTime.Parse(balance_reader["date"].ToString())
+                    );
             return account;
         }
 
