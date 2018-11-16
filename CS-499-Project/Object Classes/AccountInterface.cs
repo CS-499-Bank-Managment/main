@@ -46,6 +46,16 @@ namespace CS_499_Project.Object_Classes
         //get for balance
         public decimal accountBalance() { return this.balance; }
 
+        public AccountType getAccountType()
+        {
+            return (AccountType) account_type;
+        }
+
+        public decimal getInterestRate()
+        {
+            return interest_rate;
+        }
+
         //set for balance
         public void changeAccountBalance(decimal bal) { this.balance = bal; }
 

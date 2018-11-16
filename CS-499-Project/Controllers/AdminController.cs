@@ -159,5 +159,46 @@ namespace CS_499_Project.Controllers
             return View();
         }      
         
+        public IActionResult DeleteUser(string username)
+        {
+            var current_user = new Database().VerifySession(Request.Cookies["SESSION_ID"]);
+            if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
+            {
+                return View("Denied");
+            }
+            //Create basic admin profile. and call it's Delete Profile method.
+            ((AdminProfile)current_user).DeleteProfile(username);
+            return View("../Teller/Dashboard");
+        }
+
+        public IActionResult DeleteAccount(string username, int account_id)
+        {
+            //Commented out for testing
+            //var current_user = new Database().VerifySession(Request.Cookies["SESSION_ID"]);
+            //if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
+            //{
+            //    return View("Denied");
+            //}
+            (new Database()).DeleteCustAcct(username, account_id);
+            return RedirectToAction("Dashboard", "User");
+        }
+            
+        //Commented because they aren't used and don't use real functions
+
+        ////Method to create a customer account
+        //public IActionResult CustAcct(string username)
+        //{
+        //    AdminProfile creation = new AdminProfile();
+        //    ViewBag.results = creation.CreateCustAccount(username);
+        //    return View("Mongo");
+        //}
+        
+        ////Method to delete an account within a customer profile.
+        //public IActionResult DeleteCustAcct(string username, string acct_id)
+        //{
+        //    var foo = new Database();
+        //    foo.DeleteCustAcct(username, Convert.ToInt32(acct_id));
+        //    return View("Index");
+        //}
     }
 }

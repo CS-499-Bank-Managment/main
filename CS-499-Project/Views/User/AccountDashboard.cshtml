@@ -1,0 +1,46 @@
+﻿@{
+    Layout = "_NavBarLayout";
+}
+@using CS_499_Project.Object_Classes;
+
+<div id="main-content">
+    <h1>@ViewBag.account.DisplayName</h1>
+    <h2 class="table-header">Transaction History</h2>
+    @if (ViewBag.account.getTransactions().Count > 0)
+    {
+    <table id="accounts-table">
+        <tr>
+            <th class="table-sub-header left-header">Description</th>
+            <th class="table-sub-header">Amount</th>
+            <th class="table-sub-header">Type</th>
+            <th class="table-sub-header">Date</th>
+        </tr>
+        @foreach (TransactionInterface transaction in ViewBag.account.getTransactions())
+        {
+        <tr class="main-row">
+            <td>@transaction.note</td>
+            <td>@("$" + transaction.amount.ToString("0.00"))</td>
+            <td>
+                @if (transaction.acct_from == ViewBag.account.accountNumber())
+                {<span>Withdraw</span>}
+                else
+                {<span>Deposit</span>}
+            </td>
+            <td>@transaction.transaction_time.ToString("d/M/yyyy")</td>
+        </tr>
+        }
+        </table>
+    }
+    else
+    {
+        <p>No transactions for this account yet!</p>
+    }
+    <div id="account-sidebar">
+        <p><b>USER:</b> @ViewBag.current_customer</p>
+        <p><b>TYPE:</b> @ViewBag.account_type</p>
+        <p><b>INTEREST:</b> @ViewBag.account.getInterestRate()</p>
+        <p><b>BALANCE:</b> @ViewBag.account.accountBalance()</p>
+        <p><b>ACCOUNT NUMBER:</b> @ViewBag.account.accountNumber()</p>
+        <p><b>ROUTING NUMBER:</b> 93758734</p>
+    </div>
+</div>

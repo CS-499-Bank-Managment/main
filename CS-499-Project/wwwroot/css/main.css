@@ -302,7 +302,24 @@ header {
     vertical-align: sub;
 }
 
+.trash-icon-small {
+    background-color: #FF4000;
+    height: 35px;
+    width: 35px;
+    cursor: pointer;
+    padding-top: 3px;
+    padding-left: 3px;
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: text-top;
+}
+
 #trash-img
+{
+    vertical-align: top;
+}
+
+.trash-img-small
 {
     vertical-align: top;
 }

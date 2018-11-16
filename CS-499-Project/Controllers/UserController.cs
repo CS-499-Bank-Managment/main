@@ -12,6 +12,56 @@ namespace CS_499_Project.Controllers
             return View();
         }
 
+        public IActionResult AccountDashboard()
+        {
+            //temporary variable for customer
+            var customer_served = "clay";
+            //temporary variable for user
+            var username = "clay2";
+            //temporary variable for account number
+            var number = 10;
+            //Commented for testing
+            //var session = Request.Cookies["SESSION_ID"];
+            //ProfileInterface Verified = new Database().VerifySession(session);
+            ViewBag.Title = "Dashboard";
+            ViewBag.user_header = username;
+            ViewBag.current_customer = customer_served;
+            AccountInterface account = (new Database()).getAccount(number, customer_served);
+            ViewBag.account = account;
+            ProfileInterface Verified = new AdminProfile(username, "Clay Turner");
+            switch (Verified.profile_type)
+            {
+                case ProfileInterface.ProfileType.ADMIN: ViewBag.user_role = "Admin"; break;
+                case ProfileInterface.ProfileType.TELLER: ViewBag.user_role = "Teller"; break;
+                case ProfileInterface.ProfileType.CUSTOMER: ViewBag.user_role = "User"; break;
+            }
+            List<TransactionInterface> transactions = new Database().ListTransactions(account.accountNumber());
+            foreach (TransactionInterface transaction in transactions)
+            {
+                account.addTransaction(transaction);
+            }
+            ViewBag.account_type = "Unknown";
+            switch(account.getAccountType())
+            {
+                case AccountType.CHECKING:
+                    ViewBag.account_type = "Checking";
+                    break;
+                case AccountType.MONEY_MARKET:
+                    ViewBag.account_type = "Money Market";
+                    break;
+                case AccountType.MORTGAGE:
+                    ViewBag.account_type = "Mortgage";
+                    break;
+                case AccountType.CREDIT:
+                    ViewBag.account_type = "Credit";
+                    break;
+                case AccountType.SAVINGS:
+                    ViewBag.account_type = "Savings";
+                    break;
+            }
+            return View();
+        }
+        
         public IActionResult Dashboard()
         {
             //temporary variable for customer
@@ -60,6 +110,9 @@ namespace CS_499_Project.Controllers
                     account.addTransaction(transaction);
                 }
             }
+
+            ViewBag.current_customer = customer_served;
+
             return View();
         }
 
