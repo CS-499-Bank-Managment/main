@@ -18,7 +18,6 @@ namespace CS_499_Project.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            
             //This method shows the Default index page for the Admin Dashboard.
             ProfileInterface current_user = (new Database().VerifySession(Request.Cookies["SESSION_ID"]));
             ViewBag.username = current_user.username;
@@ -28,7 +27,7 @@ namespace CS_499_Project.Controllers
             {
                 return View("Denied");
             }
-            return View();
+            return View("");
         }
 
         public IActionResult DeleteProfileForm()
@@ -168,17 +167,17 @@ namespace CS_499_Project.Controllers
             }
             //Create basic admin profile. and call it's Delete Profile method.
             ((AdminProfile)current_user).DeleteProfile(username);
-            return View("../Teller/Dashboard");
+            return RedirectToAction("Dashboard", "Teller");
         }
 
         public IActionResult DeleteAccount(string username, int account_id)
         {
             //Commented out for testing
-            //var current_user = new Database().VerifySession(Request.Cookies["SESSION_ID"]);
-            //if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
-            //{
-            //    return View("Denied");
-            //}
+            var current_user = new Database().VerifySession(Request.Cookies["SESSION_ID"]);
+            if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
+            {
+                return View("Denied");
+            }
             (new Database()).DeleteCustAcct(username, account_id);
             return RedirectToAction("Dashboard", "User");
         }
