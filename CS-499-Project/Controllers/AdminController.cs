@@ -27,7 +27,7 @@ namespace CS_499_Project.Controllers
             {
                 return View("Denied");
             }
-            return View("");
+            return View();
         }
 
         public IActionResult DeleteProfileForm()
