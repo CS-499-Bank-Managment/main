@@ -1,0 +1,20 @@
+﻿@{
+    Layout = "/Views/Shared/_HeaderLayout.cshtml";
+}
+
+<script type="text/javascript" src="~/js/aspire-forms.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('select').formSelect();
+    });
+</script>
+<script type="text/javascript" src="~/js/materialize/forms.js"></script>
+@RenderSection("scripts", required: false)
+
+<div class="layer"></div>
+<div class="form">
+    <h2 class="form-title">@ViewBag.FormTitle</h2>
+    @RenderBody()
+</div>
+
+

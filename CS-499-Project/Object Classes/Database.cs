@@ -31,28 +31,57 @@ namespace CS_499_Project.Object_Classes
         }
 
 
-        public bool NewUser(string username, string password, string role)
+        public bool NewUser(string username, string password, string role, string name, string email)
         {
+            Console.WriteLine($"Function called with {username} {password} {role} {name} {email}");
             //Add the username and password into the role diagram. TODO: fix sqli in roles.
             switch (role)
             {
-                case ("admin"):
-                    this.dbcmd.CommandText = "INSERT INTO admins (username,password) VALUES (@user, @pwd)";
+                case "admin":
+                    this.dbcmd.CommandText = "INSERT INTO admins (username,password,name,email) VALUES (@user, @pwd, @nm, @eml)";
                     break;
                 
                 case "teller":
-                    this.dbcmd.CommandText = "INSERT INTO tellers (username,password) VALUES (@user, @pwd)";
+                    this.dbcmd.CommandText = "INSERT INTO tellers (username,password,name,email) VALUES (@user, @pwd, @nm, @eml)";
                     break;
                 
                 case "customer":
-                    this.dbcmd.CommandText = "INSERT INTO customers (username,password) VALUES (@user, @pwd)";
+                    this.dbcmd.CommandText = "INSERT INTO customers (username,password,name,email) VALUES (@user, @pwd, @nm, @eml)";
                     break;
             }
             this.dbcmd.Parameters.AddWithValue("user", username);
             this.dbcmd.Parameters.AddWithValue("pwd", Database.PasswordHash(password));
+            this.dbcmd.Parameters.AddWithValue("nm", name);
+            this.dbcmd.Parameters.AddWithValue("eml", email);
             this.dbcmd.ExecuteNonQuery();
 
-            return true; //TODO: check for success inputting.
+
+            Dictionary<string, string> info_dict = new Dictionary<string, string>();
+            switch (role)
+            {
+                case "admin":
+                    this.dbcmd.CommandText = "SELECT * from admins where username=@user";
+                    break;
+
+                case "teller":
+                    this.dbcmd.CommandText = "SELECT * from tellers where username=@user";
+                    break;
+
+                case "customer":
+                    this.dbcmd.CommandText = "SELECT * from customers where username=@user";
+                    break;
+            }
+            dbcmd.Parameters.AddWithValue("user", username);
+            SQLiteDataReader results = dbcmd.ExecuteReader();
+            results.Close();
+            if (!results.HasRows)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
 
         }
 
@@ -118,7 +147,7 @@ namespace CS_499_Project.Object_Classes
             }
 
             results.Close();
-            
+
             string session_id;
             using (SHA256 SessionAlgorithm = SHA256.Create())
             {

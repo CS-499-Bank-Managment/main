@@ -105,12 +105,54 @@ body {
     color: #525252;
 }
 
+.employee-login-form {
+    flex-grow: 1;
+    margin: 50px 100px;
+    padding: 50px;
+    background-color: #92d3be;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 600px;
+    color: #444444;
+}
+
+.field {
+    flex-grow: 1;
+    padding: .5em;
+    max-width: 500px;
+    min-width: 200px;
+    color: white;
+}
+
+.form {
+    flex-grow: 1;
+    margin: 50px 100px;
+    padding: 50px;
+    background-color: #52ba16;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 600px;
+    color: #444444;
+}
+
+.form-title {
+    font-size: 2rem;
+}
+
+
 h1 {
     font-weight: normal;
 }
 
 h2 {
     font-weight: normal;
+    color: #525252;
 }
 
 h3 {
@@ -132,8 +174,50 @@ header {
     padding-right: 5px;
 }
 
+.input-field input[type=text] {
+    border-bottom: 1px solid white !important;
+    box-shadow: 0 1px 0 0 white;
+}
+
+.input-field input[type=password] {
+    border-bottom: 1px solid white !important;
+    box-shadow: 0 1px 0 0 white;
+}
+
+.input-field input[type=email] {
+    border-bottom: 1px solid white !important;
+    box-shadow: 0 1px 0 0 white;
+}
+/* invalid color */
+.input-field input[type=text].invalid {
+    border-bottom: 1px solid #FF4000 !important;
+    box-shadow: 0 1px 0 0 #FF4000 !important;
+}
+
+.input-field label {
+    color: white !important;
+}
+
+.input-field input:focus + label {
+    color: white !important;
+}
+
+.layer {
+    background-color: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 150%;
+    opacity: 0.6;
+}
+
 .left-header {
     text-align: left;
+}
+
+.link {
+    color: white;
 }
 
 #logo {
@@ -153,6 +237,40 @@ header {
     border: 1px solid #5bb772;
 }
 
+.message {
+    flex-grow: 1;
+    margin: 50px 100px;
+    padding: 50px 50px 200px 50px;
+    background-color: #FF4000;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 600px;
+    color: #444444;
+}
+
+.row .input-field input:focus {
+    border-bottom: 1px solid white !important;
+    box-shadow: 0 1px 0 0 white !important
+}
+
+.spacer {
+    flex-shrink: 1;
+    height: 10em;
+    width: 3em;
+}
+
+.sumbit-button {
+    background-color: #a8e070;
+    flex-grow: 1;
+    padding: .5em;
+    margin: 0 0.6em;
+    max-width: 500px;
+    min-width: 200px;
+}
+
 .table-header {
     margin-bottom: 0;
 }
@@ -165,6 +283,10 @@ header {
 
 .table-sub-header {
     font-weight: normal;
+}
+
+.text-input {
+    width: 100%;
 }
 
 .trash-icon{
@@ -230,4 +352,9 @@ header {
     margin: 0;
 }
 
-/*# sourceMappingURL=main.css.map */
+.warn-message {
+    color: #FF4000;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    letter-spacing: 2px;
+    font-size: 1.2rem;
+}

@@ -1,0 +1,27 @@
+﻿@{
+    Layout = "/Views/Shared/_HeaderLayout.cshtml";
+}
+
+@if (ViewBag.redirect != null)
+{
+    <meta http-equiv="refresh" content="0; URL='@ViewBag.redirect'" />
+}
+
+<script type="text/javascript" src="~/js/aspire-login.js"></script>
+
+<div class="layer"></div>
+@if (ViewBag.employee)
+{
+    <div class="employee-login-form">
+    <h2 class="form-title">Aspire Financial Services</h2>
+    @RenderBody()
+    </div>
+}
+else
+{
+    <div class="form">
+    <h2 class="form-title">Aspire Financial Services</h2>
+    @RenderBody()
+    </div>
+}
+

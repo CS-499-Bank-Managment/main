@@ -1,15 +1,79 @@
-
+@{
+    Layout = "/Views/Shared/_HeaderLayout.cshtml";
+}
 <!DOCTYPE html>
 
 <html>
 <head>
-    <title>title</title>
+    <title>Aspire</title>
+    <style>
+        body {
+            background-image: url(https://www.artinnaturephotography.com/images/xl/Mt-Rainier-Black-White-Reflection-20130821_0632.jpg);
+            background-repeat: no-repeat;
+            background-size: 100% 160%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .layer {
+            background-color: white;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.6;
+        }
+
+        .form {
+            flex-grow: 1;
+            margin: 50px 100px;
+            padding: 50px 50px 200px 50px;
+            background-color: #52ba16;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            max-width: 600px;
+            color: #444444;
+        }
+
+        .sumbit-button {
+            background-color: #a8e070;
+            flex-grow: 1;
+            padding: .5em;
+            margin: 0 0.6em;
+            max-width: 500px;
+            min-width: 200px;
+        }
+
+        .field {
+            flex-grow: 1;
+            padding: .5em;
+            max-width: 500px;
+            min-width: 200px;
+            color: white;
+        }
+
+        .text-input {
+            width: 100%;
+        }
+
+        .h2 {
+            font-size: 2em;
+            font-weight: normal;
+            color: #525252;
+        }
+    </style>
 </head>
 <body>
+    <div class="layer"></div>
+    <div class="form">
 
-Goodbye!
-<div>
-
-</div>
+        <h2>Goodbye!</h2>
+        <a href="../">Login Again</a>
+    </div>
 </body>
 </html>

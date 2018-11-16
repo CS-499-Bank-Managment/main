@@ -1,8 +1,4 @@
-@{ 
-    Layout = "_HeaderLayout";
+@{
+    ViewBag.requiredLevel = "admin";
+    Layout = "/Views/Shared/_DeniedLayout.cshtml";
 }
-
-<p>You probably don't belong here! Click the button below to go where you do belong!</p>
-<br />
-<br />
-<a href="@Url.Action("Dashboard","Teller")"><button type="button">Go</button></a>

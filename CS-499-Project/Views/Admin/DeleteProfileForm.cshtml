@@ -1,19 +1,21 @@
-﻿<!DOCTYPE html>
+﻿@{
+    ViewBag.title = "Create A Profile";
+    ViewBag.FormTitle = "Delete a User Profile";
+    Layout = "/Views/Shared/_FormLayout.cshtml";
+}
 
-<html>
-<head>
 
-</head>
-<body>
-    <form action="./DeleteProfileConfirmation" method="post">
-        User to delete: <select name="username">
-    @foreach (var item in ViewBag.profiles)
-    {
-         <option value="@item">@item</option>
-    }
-</select>
-        <br /><br />
-        <input type="submit" value="Delete"/>
-    </form>
-</body>
-</html>
+<label for="user_to_delete">User To Delete</label>
+
+<form action="./DeleteProfileConfirmation" method="post">
+    <div class="input-field col s12 field">
+        <select id="user_to_delete" name="username">
+            @foreach (var item in ViewBag.profiles)
+            {
+                <option value="@item">@item</option>
+            }
+        </select>
+    </div>
+    <div class="sumbit-button waves-effect waves-light btn"><input type="submit" value="Delete" /></div>
+</form>
+

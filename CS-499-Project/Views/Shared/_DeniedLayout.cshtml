@@ -1,0 +1,14 @@
+﻿@{
+    Layout = "/Views/Shared/_HeaderLayout.cshtml";
+}
+
+<script type="text/javascript" src="~/js/aspire-denied.js"></script>
+
+<div class="layer"></div>
+<div class="message">
+    <h2>ACCESS DENIED</h2>
+    <p>The operation you just attempted requires @ViewBag.requiredLevel Status.</p>
+    <a class="link" href="../..">Back to Dashboard</a>
+    @RenderBody()
+</div>
+

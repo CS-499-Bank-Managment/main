@@ -66,6 +66,7 @@ namespace CS_499_Project.Controllers
             }
             ((AdminProfile)current_user).CreateCustAccount(username, deposit, type, name);
             List<string> results = new List<string>();
+            // What is this hoping to accomplish? results has no contents. 
             ViewBag.acct_user = results[0];
             ViewBag.acct_num  = results[1];
             ViewBag.acct_dep  = results[2];
@@ -78,13 +79,13 @@ namespace CS_499_Project.Controllers
         public IActionResult CreateProfileConfirmation(string username, string password, string confirm, string role)
         {
             //Create basic admin profile class - later we'll need to verify this with session info.
-/*            
+
             var current_user = new Database().VerifySession(Request.Cookies["SESSION_ID"]);
             if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
             {
                 return View("Denied");
             }
-*/            
+
             if (username == null && ViewBag.username == null)
             {
                 return View();
@@ -93,30 +94,55 @@ namespace CS_499_Project.Controllers
             ViewBag.password = password;
             ViewBag.role = role;
 
-            if(confirm != password)
-            {
-                ViewBag.confirm = "";
-                throw (new System.FormatException("The Confirm password field does not match the password you entered!"));
-            }
-
-            //Call the create profile method
-            (new AdminProfile()).CreateProfile(username, password, role);
             return View();
         }
 
         public IActionResult CreateProfileForm()
         {
-            //TODO: FIX THIS LATER, THE FORM USES POST AUTHENTICATION BUT THE ACCOUNTCREATED METHOD DOES NOT
-            //TODO: PROCESS THAT INFORMATION IT EXPECTS IT IN THE FORM /USER/PASS/ETC RATHER THAN
-            //TODO: ACCOUNTCREATED?USER=*PASS=* ...
+            var current_user = new Database().VerifySession(Request.Cookies["SESSION_ID"]);
+            if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
+            {
+                return View("Denied");
+            }
+
+            ViewBag.Form = false;
+            if (Request.HasFormContentType)
+            {
+                ViewBag.Form = true;
+                string User = Request.Form["username"];
+                string Password = Request.Form["password"];
+                string ConfirmPass = Request.Form["confirm"];
+                string role = Request.Form["role"];
+                string email = Request.Form["email"];
+                string name = Request.Form["name"];
+                ViewBag.User = User;
+                ViewBag.Pass = Password;
+
+                if (ConfirmPass != Password)
+                {
+                    ViewBag.errorMessage = "The passwords you entered do not match.";
+                    return View();
+                }
+
+                //Call the create profile method
+                if (((AdminProfile)current_user).CreateProfile(User, Password, role, name, email))
+                {
+                    ViewBag.User = User;
+                    ViewBag.role = role;
+                    ViewBag.name = name;
+                    ViewBag.email = email;
+                    return View("CreateProfileConfirmation");
+                }
+                else
+                {
+                    ViewBag.errorMessage = "COULD NOT CREATE USER";
+                }
+            }
+
+
             return View();
         }
 
-        public IActionResult Denied()
-        {
-            ViewBag.title = "Access Denied";
-            return View();
-        }
 
         public IActionResult DeleteProfileConfirmation(string username)
         {
@@ -131,7 +157,7 @@ namespace CS_499_Project.Controllers
             ViewBag.status = ((AdminProfile)current_user).Check(username);
                
             return View();
-        }
+        }      
         
         public IActionResult DeleteUser(string username)
         {
