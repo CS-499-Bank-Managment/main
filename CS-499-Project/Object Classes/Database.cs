@@ -430,11 +430,12 @@ namespace CS_499_Project.Object_Classes
         public void LogSessionID(string Session_ID, string username, string role, string name)
         {
             //This is a helper function to log the session into the Sessions table.
-            this.dbcmd.CommandText = "INSERT into sessions (ID, username, role, name) VALUES (@Sess_ID, @user, @roll, @name)";
+            this.dbcmd.CommandText = "INSERT into sessions (ID, username, role, name, customer) VALUES (@Sess_ID, @user, @roll, @name, @customer)";
             this.dbcmd.Parameters.AddWithValue("user", username);
             this.dbcmd.Parameters.AddWithValue("roll", role);
             this.dbcmd.Parameters.AddWithValue("Sess_ID", Session_ID);
             this.dbcmd.Parameters.AddWithValue("name", name);
+            this.dbcmd.Parameters.AddWithValue("customer", username);
             this.dbcmd.ExecuteNonQuery();
         }
 
