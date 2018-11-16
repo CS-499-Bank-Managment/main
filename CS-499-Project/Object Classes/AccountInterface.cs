@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 using Microsoft.AspNetCore.Mvc.Formatters;
 
 //using System.DateTime;
@@ -38,6 +39,7 @@ namespace CS_499_Project.Object_Classes
         protected decimal pending_balance;
         //The list of all transactions under this account
         protected List<TransactionInterface> transactionList;
+        private System.Timers.Timer PleaseGodWork;
 
         //TODO: May add extra data that other banks have, but for now, this is the minimum
 
@@ -76,7 +78,7 @@ namespace CS_499_Project.Object_Classes
                                 long number, 
                                 int type, 
                                 string user_name,
-                                string account_name, decimal interestRate)
+                                string account_name, decimal interestRate, DateTime date)
         {
             //TODO: define the interest rate and date based on the account type
             this.balance = initial_amount;
@@ -86,8 +88,20 @@ namespace CS_499_Project.Object_Classes
             this.account_number = number;
             this.interest_rate = interestRate;
             this.transactionList = new List<TransactionInterface>();
+            this.interest_date = date;
+            PleaseGodWork = new Timer();
+            PleaseGodWork.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            PleaseGodWork.Interval = 60000;
+            PleaseGodWork.Enabled = true;
         }
 
+
+        private void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            this.balance = balance + (balance * interest_rate);
+            Console.WriteLine($"New balance is {balance}");
+            
+        }
         
         public override string ToString()
         {
