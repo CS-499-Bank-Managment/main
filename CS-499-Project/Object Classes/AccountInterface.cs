@@ -19,9 +19,7 @@ namespace CS_499_Project.Object_Classes
         CREDIT
     }
 
-    
-
-public class AccountInterface
+    public class AccountInterface
     {
         //How much is in the account
         protected decimal balance;
