@@ -44,6 +44,14 @@ namespace CS_499_Project.Object_Classes
             }
         }
 
+        public CustomerProfile(string username, string name, string email)
+        {
+            this.username = username;
+            this.profile_type = ProfileType.CUSTOMER;
+            this.full_name = name;
+            this.email_address = email;
+        }
+
         public CustomerProfile(string username, string name)
         {
             this.accounts = new List<AccountInterface>();

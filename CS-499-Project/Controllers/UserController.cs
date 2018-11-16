@@ -105,9 +105,14 @@ namespace CS_499_Project.Controllers
             foreach (AccountInterface account in ViewBag.accounts)
             {
                 List<TransactionInterface> transactions = new Database().ListTransactions(account.accountNumber());
+                int count = 0;
                 foreach(TransactionInterface transaction in transactions)
                 {
-                    account.addTransaction(transaction);
+                    if (count < 5)
+                    {
+                        account.addTransaction(transaction);
+                        count++;
+                    }
                 }
             }
 

@@ -1,5 +1,73 @@
-﻿@{ 
-    Layout = "_HeaderLayout";
+﻿@{
+    Layout = "_NavBarLayout";
 }
 
-This is the Teller and Admin dashboard!
+@using CS_499_Project.Object_Classes;
+
+
+<script>
+    function redirect(username) {
+        location.href = "@ViewBag.path" + "/ListAccounts?username=" + username.trim();
+    }
+    function delete_user(username)
+    {
+        location.href = "@Url.Action("DeleteUser", "Admin", new { username = "someString" })".replace("someString", username);
+    }
+
+    $(document).ready(function () {
+        $("#search").select();
+        $("#search").focus();
+    });
+
+    function add_user() {
+        location.href = ""@Url.Action("AddUser", "Admin");
+    }
+</script>
+
+@if(ViewBag.user_role == "Admin")
+{
+    <button onclick="add_user();">Add User</button>
+}
+
+<form method="post">
+    @if (ViewBag.set_username == "true")
+    {
+        <span>Find a customer by username: <input name="username" id="search" type="text" value="@ViewBag.LS" oninput="this.form.submit()" autofocus="autofocus" /></span>
+    }
+    else
+    {
+        <span>Find a customer by username: <input name="username" id="search" type="text" oninput="this.form.submit()" autofocus="autofocus" /></span>
+    }
+    <input type="submit" />
+</form>
+
+@if (ViewBag.info != null && ViewBag.info.Count > 0 && ViewBag.LS != String.Empty)
+{
+    <table>
+        <tr>
+            <td>Username</td>
+            <td>Full Name</td>
+            <td>Email Address</td>
+            <td>Role</td>
+        </tr>
+        @foreach (ProfileInterface profile in ViewBag.info)
+        {
+            <tr>
+                <td>@profile.username</td>
+                <td>@profile.full_name</td>
+                <td>@profile.email_address</td>
+                <td>@profile.getType()</td>
+                <td> <input type="button" value="SELECT" onclick="redirect('@profile.username')" /></td>
+                @if (ViewBag.user_role == "Admin")
+                {
+                    <td><input type="button" value="Delete" onclick="delete_user('@profile.username')" /></td>
+                }
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <span>No results!</span>
+}
+

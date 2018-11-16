@@ -65,6 +65,7 @@
                         <th class="table-sub-header">Type</th>
                         <th class="table-sub-header">Date</th>
                     </tr>
+                    @ViewBag.count = 0;
                     @foreach (TransactionInterface transaction in account.getTransactions())
                     {
                         <tr class="main-row">
@@ -72,7 +73,8 @@
                             <td>@("$" + transaction.amount.ToString("0.00"))</td>
                             <td>@if (transaction.acct_from == account.accountNumber())
                             {<span>Withdraw</span>}
-                            else {<span>Deposit</span>}</td>
+                            else
+                            {<span>Deposit</span>}</td>
                             <td>@transaction.transaction_time.ToString("d/M/yyyy")</td>
                         </tr>
                     }

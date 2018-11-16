@@ -23,6 +23,15 @@ namespace CS_499_Project.Object_Classes
             this.profile_type = ProfileType.TELLER;
             this.full_name = name;
         }
+
+        public TellerProfile(string username, string name, string email)
+        {
+            this.username = username;
+            this.profile_type = ProfileType.TELLER;
+            this.full_name = name;
+            this.email_address = email;
+            this._FullName = name;
+        }
         
         public bool IsAuthenticated()
         {

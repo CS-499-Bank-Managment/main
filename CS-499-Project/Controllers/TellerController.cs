@@ -9,9 +9,10 @@ namespace CS_499_Project.Controllers
     {
         // GET
 
-        public IActionResult Index()
+        public IActionResult Dashboard()
         {
-            if(Request.Path.Value.ToString().ToLower().EndsWith('/'))
+            ViewBag.Title = "Dashboard";
+            if (Request.Path.Value.ToString().ToLower().EndsWith('/'))
             {
                 ViewBag.path = ".";
             }
@@ -19,20 +20,39 @@ namespace CS_499_Project.Controllers
             {
                 ViewBag.path = "./Teller";
             }
-            ViewBag.LS = ""; //Last Searched.
+            var type = "";
             var session = Request.Cookies["SESSION_ID"];
             ProfileInterface Verified = new Database().VerifySession(session);
-            //Check if Verified is a TellerProfile type object, this means the session is valid
-            if (Verified.profile_type != ProfileInterface.ProfileType.TELLER)
+            if (Verified.profile_type == ProfileInterface.ProfileType.CUSTOMER)
             {
                 return View("Denied");
             }
+            else if (Verified.profile_type == ProfileInterface.ProfileType.TELLER)
+            {
+                type = "Teller";
+                ViewBag.user_role = "Teller";
+            }
+            else if (Verified.profile_type == ProfileInterface.ProfileType.ADMIN)
+            {
+                type = "Admin";
+                ViewBag.user_role = "Admin";
+            }
+            else
+            {
+                return View("Denied");
+            }
+            if(ViewBag.set_username != "true")
+            {
+                ViewBag.LS = "";
+            }
             ViewBag.User = Verified.username;
+            ViewBag.user_header = Verified.username;
             if (Request.HasFormContentType)
             {
                 ViewBag.LS = Request.Form["username"];
+                ViewBag.set_username = "true";
                 var lookup_db = new Database();
-                ViewBag.info = lookup_db.CustomerLookup(Request.Form["username"]);
+                ViewBag.info = lookup_db.CustomerLookup(Request.Form["username"], type);
             }
             return View();
         }

@@ -25,8 +25,8 @@ namespace CS_499_Project.Object_Classes
         private int id_number { get; set; }
 
         // contact info used to verify account
-        private string email_address { get; set; }
-        private string phone_number { get; set; }
+        public string email_address { get; set; }
+        protected string phone_number { get; set; }
 
         // The full name
         public string full_name { get; set; }
@@ -70,6 +70,30 @@ namespace CS_499_Project.Object_Classes
         {
             this.username = username;
 
+        }
+
+        public string getType()
+        {
+            switch(this.profile_type)
+            {
+                case ProfileType.ADMIN: return "Admin";
+                case ProfileType.CUSTOMER: return "Customer";
+                case ProfileType.TELLER: return "Teller";
+                default: return "N/A";
+            }
+        }
+
+        public ProfileInterface(string username, string name, string email, string type)
+        {
+            this.username = username;
+            full_name = name;
+            email_address = email;
+            switch(type)
+            {
+                case "Admin": profile_type = ProfileType.ADMIN; break;
+                case "Teller": profile_type = ProfileType.TELLER; break;
+                case "Customer": profile_type = ProfileType.CUSTOMER; break;
+            }
         }
 
         public ProfileInterface(string username, string password, string role)

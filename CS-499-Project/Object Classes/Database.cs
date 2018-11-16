@@ -557,21 +557,40 @@ namespace CS_499_Project.Object_Classes
 
         }
 
-        public Dictionary<string, string> CustomerLookup(string username)
+        public List<ProfileInterface> CustomerLookup(string username, string type)
         {
-            Dictionary<string, string> info_dict = new Dictionary<string, string>();
-            dbcmd.CommandText = "SELECT * from customers where username=@user";
-            dbcmd.Parameters.AddWithValue("user", username);
+            List<ProfileInterface> profile_list = new List<ProfileInterface>();
+             dbcmd.CommandText = "SELECT * from customers where username LIKE @user1 OR name LIKE @user2";
+            dbcmd.Parameters.AddWithValue("user1", "%" + username + "%");
+            dbcmd.Parameters.AddWithValue("user2", "%" + username + "%");
             var reader = dbcmd.ExecuteReader();
             while (reader.Read())
             {
-                for( int lp = 0 ; lp < reader.FieldCount ; lp++ ) {
-                    info_dict.Add(reader.GetName(lp), reader.GetValue(lp).ToString());
-                }
-                info_dict.Remove("password");
+                profile_list.Add(new CustomerProfile(reader["username"].ToString(), reader["name"].ToString(), reader["email"].ToString()));
             }
             reader.Close();
-            return info_dict;
+            if(type == "Admin")
+            {
+                dbcmd.CommandText = "SELECT * from tellers where username LIKE @user1 OR name LIKE @user2";
+                dbcmd.Parameters.AddWithValue("user1", "%" + username + "%");
+                dbcmd.Parameters.AddWithValue("user2", "%" + username + "%");
+                var reader2 = dbcmd.ExecuteReader();
+                while (reader2.Read())
+                {
+                    profile_list.Add(new TellerProfile(reader2["username"].ToString(), reader2["name"].ToString(), reader2["email"].ToString()));
+                }
+                reader2.Close();
+                dbcmd.CommandText = "SELECT * from admins where username LIKE @user1 OR name LIKE @user2";
+                dbcmd.Parameters.AddWithValue("user1", "%" + username + "%");
+                dbcmd.Parameters.AddWithValue("user2", "%" + username + "%");
+                var reader3 = dbcmd.ExecuteReader();
+                while (reader3.Read())
+                {
+                    profile_list.Add(new AdminProfile(reader3["username"].ToString(), reader3["name"].ToString(), reader3["email"].ToString()));
+                }
+                reader3.Close();
+            }
+            return profile_list;
         }
 
         public string GetUsername(int account_id)

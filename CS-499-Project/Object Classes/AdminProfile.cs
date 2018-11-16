@@ -17,6 +17,14 @@ namespace CS_499_Project.Object_Classes
             this.profile_type = ProfileType.ADMIN;
         }
 
+        public AdminProfile(string username, string name, string email)
+        {
+            this.username = username;
+            this.profile_type = ProfileType.ADMIN;
+            this.full_name = name;
+            this.email_address = email;
+        }
+
     public AdminProfile(string username, string name)
     {
         Database loginDB = new Database();
