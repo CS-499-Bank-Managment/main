@@ -4,10 +4,14 @@
     Layout = "/Views/Shared/_FormLayout.cshtml";
 }
 
-    To: @ViewBag.To <br>
-    Amt: @ViewBag.amt <br>
+        To:  @ViewBag.To
+        <br class="little-space" />
+        From: @ViewBag.From
+        <br class="little-space" />
+        Amount: @ViewBag.amt
+        <br class="little-space" />
 
-    @foreach (KeyValuePair<string, string> item in @ViewBag.ResultDict)
-    {
-        @item.Key @item.Value <br>
-    }
+
+        @ViewBag.To
+        @ViewBag.amt
+        @ViewBag.From

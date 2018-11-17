@@ -27,25 +27,26 @@
 @if (ViewBag.Accounts != null)
 {
 <form method="post">
-    Transfer From Account:
+    <label for="selectFrom">Transfer From:</label>
     <select id="selectFrom" name="acctFrom" onchange="JSRemove()">
         @foreach (AccountInterface act in ViewBag.Accounts)
         {
             <option value="@act.accountNumber()"> @act.DisplayName </option>
         }
     </select>
-    <br/>
+    <br />
 
-    Transfer To Account:
+    <label for="selectTo">To:</label>
     <select id="selectTo" name="acctTo">
         @foreach (AccountInterface act in ViewBag.Accounts)
         {
             <option value="@act.accountNumber()"> @act.DisplayName </option>
         }
     </select>
-    <br/>
-    Amount: <input type="text" id="amount" name="amount" value=""/>
-    <br/>
+    <br />
+        <label for="amount">Amount to Transfer:</label>
+        <input type="text" id="amount" name="amount" value="" />
+    <br />
     <button type="submit">Transfer!</button>
 </form>
 }
