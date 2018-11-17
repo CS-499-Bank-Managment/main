@@ -15,27 +15,32 @@
         <p class="warn-message">@ViewBag.errorMessage</p>
     }
         <form method="post">
-            <div class="input-field col s12 field">
+            <div class="input-field col s12 field text-white">
                 <input id="name" type="text" name="name" required />
                 <label for="name">Full Name</label>
             </div>
-            <div class="input-field col s12 field">
+            <br class="little-space" />
+            <div class="input-field col s12 field text-white">
                 <input id="email" type="email" name="email" required />
                 <label for="email">Email Address</label>
             </div>
-            <div class="input-field col s12 field">
+            <br class="little-space" />
+            <div class="input-field col s12 field text-white">
                 <input id="username" type="text" name="username" required />
                 <label for="username">Username</label>
             </div>
-            <div class="input-field col s12 field">
-                <input id="password"type="password" name="password" required />
+            <br class="little-space" />
+            <div class="input-field col s12 field text-white">
+                <input id="password" type="password" name="password" required />
                 <label for="password">Password</label>
             </div>
+            <br class="little-space" />
             <div class="input-field col s12 field">
                 <input id="confirm" type="password" label="Confirm Password" name="confirm" required />
                 <label for="confirm">Confirm Password</label>
             </div>
-            <div class="input-field col s12">
+            <br class="little-space" />
+            <div class="input-field col s12 text-white">
                 <p>
                     <label>
                         <input name="role" type="radio" value="admin" />
@@ -55,7 +60,7 @@
                     </label>
                 </p>
             </div>
-            <div class="sumbit-button waves-effect waves-light btn">
+            <div class="sumbit-button waves-effect waves-light btn light-green accent-2">
                 <input type="submit" value="Create" />
             </div>
 

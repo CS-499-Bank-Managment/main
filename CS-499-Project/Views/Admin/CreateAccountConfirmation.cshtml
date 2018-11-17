@@ -5,16 +5,18 @@
     Layout = "/Views/Shared/_FormLayout.cshtml";
 }
 
-<html>
-<head>
-    <title>Account Created</title>
-</head>
+
+@if(ViewBag.errorMessage != null)
+{
+    <p class="warn-message">@ViewBag.errorMessage</p>
+}
 
 
-    Account Number: @ViewBag.acct_num <br />
-    User: @ViewBag.acct_user <br />
-    Account Type: @ViewBag.acct_type <br />
-    Initial Deposit: @ViewBag.acct_dep <br />
-    Account Name: @ViewBag.acct_name <br />
-
-</html>
+    User: @ViewBag.acct_user
+    <br />
+    Account Type: @ViewBag.acct_type
+    <br />
+    Balance: @ViewBag.acct_dep
+    <br />
+    Account Name: @ViewBag.acct_name
+    <br />
