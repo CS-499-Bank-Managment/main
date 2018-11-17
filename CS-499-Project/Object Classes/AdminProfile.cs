@@ -34,9 +34,9 @@ namespace CS_499_Project.Object_Classes
         this.full_name = name;
     }
 
-    public bool CreateCustAccount(string acct_owner, decimal balance, int type, string acct_name)
+    public bool CreateCustAccount(string acct_owner, decimal balance, int type, string acct_name, decimal interest)
     {
-        new Database().CreateCustAcct(acct_owner, balance, type, acct_name);
+        new Database().CreateCustAcct(acct_owner, balance, type, acct_name, interest);
         return true;
     }
 
