@@ -630,8 +630,16 @@ namespace CS_499_Project.Object_Classes
                     reader["note"].ToString(), reader["date"].ToString());
                 transaction_list.Add(temp);
             }
-      
+
+            reader.Close();
             return transaction_list;
+        }
+
+        public string GetAcctName(int number)
+        {
+            this.dbcmd.CommandText = "SELECT name from customer_acct where acct_id=@id";
+            dbcmd.Parameters.AddWithValue("id", number);
+            return dbcmd.ExecuteScalar().ToString();
         }
         //Destructor for database to make sure nothing stays open.
         ~Database()
