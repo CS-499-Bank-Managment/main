@@ -1,17 +1,29 @@
 @using CS_499_Project.Object_Classes
 
 <!DOCTYPE html>
-<style type="text/css">
-    td
-    {
-        padding:0 30px 0 30px;
-    }
-</style>
 <html>
 <head>
     <title>title</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <style type="text/css">
+        td {
+            padding: 0 30px 0 30px;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            window.print();
+        });
+    </script>
 </head>
 <body>
+    <header>
+        <h1>Account: @ViewBag.account.DisplayName</h1>
+        <h2>Account Number: @ViewBag.account.accountNumber()</h2>
+        <h2>Balance: @("$" + ViewBag.account.accountBalance().ToString("0.00"))</h2>
+        <h2>Account Type: @ViewBag.account.getType()</h2>
+        <h2>Account User: @ViewBag.account.username()</h2>
+    </header>
 <center>
     <font size="10">
     <table>

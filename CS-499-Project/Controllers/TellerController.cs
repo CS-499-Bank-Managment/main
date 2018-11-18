@@ -7,11 +7,14 @@ namespace CS_499_Project.Controllers
 {
     public class TellerController : Controller
     {
-        // GET
+        public IActionResult Index()
+        {
+            return RedirectToAction("Dashboard", "Teller");
+        }
 
         public IActionResult Dashboard()
         {
-            ViewBag.Title = "Dashboard";
+            ViewBag.Title = "Employee Dashboard";
             if (Request.Path.Value.ToString().ToLower().EndsWith('/'))
             {
                 ViewBag.path = ".";
@@ -65,6 +68,13 @@ namespace CS_499_Project.Controllers
         {
             ViewBag.title = "Access Denied";
             return View();
+        }
+
+        public IActionResult GoToUser(string username)
+        {
+            var session = Request.Cookies["SESSION_ID"];
+            new Database().setCurrentCustomer(username, session);
+            return RedirectToAction("Dashboard", "User");
         }
 
         public IActionResult ListAccounts()

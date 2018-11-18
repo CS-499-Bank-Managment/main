@@ -39,12 +39,6 @@
                     </div>
                 </a>
             }
-            <a href="@Url.Action("Help","User")">
-                <div class="action-box">
-                    <img class="action-icon" src="~/images/info-2-64.png" alt="help icon" height="64" width="64">
-                    <div class="action-text">Help</div>
-                </div>
-            </a>
         </div>
     </center>
     <h2>Accounts @if ( (bool) ViewBag.isAdmin) {<a href="@Url.Action("CreateAccountForm", "Admin")"><div class="add-icon"><img id="add-img" src="~/images/plus-48.png" width="30" height="30" alt="add account" /></div></a>}</h2>
@@ -52,7 +46,7 @@
         @foreach (AccountInterface account in ViewBag.accounts)
         {
         <h3>
-            @account.DisplayName@if ( (bool) ViewBag.isAdmin)
+            <a class="account-link" href="@Url.Action("AccountDashboard", "User", new { account_number=account.accountNumber() })">@account.DisplayName</a>@if ( (bool) ViewBag.isAdmin)
                     {<div class="trash-icon-small" data-url="@Url.Action("DeleteAccount","Admin", new { username = (string) ViewBag.current_customer, account_id = (int) account.accountNumber() })"><img class="trash-img-small" src="~/images/trash.png" alt="delete account icon for @account.DisplayName" height="30" width="30" /></div>}
         </h3>
             <p>Balance: $@account.accountBalance().ToString("0.00")</p>
@@ -65,7 +59,6 @@
                         <th class="table-sub-header">Type</th>
                         <th class="table-sub-header">Date</th>
                     </tr>
-                    @ViewBag.count = 0;
                     @foreach (TransactionInterface transaction in account.getTransactions())
                     {
                         <tr class="main-row">

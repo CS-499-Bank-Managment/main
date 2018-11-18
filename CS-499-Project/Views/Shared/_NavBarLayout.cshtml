@@ -4,7 +4,7 @@
 
 <script type="text/javascript" src="~/js/aspire_header.js"></script>
 <header>
-    <a href="@Url.Action("Dashboard", (string) ViewBag.user_role)">
+    <a href="/@ViewBag.user_role">
         <div id="logo">
             <img src="~/images/aspire_logo_reverse.png" alt="aspire logo" width="65" height="65" id="logo-image">
             <div id="aspire-words">Aspire Financial Services</div>
@@ -17,6 +17,7 @@
 </header>
 <div id="user-menu">
     <a href="@Url.Action("Logout", "Login")"><p class="user-menu-item">Log out</p></a>
+    <a href="@Url.Action("Help", "User")"><p class="user-menu-item">Help</p></a>
 </div>
 
 @RenderBody()

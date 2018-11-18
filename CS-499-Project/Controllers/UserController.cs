@@ -12,26 +12,20 @@ namespace CS_499_Project.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Dashboard", "User");
         }
 
-        public IActionResult AccountDashboard()
+        public IActionResult AccountDashboard(int account_number)
         {
-            //temporary variable for customer
-            var customer_served = "clay";
-            //temporary variable for user
-            var username = "clay2";
-            //temporary variable for account number
-            var number = 10;
-            //Commented for testing
-            //var session = Request.Cookies["SESSION_ID"];
-            //ProfileInterface Verified = new Database().VerifySession(session);
-            ViewBag.Title = "Dashboard";
+            var session = Request.Cookies["SESSION_ID"];
+            ProfileInterface Verified = new Database().VerifySession(session);
+            var username = Verified.username;
+            ViewBag.Title = "Account Dashboard";
             ViewBag.user_header = username;
-            ViewBag.current_customer = customer_served;
+            var number = account_number;
+            var customer_served = new Database().getCurrentCustomer(session);
             AccountInterface account = (new Database()).getAccount(number, customer_served);
             ViewBag.account = account;
-            ProfileInterface Verified = new AdminProfile(username, "Clay Turner");
             switch (Verified.profile_type)
             {
                 case ProfileInterface.ProfileType.ADMIN: ViewBag.user_role = "Admin"; break;
@@ -67,17 +61,13 @@ namespace CS_499_Project.Controllers
         
         public IActionResult Dashboard()
         {
-            //temporary variable for customer
-            var customer_served = "clay";
-            //temporary variable for user
-            var username = "clay2";
-            //Commented for testing
-            //var session = Request.Cookies["SESSION_ID"];
-            //ProfileInterface Verified = new Database().VerifySession(session);
-            ViewBag.Title = "Dashboard";
+            var session = Request.Cookies["SESSION_ID"];
+            ProfileInterface Verified = new Database().VerifySession(session);
+            var username = Verified.username;
+            ViewBag.Title = "Customer Dashboard";
             ViewBag.user_header = username;
-            ProfileInterface Verified = new AdminProfile(username, "Clay Turner");
-            if(Verified.profile_type == ProfileInterface.ProfileType.TELLER || 
+            var customer_served = new Database().getCurrentCustomer(session);
+            if (Verified.profile_type == ProfileInterface.ProfileType.TELLER || 
                Verified.profile_type == ProfileInterface.ProfileType.ADMIN)
             {
                 ViewBag.allowed = true;
@@ -173,22 +163,17 @@ namespace CS_499_Project.Controllers
             View();
         }
 
-        public IActionResult PrintReport()
+        public IActionResult PrintReport(int account_number)
         {
             var session = Request.Cookies["SESSION_ID"];
             var LookupDB = new Database();
             var profile = (LookupDB).VerifySession(session);
+            var username = LookupDB.getCurrentCustomer(session);
             if (profile?.profile_type != null)
             {
-                List<AccountInterface> CustAccounts = LookupDB.CustomerAcctList(profile.username);
                 List<TransactionInterface> TransList = new List<TransactionInterface>();
-                foreach(AccountInterface item in CustAccounts)
-                {
-                    TransList.AddRange(
-                        LookupDB.ListTransactions(item.accountNumber())
-                        );
-                }
-
+                TransList.AddRange(LookupDB.ListTransactions(account_number));
+                ViewBag.account = LookupDB.getAccount(account_number, username);
                 ViewBag.Transactions = TransList;
                 return View();
             }

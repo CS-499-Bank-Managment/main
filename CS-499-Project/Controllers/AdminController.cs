@@ -18,18 +18,19 @@ namespace CS_499_Project.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            ProfileInterface current_user = (new Database().VerifySession(Request.Cookies["SESSION_ID"]));
-            if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
-            {
-                return View("Denied");
-            }
+            //ProfileInterface current_user = (new Database().VerifySession(Request.Cookies["SESSION_ID"]));
+            //if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
+            //{
+            //    return View("Denied");
+            //}
 
-            //This method shows the Default index page for the Admin Dashboard.
-            
-            ViewBag.username = current_user.username;
-            ViewBag.role = current_user.profile_type;
-            Console.WriteLine( current_user.GetType() == typeof(AdminProfile));
-            return View();
+            ////This method shows the Default index page for the Admin Dashboard.
+
+            //ViewBag.username = current_user.username;
+            //ViewBag.role = current_user.profile_type;
+            //Console.WriteLine( current_user.GetType() == typeof(AdminProfile));
+            //return View();
+            return RedirectToAction("Dashboard", "Teller");
         }
 
         public IActionResult DeleteProfileForm()

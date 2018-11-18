@@ -60,6 +60,8 @@ namespace CS_499_Project.Object_Classes
 
         public long accountNumber() { return this.account_number; }
 
+        public string username() { return this.user; }
+
         public string DisplayName => display_name;
 
         //add transaction to the list
@@ -127,6 +129,19 @@ namespace CS_499_Project.Object_Classes
             }
 
             return -1;
+        }
+
+        public string getType()
+        {
+            switch((AccountType) this.account_type)
+            {
+                case AccountType.CHECKING: return "Checking";
+                case AccountType.MONEY_MARKET: return "Money Market";
+                case AccountType.MORTGAGE: return "Mortgage";
+                case AccountType.SAVINGS: return "Savings";
+                case AccountType.CREDIT: return "Credit";
+                default: return null;
+            }
         }
     }
 }

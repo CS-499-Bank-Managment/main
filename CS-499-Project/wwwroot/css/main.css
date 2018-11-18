@@ -1,3 +1,7 @@
+.account-link {
+    color: #525252;
+}
+
 #accounts-wrapper {
     border: 1px solid #5bb772;
     padding-left: 30px;
@@ -105,6 +109,17 @@ body {
     color: #525252;
 }
 
+[type=checkbox].filled-in:checked + span:not(.lever):after {
+    border: 2px solid #52ba16 !important;
+    background-color: #52ba16 !important;
+}
+
+#content-wrapper
+{
+    margin-right: 30px;
+    margin-left: 30px;
+}
+
 .employee-login-form {
     flex-grow: 1;
     margin: 50px 100px;
@@ -162,11 +177,11 @@ h3 {
 }
 
 header {
-  background-color: #52ba16;
-  color: white;
-  height: 70px;
-  vertical-align: middle;
-  width: 100%;
+    background-color: #52ba16;
+    color: white;
+    height: 70px;
+    vertical-align: middle;
+    width: 100%;
 }
 
 #hello-words {
@@ -240,6 +255,20 @@ header {
   padding-top: 5px;
 }
 
+.main-button {
+    background-color: #52ba16;
+    border: none;
+    padding: 10px;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-left: 5px;
+    margin-right: 5px;
+    float: right;
+    cursor: pointer;
+}
+
 #main-content {
     padding-left: 30px;
 }
@@ -262,9 +291,29 @@ header {
     color: #444444;
 }
 
+.report-button
+{
+    margin-right: 55%;
+    margin-top: 10px;
+    font-size: medium;
+}
+
 .row .input-field input:focus {
     border-bottom: 1px solid white !important;
     box-shadow: 0 1px 0 0 white !important
+}
+
+#search
+{
+    width: 50%;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+#search-form
+{
+    display: inline-block;
+    width: 70%;
 }
 
 .selected-row {
@@ -283,7 +332,6 @@ header {
     color: white !important;
 }
 
-
 .spacer {
     flex-shrink: 1;
     height: 10em;
@@ -297,6 +345,11 @@ header {
     margin: 0 0.6em;
     max-width: 500px;
     min-width: 200px;
+}
+
+.table-checkbox {
+    vertical-align: middle;
+    text-align: center;
 }
 
 .table-header {
@@ -371,7 +424,7 @@ header {
     padding-top: 15px;
     border: 1px solid #5bb772;
     background-color: white;
-    height: 50px;
+    height: 80px;
 }
 
 .user-menu-item {
@@ -385,11 +438,4 @@ header {
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     letter-spacing: 2px;
     font-size: 1.2rem;
-}
-
-
-
-
-.select-wrapper input.select-dropdown {
-    color: white;
 }

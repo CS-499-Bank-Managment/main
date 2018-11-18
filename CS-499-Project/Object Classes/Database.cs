@@ -264,7 +264,6 @@ namespace CS_499_Project.Object_Classes
             return true;
         }
 
-
         public Dictionary<string, string> TransferAcct(int acct_to, int acct_from, decimal amount)
         {
             /*
@@ -352,14 +351,13 @@ namespace CS_499_Project.Object_Classes
             var balance_reader = this.dbcmd.ExecuteReader();
             while (balance_reader.Read())
             {
-                account = new AccountInterface(
-                    Convert.ToDecimal(balance_reader["balance"]),
-                    Convert.ToInt32(account_number),
-                    Convert.ToInt32(balance_reader["type"]),
-                    customer, 
-                    balance_reader["name"].ToString(),
-                    Convert.ToDecimal(balance_reader["interest"]),
-                    DateTime.Parse(balance_reader["date"].ToString()));
+                var balance = Convert.ToDecimal(balance_reader["balance"]);
+                var number = Convert.ToInt32(account_number);
+                var type = Convert.ToInt32(balance_reader["type"]);
+                var name = balance_reader["name"].ToString();
+                var interest = Convert.ToDecimal(balance_reader["interest"]);
+                var date = DateTime.Parse(balance_reader["created"].ToString());
+                account = new AccountInterface(balance, number, type, customer, name, interest, date);
             }
             return account;
         }
@@ -429,7 +427,6 @@ namespace CS_499_Project.Object_Classes
 
         }
 
-
         public void LogSessionID(string Session_ID, string username, string role, string name)
         {
             //This is a helper function to log the session into the Sessions table.
@@ -441,7 +438,6 @@ namespace CS_499_Project.Object_Classes
             this.dbcmd.Parameters.AddWithValue("customer", username);
             this.dbcmd.ExecuteNonQuery();
         }
-
 
         public ProfileInterface VerifySession(string sessionID)
         {

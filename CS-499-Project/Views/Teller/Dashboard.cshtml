@@ -4,7 +4,7 @@
 
 @using CS_499_Project.Object_Classes;
 
-
+<script src="~/js/materialize/forms.js" type="text/javascript"></script>
 <script>
     function selectUser(username, checkbox) {
         $(".table-button").toggle();
@@ -27,7 +27,7 @@
             var index = this.href.lastIndexOf("/");
             var original = this.href;
             this.href = original.replace(original.substring(index + 1, original.length), "") + username;
-        }); 
+        });
     }
 
     $(document).ready(function () {
@@ -45,53 +45,58 @@
     }
 </script>
 
-<h1>Customer Search</h1>
+<div id="content-wrapper">
+    <h1>Customer Search</h1>
 
-@if (ViewBag.user_role == "Admin")
-{
-    <button onclick="add_user();">Add User</button>
-}
-
-<form method="post">
-    @if (ViewBag.set_username == "true")
+    @if (ViewBag.user_role == "Admin")
     {
-        <span>Find a customer by username: <input name="username" id="search" type="text" value="@ViewBag.LS" oninput="this.form.submit()" autofocus="autofocus" /></span>
+        <button onclick="add_user();" class="main-button">Add User</button>
+    }
+
+    <form method="post" id="search-form">
+        @if (ViewBag.set_username == "true")
+        {
+            <span>Find a customer by username: <input name="username" id="search" type="text" value="@ViewBag.LS" oninput="this.form.submit()" autofocus="autofocus" /></span>
+        }
+        else
+        {
+            <span>Find a customer by username: <input name="username" id="search" type="text" oninput="this.form.submit()" autofocus="autofocus" /></span>
+        }
+    </form>
+    <a class="button-link" href="@Url.Action("GoToUser", "Teller", new { username="fakeUsername" })"><input type="button" class="main-button table-button" value="Go To User" /></a>
+
+    <br /><br />
+    @if (ViewBag.info != null && ViewBag.info.Count > 0 && ViewBag.LS != String.Empty)
+    {
+          <form action="#">
+              <table class="account-table">
+                  <tr>
+                      <td>Select</td>
+                      <td>Username</td>
+                      <td>Full Name</td>
+                      <td>Email Address</td>
+                      <td>Role</td>
+                  </tr>
+                  @foreach (ProfileInterface profile in ViewBag.info)
+                  {
+                      <tr data-username="@profile.username">
+                          <td>
+                              <label for="checkbox-@profile.username">
+                                  <input type="checkbox" id="checkbox-@profile.username" class="filled-in checkbox-green table-checkbox" onclick="selectUser('@profile.username', this)" />
+                                  <span> </span>
+                              </label>
+                          </td>
+                          <td>@profile.username</td>
+                          <td>@profile.full_name</td>
+                          <td>@profile.email_address</td>
+                          <td>@profile.getType()</td>
+                      </tr>
+                  }
+              </table>
+          </form>
     }
     else
     {
-        <span>Find a customer by username: <input name="username" id="search" type="text" oninput="this.form.submit()" autofocus="autofocus" /></span>
+        <div id="no-results">No results!</div>
     }
-</form>
-
-@if (ViewBag.info != null && ViewBag.info.Count > 0 && ViewBag.LS != String.Empty)
-{
-    @if (ViewBag.user_role == "Admin")
-    {
-        <a class="button-link" href="@Url.Action("DeleteUser", "Admin", new { username="fakeUsername" })"><input type="button" class="table-button" value="Delete User" /></a>
-    }
-        <a class="button-link" href="@Url.Action("GoToUser", "Admin", new { username="fakeUsername" })"><input type="button" class="table-button" value="Go To User" /></a>
-    <table class="account-table">
-        <tr>
-            <td>Select</td>
-            <td>Username</td>
-            <td>Full Name</td>
-            <td>Email Address</td>
-            <td>Role</td>
-        </tr>
-        @foreach (ProfileInterface profile in ViewBag.info)
-        {
-            <tr data-username="@profile.username">
-                <td><input type="checkbox" class="table-checkbox" onclick="selectUser('@profile.username', this)" /></td>
-                <td>@profile.username</td>
-                <td>@profile.full_name</td>
-                <td>@profile.email_address</td>
-                <td>@profile.getType()</td>
-            </tr>
-        }
-    </table>
-}
-else
-{
-    <div id="no-results">No results!</div>
-}
-
+</div>

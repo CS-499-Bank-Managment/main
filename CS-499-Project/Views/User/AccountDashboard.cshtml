@@ -5,7 +5,7 @@
 
 <div id="main-content">
     <h1>@ViewBag.account.DisplayName</h1>
-    <h2 class="table-header">Transaction History</h2>
+    <h2 class="table-header">Transaction History <a href="@Url.Action("PrintReport", "User", new { account_number = ViewBag.account.accountNumber() })"><button class="report-button main-button" type="button">Generate Report</button></a></h2>
     @if (ViewBag.account.getTransactions().Count > 0)
     {
     <table id="accounts-table">
@@ -36,10 +36,10 @@
         <p>No transactions for this account yet!</p>
     }
     <div id="account-sidebar">
-        <p><b>USER:</b> @ViewBag.current_customer</p>
+        <p><b>USER:</b> @ViewBag.account.username()</p>
         <p><b>TYPE:</b> @ViewBag.account_type</p>
         <p><b>INTEREST:</b> @ViewBag.account.getInterestRate()</p>
-        <p><b>BALANCE:</b> @ViewBag.account.accountBalance()</p>
+        <p><b>BALANCE:</b> @("$" + ViewBag.account.accountBalance().ToString("0.00"))</p>
         <p><b>ACCOUNT NUMBER:</b> @ViewBag.account.accountNumber()</p>
         <p><b>ROUTING NUMBER:</b> 93758734</p>
     </div>
