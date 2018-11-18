@@ -135,6 +135,7 @@ body {
     opacity: 0.8;
     display: flex;
     align-items: center;
+    align-content: space-around;
     justify-content: center;
     flex-direction: column;
     max-width: 600px;
@@ -174,6 +175,11 @@ header {
     padding-right: 5px;
 }
 
+.input-field input[type=number] {
+    border-bottom: 1px solid white !important;
+    box-shadow: 0 1px 0 0 white;
+}
+
 .input-field input[type=text] {
     border-bottom: 1px solid white !important;
     box-shadow: 0 1px 0 0 white;
@@ -188,7 +194,8 @@ header {
     border-bottom: 1px solid white !important;
     box-shadow: 0 1px 0 0 white;
 }
-/* invalid color */
+
+/* invalid color*/ 
 .input-field input[type=text].invalid {
     border-bottom: 1px solid #FF4000 !important;
     box-shadow: 0 1px 0 0 #FF4000 !important;
@@ -218,6 +225,10 @@ header {
 
 .link {
     color: white;
+}
+
+.little-space {
+    font-size: 0.3rem;
 }
 
 #logo {
@@ -267,6 +278,11 @@ header {
 .selected-row-cell {
     background-color: #92d3be;
 }
+
+.select-wrapper input.select-dropdown {
+    color: white !important;
+}
+
 
 .spacer {
     flex-shrink: 1;
@@ -369,4 +385,11 @@ header {
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     letter-spacing: 2px;
     font-size: 1.2rem;
+}
+
+
+
+
+.select-wrapper input.select-dropdown {
+    color: white;
 }

@@ -55,11 +55,7 @@ namespace CS_499_Project.Object_Classes
         {
             Database DB = new Database();
             return DB.AddAmount(AcctTo, amount);
-        }    
-        public bool LogOut()
-        {
-            this._authenticated = false;
-            return this._authenticated;
-        }
+        }   
+        
 }
 }

@@ -18,22 +18,24 @@ namespace CS_499_Project.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            //This method shows the Default index page for the Admin Dashboard.
             ProfileInterface current_user = (new Database().VerifySession(Request.Cookies["SESSION_ID"]));
-            ViewBag.username = current_user.username;
-            ViewBag.role = current_user.profile_type;
-            Console.WriteLine( current_user.GetType() == typeof(AdminProfile));
-            if (current_user.GetType() != typeof(AdminProfile))
+            if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
             {
                 return View("Denied");
             }
+
+            //This method shows the Default index page for the Admin Dashboard.
+            
+            ViewBag.username = current_user.username;
+            ViewBag.role = current_user.profile_type;
+            Console.WriteLine( current_user.GetType() == typeof(AdminProfile));
             return View();
         }
 
         public IActionResult DeleteProfileForm()
         {
             var current_user = new Database().VerifySession(Request.Cookies["SESSION_ID"]);
-            if (current_user.profile_type != ProfileInterface.ProfileType.ADMIN)
+            if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
             {
                 return View("Denied");
             }
@@ -45,7 +47,7 @@ namespace CS_499_Project.Controllers
         public IActionResult CreateAccountForm()
         {
             var current_user = new Database().VerifySession(Request.Cookies["SESSION_ID"]);
-            if (current_user.profile_type != ProfileInterface.ProfileType.ADMIN)
+            if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
             {
                 return View("Denied");
             }
@@ -56,21 +58,25 @@ namespace CS_499_Project.Controllers
             return View();
         }
 
-        public IActionResult CreateAccountConfirmation(string username, string name, decimal deposit, int type)
+        public IActionResult CreateAccountConfirmation(string username, string name, decimal deposit, int type, decimal interest)
         {
             var current_user = new Database().VerifySession(Request.Cookies["SESSION_ID"]);
-            if (current_user.profile_type != ProfileInterface.ProfileType.ADMIN)
+            if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
             {
                 return View("Denied");
             }
-            ((AdminProfile)current_user).CreateCustAccount(username, deposit, type, name);
-            List<string> results = new List<string>();
-            // What is this hoping to accomplish? results has no contents. 
-            ViewBag.acct_user = results[0];
-            ViewBag.acct_num  = results[1];
-            ViewBag.acct_dep  = results[2];
-            ViewBag.acct_type = results[3];
-            ViewBag.acct_name = results[4];
+            if (((AdminProfile)current_user).CreateCustAccount(username, deposit, type, name, interest))
+            {
+                // What is this hoping to accomplish? results has no contents. 
+                ViewBag.acct_user = username;
+                ViewBag.acct_dep = deposit;
+                ViewBag.acct_type = type;
+                ViewBag.acct_name = name;
+            }
+            else
+            {
+                ViewBag.errorMessage = "Unable to create account";
+            }
             return View();
         }
 
@@ -167,37 +173,15 @@ namespace CS_499_Project.Controllers
             }
             //Create basic admin profile. and call it's Delete Profile method.
             ((AdminProfile)current_user).DeleteProfile(username);
-            return RedirectToAction("Dashboard", "Teller");
+            return View("../Teller/Dashboard");
         }
 
         public IActionResult DeleteAccount(string username, int account_id)
         {
-            //Commented out for testing
-            var current_user = new Database().VerifySession(Request.Cookies["SESSION_ID"]);
-            if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
-            {
-                return View("Denied");
-            }
             (new Database()).DeleteCustAcct(username, account_id);
             return RedirectToAction("Dashboard", "User");
         }
             
-        //Commented because they aren't used and don't use real functions
 
-        ////Method to create a customer account
-        //public IActionResult CustAcct(string username)
-        //{
-        //    AdminProfile creation = new AdminProfile();
-        //    ViewBag.results = creation.CreateCustAccount(username);
-        //    return View("Mongo");
-        //}
-        
-        ////Method to delete an account within a customer profile.
-        //public IActionResult DeleteCustAcct(string username, string acct_id)
-        //{
-        //    var foo = new Database();
-        //    foo.DeleteCustAcct(username, Convert.ToInt32(acct_id));
-        //    return View("Index");
-        //}
     }
 }

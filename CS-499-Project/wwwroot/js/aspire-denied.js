@@ -5,3 +5,4 @@ body.style.backgroundSize = "cover";
 body.style.display = "flex";
 body.style.alignItems = "center";
 body.style.justifyContent = "center";
+body.style.backgroundAttachment = "fixed";

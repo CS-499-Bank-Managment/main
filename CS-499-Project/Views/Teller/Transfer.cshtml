@@ -1,12 +1,12 @@
 @using CS_499_Project.Object_Classes
+@{
+    ViewBag.title = "Transfer";
+    ViewBag.FormTitle = "Transfer";
+    Layout = "/Views/Shared/_FormLayout.cshtml";
+}
 
-<!DOCTYPE html>
-
-<html>
 <script type="text/javascript">
     function JSRemove() {
-        // Doesn't work like it should
-        // document.getElementById("selectFrom").remove( document.getElementById("selectTo").selectedIndex );
 
         var optionlist = new Array();
         var size = document.getElementById("selectFrom").length;
@@ -15,48 +15,38 @@
         }
         document.getElementById("selectTo").innerHTML = document.getElementById("selectFrom").innerHTML;
         document.getElementById("selectTo").options.remove(
-            document.getElementById("selectFrom").selectedIndex );
+            document.getElementById("selectFrom").selectedIndex);
+
+        $('select').formSelect();
     }
     
    
 </script>
-<head>
-    <title>title</title>
-</head>
-<body>
 
-<form method="post">
-    Customer username to search:
-    <input type="text" name="username" id="username" />
-    <input type="submit" />
-</form>
-@if (!String.IsNullOrEmpty(ViewBag.searched) && (ViewBag.Accounts != null))
+
+@if (ViewBag.Accounts != null)
 {
 <form method="post">
-    Transfer From Account:
+    <label for="selectFrom">Transfer From:</label>
     <select id="selectFrom" name="acctFrom" onchange="JSRemove()">
         @foreach (AccountInterface act in ViewBag.Accounts)
         {
             <option value="@act.accountNumber()"> @act.DisplayName </option>
         }
     </select>
-    <br/>
+    <br />
 
-    Transfer To Account:
+    <label for="selectTo">To:</label>
     <select id="selectTo" name="acctTo">
         @foreach (AccountInterface act in ViewBag.Accounts)
         {
             <option value="@act.accountNumber()"> @act.DisplayName </option>
         }
     </select>
-    <br/>
-    Amount: <input type="text" id="amount" name="amount" value=""/>
-    <br/>
+    <br />
+        <label for="amount">Amount to Transfer:</label>
+        <input type="text" id="amount" name="amount" value="" />
+    <br />
     <button type="submit">Transfer!</button>
 </form>
 }
-<div>
-
-</div>
-</body>
-</html>

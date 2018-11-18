@@ -89,13 +89,15 @@ namespace CS_499_Project.Object_Classes
             }
             dbcmd.Parameters.AddWithValue("user", username);
             SQLiteDataReader results = dbcmd.ExecuteReader();
-            results.Close();
+            
             if (!results.HasRows)
             {
+                results.Close();
                 return false;
             }
             else
             {
+                results.Close();
                 return true;
             }
 
@@ -201,7 +203,7 @@ namespace CS_499_Project.Object_Classes
             }
 
             reader.Close();
-            this.dbcmd.CommandText = "INSERT INTO customer_acct (owner_id, balance, type, name) VALUES (@user, @balance, @type, @name, @interest)";
+            this.dbcmd.CommandText = "INSERT INTO customer_acct (owner_id, balance, type, name, interest) VALUES (@user, @balance, @type, @name, @interest)";
             this.dbcmd.Parameters.AddWithValue("user", userid);
             this.dbcmd.Parameters.AddWithValue("balance", balance);
             this.dbcmd.Parameters.AddWithValue("type", type);
@@ -631,8 +633,16 @@ namespace CS_499_Project.Object_Classes
                     reader["note"].ToString(), reader["date"].ToString());
                 transaction_list.Add(temp);
             }
-      
+
+            reader.Close();
             return transaction_list;
+        }
+
+        public string GetAcctName(int number)
+        {
+            this.dbcmd.CommandText = "SELECT name from customer_acct where acct_id=@id";
+            dbcmd.Parameters.AddWithValue("id", number);
+            return dbcmd.ExecuteScalar().ToString();
         }
         //Destructor for database to make sure nothing stays open.
         ~Database()

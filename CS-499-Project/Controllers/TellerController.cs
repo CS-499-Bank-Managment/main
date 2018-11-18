@@ -72,7 +72,7 @@ namespace CS_499_Project.Controllers
             var session = Request.Cookies["SESSION_ID"];
             ProfileInterface Verified = new Database().VerifySession(session);
             //Check if Verified is a TellerProfile type object, this means the session is valid
-            if (Verified.profile_type != ProfileInterface.ProfileType.TELLER)
+            if (Verified?.profile_type != ProfileInterface.ProfileType.TELLER)
             {
                 return View("Denied");
             }
@@ -105,60 +105,60 @@ namespace CS_499_Project.Controllers
             return View();
         }
 
-        public IActionResult Transaction(string acct_to, string amount)
+        public IActionResult Transaction(string To, string amt, string From)
         {
             var session = Request.Cookies["SESSION_ID"];
-            ProfileInterface Verified = new Database().VerifySession(session);
+            Database data = new Database();
+            ProfileInterface Verified = data.VerifySession(session);
             //Check if Verified is a TellerProfile type object, this means the session is valid
-            if (Verified.profile_type != ProfileInterface.ProfileType.TELLER)
+            if (Verified?.profile_type != ProfileInterface.ProfileType.TELLER)
             {
                 return View("Denied");
             }
-            ViewBag.To = acct_to;
-            ViewBag.amt = amount;
-            ViewBag.ResultDict = ((TellerProfile)Verified).AddAmount(Convert.ToInt32(acct_to), Convert.ToDecimal(amount) );
-            return View();
-        }
+            else
+            {
+                ViewBag.ResultDict = ((TellerProfile)Verified).AddAmount(Convert.ToInt32(ViewBag.To), Convert.ToDecimal(ViewBag.amt));
+                return View();
 
-        public IActionResult Between(string acct_to, string acct_from, string amount)
-        {
-            var session = Request.Cookies["SESSION_ID"];
-            ProfileInterface Verified = new Database().VerifySession(session);
-            //Check if Verified is a TellerProfile type object, this means the session is valid
-            if (Verified.profile_type != ProfileInterface.ProfileType.TELLER)
-            {
-                return View("Denied");
             }
-            TellerProfile foo = new TellerProfile();
-            ViewBag.ResultDict = foo.Transfer(Convert.ToInt32(acct_to), 
-                Convert.ToInt32(acct_from), Convert.ToDecimal(amount));
-            return View("Transaction");
         }
         
         //Route for the Transfer Page site/Teller/Transfer
         public IActionResult Transfer()
         {
 
-            var session = Request.Cookies["SESSION_ID"].Trim();
-            ViewBag.Sess = session;
-
+            var session = Request.Cookies["SESSION_ID"];
             Database Test_Auth = new Database();
+            ProfileInterface Verified = Test_Auth.VerifySession(session);
+            //Check if Verified is a TellerProfile type object, this means the session is valid
+            if (Verified?.profile_type != ProfileInterface.ProfileType.TELLER)
+            {
+                return View("Denied");
+            }
+
+
             var my_interface = Test_Auth.VerifySession(session);
 
-            if (!String.IsNullOrEmpty(Request.Query["username"]))
+            // TEST PURPOSES ONLY - REMOVE
+            Test_Auth.setCurrentCustomer("customer", session);
+
+            var customer = Test_Auth.getCurrentCustomer(session);
+            if (customer == my_interface.username)
             {
-                var customer = Request.Query["username"].ToString().Trim();
-                ViewBag.cust = customer;
-                ViewBag.searched = "yes";
-                ViewBag.Accounts = ((TellerProfile)my_interface).ListAccounts(customer);
+                return RedirectToAction("Dashboard", "Teller"); // if you're not helping someone, go back to dashboard
             }
+            Console.WriteLine("customer - ", customer);
+            ViewBag.cust = customer;
+            ViewBag.searched = "yes";
+            ViewBag.Accounts = ((TellerProfile)my_interface).ListAccounts(customer);
+                
 
             if (Request.HasFormContentType )
             {
 
                  if (!String.IsNullOrEmpty(Request.Form["username"]))
                  {
-                    var customer = Request.Form["username"].ToString().Trim();
+                    
                     ViewBag.cust = customer;
                     ViewBag.searched = "yes";
                     ViewBag.Accounts = ((TellerProfile)my_interface).ListAccounts(customer);
@@ -169,6 +169,11 @@ namespace CS_499_Project.Controllers
                 {
                     ((TellerProfile)my_interface)?.Transfer(Convert.ToInt32(Request.Form["acctTo"]),
                         Convert.ToInt32(Request.Form["acctFrom"]), Convert.ToDecimal(Request.Form["amount"]));
+                    ViewBag.acct_to = Request.Form["acctTo"];
+                    ViewBag.amount = Request.Form["amount"];
+                    ViewBag.acct_from = Request.Form["acctFrom"];
+                    return RedirectToAction("Transaction", "Teller");
+
                 }
             } 
             

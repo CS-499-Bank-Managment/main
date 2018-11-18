@@ -1,20 +1,17 @@
-<!DOCTYPE html>
-
-<html>
-<head>
-    <title>title</title>
-</head>
-<body>
-
-    To: @ViewBag.To <br>
-    Amt: @ViewBag.amt <br>
-
-@foreach (KeyValuePair<string, string> item in @ViewBag.ResultDict)
-{
-    @item.Key @item.Value <br>
+@{
+    ViewBag.title = "Transfer Complete";
+    ViewBag.FormTitle = "Transfer Completed Successfully";
+    Layout = "/Views/Shared/_FormLayout.cshtml";
 }
- <div>
 
-</div>
-</body>
-</html>
+        To:  @ViewBag.To
+        <br class="little-space" />
+        From: @ViewBag.From
+        <br class="little-space" />
+        Amount: @ViewBag.amt
+        <br class="little-space" />
+
+
+        @ViewBag.To
+        @ViewBag.amt
+        @ViewBag.From
