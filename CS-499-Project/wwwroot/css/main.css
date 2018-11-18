@@ -256,6 +256,18 @@ header {
     box-shadow: 0 1px 0 0 white !important
 }
 
+.selected-row {
+    background-color: #92d3be;
+}
+
+.selected-row td {
+    background-color: #92d3be;
+}
+
+.selected-row-cell {
+    background-color: #92d3be;
+}
+
 .spacer {
     flex-shrink: 1;
     height: 10em;

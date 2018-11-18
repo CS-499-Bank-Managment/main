@@ -6,25 +6,48 @@
 
 
 <script>
-    function redirect(username) {
-        location.href = "@ViewBag.path" + "/ListAccounts?username=" + username.trim();
-    }
-    function delete_user(username)
-    {
-        location.href = "@Url.Action("DeleteUser", "Admin", new { username = "someString" })".replace("someString", username);
+    function selectUser(username, checkbox) {
+        $(".table-button").toggle();
+        if ($(".table-button").first().css("display") == "none") {
+            $(".table-checkbox").prop("disabled", false);
+            $('[data-username="' + username + '"]').each(function () {
+                $(this).removeClass("selected-row");
+                $(this).children().removeClass("selected-row-cell");
+            });
+        }
+        else {
+            $(".table-checkbox").prop("disabled", true);
+            $("[data-username='" + username + "']").each(function () {
+                $(this).addClass("selected-row");
+                $(this).children().addClass("selected-row-cell");
+            });
+        }
+        $(checkbox).prop("disabled", false);
+        $(".button-link").each(function () {
+            var index = this.href.lastIndexOf("/");
+            var original = this.href;
+            this.href = original.replace(original.substring(index + 1, original.length), "") + username;
+        }); 
     }
 
     $(document).ready(function () {
-        $("#search").select();
         $("#search").focus();
+        $("#search").click();
+        setTimeout(function () {
+            $("#search").focus();
+            $("#search").click();
+        }, 100);
+        $(".table-button").hide();
     });
 
     function add_user() {
-        location.href = ""@Url.Action("AddUser", "Admin");
+        location.href = "@Url.Action("CreateProfileForm", "Admin")";
     }
 </script>
 
-@if(ViewBag.user_role == "Admin")
+<h1>Customer Search</h1>
+
+@if (ViewBag.user_role == "Admin")
 {
     <button onclick="add_user();">Add User</button>
 }
@@ -38,13 +61,18 @@
     {
         <span>Find a customer by username: <input name="username" id="search" type="text" oninput="this.form.submit()" autofocus="autofocus" /></span>
     }
-    <input type="submit" />
 </form>
 
 @if (ViewBag.info != null && ViewBag.info.Count > 0 && ViewBag.LS != String.Empty)
 {
-    <table>
+    @if (ViewBag.user_role == "Admin")
+    {
+        <a class="button-link" href="@Url.Action("DeleteUser", "Admin", new { username="fakeUsername" })"><input type="button" class="table-button" value="Delete User" /></a>
+    }
+        <a class="button-link" href="@Url.Action("GoToUser", "Admin", new { username="fakeUsername" })"><input type="button" class="table-button" value="Go To User" /></a>
+    <table class="account-table">
         <tr>
+            <td>Select</td>
             <td>Username</td>
             <td>Full Name</td>
             <td>Email Address</td>
@@ -52,22 +80,18 @@
         </tr>
         @foreach (ProfileInterface profile in ViewBag.info)
         {
-            <tr>
+            <tr data-username="@profile.username">
+                <td><input type="checkbox" class="table-checkbox" onclick="selectUser('@profile.username', this)" /></td>
                 <td>@profile.username</td>
                 <td>@profile.full_name</td>
                 <td>@profile.email_address</td>
                 <td>@profile.getType()</td>
-                <td> <input type="button" value="SELECT" onclick="redirect('@profile.username')" /></td>
-                @if (ViewBag.user_role == "Admin")
-                {
-                    <td><input type="button" value="Delete" onclick="delete_user('@profile.username')" /></td>
-                }
             </tr>
         }
     </table>
 }
 else
 {
-    <span>No results!</span>
+    <div id="no-results">No results!</div>
 }
 

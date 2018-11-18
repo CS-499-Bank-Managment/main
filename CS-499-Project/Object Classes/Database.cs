@@ -44,6 +44,7 @@ namespace CS_499_Project.Object_Classes
             this.dbcmd.CommandText = "UPDATE sessions SET customer=@customer WHERE ID=@session";
             this.dbcmd.Parameters.AddWithValue("customer", customer);
             this.dbcmd.Parameters.AddWithValue("session", session);
+            this.dbcmd.ExecuteNonQuery();
         }
 
         public bool NewUser(string username, string password, string role, string name, string email)

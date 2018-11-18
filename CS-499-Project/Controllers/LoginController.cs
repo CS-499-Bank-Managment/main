@@ -22,20 +22,24 @@ namespace CS_499_Project.Controllers
             if (!String.IsNullOrEmpty(Request.Cookies["SESSION_ID"]))
             {
                 Database Redirect = new Database();
-                var type = Redirect.VerifySession(Request.Cookies["SESSION_ID"]).profile_type;
-                if (type == ProfileInterface.ProfileType.ADMIN)
+                var session = Redirect.VerifySession(Request.Cookies["SESSION_ID"]);
+                if (session != null)
                 {
-                    ViewBag.redirect = "../Admin/";
-                }
+                    var type = session.profile_type;
+                    if (type == ProfileInterface.ProfileType.ADMIN)
+                    {
+                        ViewBag.redirect = "../Admin/";
+                    }
 
-                if (type == ProfileInterface.ProfileType.TELLER)
-                {
-                    ViewBag.redirect = "../Teller/";
-                }
+                    if (type == ProfileInterface.ProfileType.TELLER)
+                    {
+                        ViewBag.redirect = "../Teller/";
+                    }
 
-                if (type == ProfileInterface.ProfileType.CUSTOMER)
-                {
-                    ViewBag.redirect = "../User/Dashboard";
+                    if (type == ProfileInterface.ProfileType.CUSTOMER)
+                    {
+                        ViewBag.redirect = "../User/Dashboard";
+                    }
                 }
             }
             ViewBag.Form = false;
@@ -79,15 +83,19 @@ namespace CS_499_Project.Controllers
             if (!String.IsNullOrEmpty(Request.Cookies["SESSION_ID"]))
             {
                 Database Redirect = new Database();
-                var type = Redirect.VerifySession(Request.Cookies["SESSION_ID"]).profile_type;
-                if (type == ProfileInterface.ProfileType.ADMIN)
+                var session = Redirect.VerifySession(Request.Cookies["SESSION_ID"]);
+                if (session != null)
                 {
-                    ViewBag.redirect = "../../Admin/";
-                }
+                    var type = session.profile_type;
+                    if (type == ProfileInterface.ProfileType.ADMIN)
+                    {
+                        ViewBag.redirect = "../../Admin/";
+                    }
 
-                if (type == ProfileInterface.ProfileType.TELLER)
-                {
-                    ViewBag.redirect = "../../Teller/";
+                    if (type == ProfileInterface.ProfileType.TELLER)
+                    {
+                        ViewBag.redirect = "../../Teller/";
+                    }
                 }
             }
             ViewBag.Form = false;
