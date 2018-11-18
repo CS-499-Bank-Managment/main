@@ -150,14 +150,13 @@ namespace CS_499_Project.Controllers
             var my_interface = Test_Auth.VerifySession(session);
 
             // TEST PURPOSES ONLY - REMOVE
-            Test_Auth.setCurrentCustomer("customer", session);
+            Test_Auth.setCurrentCustomer("clay", session);
 
             var customer = Test_Auth.getCurrentCustomer(session);
             if (customer == my_interface.username)
             {
                 return RedirectToAction("Dashboard", "Teller"); // if you're not helping someone, go back to dashboard
             }
-            Console.WriteLine("customer - ", customer);
             ViewBag.cust = customer;
             ViewBag.searched = "yes";
             ViewBag.Accounts = ((TellerProfile)my_interface).ListAccounts(customer);
@@ -179,14 +178,127 @@ namespace CS_499_Project.Controllers
                 {
                     ((TellerProfile)my_interface)?.Transfer(Convert.ToInt32(Request.Form["acctTo"]),
                         Convert.ToInt32(Request.Form["acctFrom"]), Convert.ToDecimal(Request.Form["amount"]));
-                    ViewBag.acct_to = Request.Form["acctTo"];
-                    ViewBag.amount = Request.Form["amount"];
-                    ViewBag.acct_from = Request.Form["acctFrom"];
-                    return RedirectToAction("Transaction", "Teller");
+                    ViewBag.To = Request.Form["acctTo"];
+                    ViewBag.amt = Request.Form["amount"];
+                    ViewBag.From = Request.Form["acctFrom"];
+                    ViewBag.type = "Transfer";
+                    return View("Transaction");
 
                 }
             } 
             
+            ViewBag.User = my_interface.username;
+            return View();
+        }
+
+        public IActionResult Withdrawal()
+        {
+            var session = Request.Cookies["SESSION_ID"];
+            Database Test_Auth = new Database();
+            ProfileInterface Verified = Test_Auth.VerifySession(session);
+            //Check if Verified is a TellerProfile type object, this means the session is valid
+            if (Verified?.profile_type != ProfileInterface.ProfileType.TELLER)
+            {
+                return View("Denied");
+            }
+
+
+            var my_interface = Test_Auth.VerifySession(session);
+
+            // TEST PURPOSES ONLY - REMOVE
+            Test_Auth.setCurrentCustomer("clay", session);
+
+            var customer = Test_Auth.getCurrentCustomer(session);
+            if (customer == my_interface.username)
+            {
+                return RedirectToAction("Dashboard", "Teller"); // if you're not helping someone, go back to dashboard
+            }
+            ViewBag.cust = customer;
+            ViewBag.searched = "yes";
+            ViewBag.Accounts = ((TellerProfile)my_interface).ListAccounts(customer);
+
+
+            if (Request.HasFormContentType)
+            {
+
+                if (!String.IsNullOrEmpty(Request.Form["username"]))
+                {
+
+                    ViewBag.cust = customer;
+                    ViewBag.searched = "yes";
+                    ViewBag.Accounts = ((TellerProfile)my_interface).ListAccounts(customer);
+                }
+                //At this point there should be an acctFrom in the title. this is just a sanity check
+                //To make sure we don't run this on page load.
+                if (!String.IsNullOrEmpty(Request.Form["acctFrom"]))
+                {
+                    ((TellerProfile)my_interface)?.Withdrawal(Convert.ToInt32(Request.Form["acctFrom"]), Convert.ToDecimal(Request.Form["amount"]));
+                    ViewBag.amt = Request.Form["amount"];
+                    ViewBag.From = Request.Form["acctFrom"];
+                    ViewBag.To = null;
+                    ViewBag.type = "Withdrawal";
+                    return View("Transaction");
+
+                }
+            }
+
+            ViewBag.User = my_interface.username;
+            return View();
+        }
+
+        public IActionResult Deposit()
+        {
+
+            var session = Request.Cookies["SESSION_ID"];
+            Database Test_Auth = new Database();
+            ProfileInterface Verified = Test_Auth.VerifySession(session);
+            //Check if Verified is a TellerProfile type object, this means the session is valid
+            if (Verified?.profile_type != ProfileInterface.ProfileType.TELLER)
+            {
+                return View("Denied");
+            }
+
+
+            var my_interface = Test_Auth.VerifySession(session);
+
+            // TEST PURPOSES ONLY - REMOVE
+            Test_Auth.setCurrentCustomer("clay", session);
+
+            var customer = Test_Auth.getCurrentCustomer(session);
+            if (customer == my_interface.username)
+            {
+                return RedirectToAction("Dashboard", "Teller"); // if you're not helping someone, go back to dashboard
+            }
+            ViewBag.cust = customer;
+            ViewBag.searched = "yes";
+            ViewBag.Accounts = ((TellerProfile)my_interface).ListAccounts(customer);
+
+
+            if (Request.HasFormContentType)
+            {
+
+                if (!String.IsNullOrEmpty(Request.Form["username"]))
+                {
+
+                    ViewBag.cust = customer;
+                    ViewBag.searched = "yes";
+                    ViewBag.Accounts = ((TellerProfile)my_interface).ListAccounts(customer);
+                }
+                //At this point there should be an acctFrom in the title. this is just a sanity check
+                //To make sure we don't run this on page load.
+                if (!String.IsNullOrEmpty(Request.Form["acctTo"]))
+                {
+                    ((TellerProfile)my_interface)?.Deposit(Convert.ToInt32(Request.Form["acctTo"]),
+                        Convert.ToDecimal(Request.Form["amount"]));
+                    ViewBag.To = Request.Form["acctTo"];
+                    ViewBag.amt = Request.Form["amount"];
+                    ViewBag.From = null;
+                    ViewBag.type = "Deposit";
+                    return View("Transaction");
+
+                }
+            }
+
             ViewBag.User = my_interface.username;
             return View();
         }

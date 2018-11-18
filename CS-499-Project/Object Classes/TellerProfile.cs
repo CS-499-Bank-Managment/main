@@ -45,6 +45,19 @@ namespace CS_499_Project.Object_Classes
             return results;
         }
 
+        public Dictionary<string, string> Withdrawal(int AcctFrom, decimal amount)
+        {
+            Database DB = new Database();
+            Dictionary<string, string> results = DB.WithdrawAmt(AcctFrom, amount);
+            return results;
+        }
+        public Dictionary<string, string> Deposit(int AcctTo, decimal amount)
+        {
+            Database DB = new Database();
+            Dictionary<string, string> results = DB.DepositAmt(AcctTo, amount);
+            return results;
+        }
+
         public List<AccountInterface> ListAccounts(string username)
         {
             var customer = new CustomerProfile(username);

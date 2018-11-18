@@ -1,17 +1,27 @@
 @{
-    ViewBag.title = "Transfer Complete";
-    ViewBag.FormTitle = "Transfer Completed Successfully";
+    ViewBag.title = ViewBag.type + " Complete";
+    ViewBag.FormTitle = ViewBag.type + " Completed Successfully";
     Layout = "/Views/Shared/_FormLayout.cshtml";
 }
 
-        To:  @ViewBag.To
-        <br class="little-space" />
-        From: @ViewBag.From
-        <br class="little-space" />
-        Amount: @ViewBag.amt
-        <br class="little-space" />
+@if ((string)ViewBag.To != null)
+{
+    <div>To: @ViewBag.To</div>
+    <br class="little-space" />
+}
+@if ((string)ViewBag.From != null)
+{
+    <div>From: @ViewBag.From</div>
+    <br class="little-space" />
+}
+@if ((string)ViewBag.amt != null)
+{
+    <div>Amount: $@ViewBag.amt</div>
+    <br class="little-space" />
+}
+@if ((string)ViewBag.type != null)
+{
+    <div>Type: @ViewBag.type</div>
+    <br class="little-space" />
+}
 
-
-        @ViewBag.To
-        @ViewBag.amt
-        @ViewBag.From
