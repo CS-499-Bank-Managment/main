@@ -27,26 +27,32 @@
 @if (ViewBag.Accounts != null)
 {
 <form method="post">
-    <label for="selectFrom">Transfer From:</label>
-    <select id="selectFrom" name="acctFrom" onchange="JSRemove()">
-        @foreach (AccountInterface act in ViewBag.Accounts)
-        {
-            <option value="@act.accountNumber()"> @act.DisplayName </option>
-        }
-    </select>
-    <br />
-
-    <label for="selectTo">To:</label>
-    <select id="selectTo" name="acctTo">
-        @foreach (AccountInterface act in ViewBag.Accounts)
-        {
-            <option value="@act.accountNumber()"> @act.DisplayName </option>
-        }
-    </select>
-    <br />
+    <div class="input-field col s12 text-white" id="from">
+        <div><label for="from">Transfer From:</label></div>
+        <select id="selectFrom" name="acctFrom" onchange="JSRemove()" class="select">
+            @foreach (AccountInterface act in ViewBag.Accounts)
+            {
+                <option value="@act.accountNumber()"> @act.DisplayName </option>
+            }
+        </select>
+    </div>
+    <br class="little-space" />
+    
+    <div class="input-field col s12 text-white" id="to">
+        <div><label for="to">To:</label></div>
+        <select id="selectTo" name="acctTo" class="select">
+            @foreach (AccountInterface act in ViewBag.Accounts)
+            {
+                <option value="@act.accountNumber()"> @act.DisplayName </option>
+            }
+        </select>
+    </div>
+    <br class="little-space" />
+    <div class="input-field col s12 text-white">
         <label for="amount">Amount to Transfer:</label>
-        <input type="text" id="amount" name="amount" value="" />
-    <br />
-    <button type="submit">Transfer!</button>
+        <input class="select" type="number" id="amount" name="amount" value="" step="0.01" />
+    </div>
+    <br class="little-space" />
+    <div class="sumbit-button waves-effect waves-light btn light-green accent-2"><input type="submit" value="Transfer!" /></div>
 </form>
 }

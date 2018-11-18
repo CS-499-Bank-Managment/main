@@ -1,0 +1,29 @@
+﻿@using CS_499_Project.Object_Classes
+@{
+    ViewBag.title = "Withdrawal";
+    ViewBag.FormTitle = "Withdrawal";
+    Layout = "/Views/Shared/_FormLayout.cshtml";
+}
+
+
+@if (ViewBag.Accounts != null)
+{
+    <form method="post">
+        <div class="input-field col s12 text-white" id="from">
+            <div><label for="from">Withdraw From:</label></div>
+            <select id="selectFrom" name="acctFrom" onchange="JSRemove()" class="select">
+                @foreach (AccountInterface act in ViewBag.Accounts)
+                {
+                    <option value="@act.accountNumber()"> @act.DisplayName </option>
+                }
+            </select>
+        </div>
+        <br class="little-space" />
+        <div class="input-field col s12 text-white">
+            <label for="amount">Amount to Withdraw:</label>
+            <input class="select" type="number" id="amount" name="amount" value="" step="0.01" />
+        </div>
+        <br class="little-space" />
+        <div class="sumbit-button waves-effect waves-light btn light-green accent-2"><input type="submit" value="Withdraw" /></div>
+    </form>
+}
