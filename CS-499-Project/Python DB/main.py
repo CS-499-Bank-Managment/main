@@ -18,15 +18,17 @@ def eventloop(sc):
 	conn = sqlite3.connect("../Accounts.sqlite")
 	
 	cursor = conn.cursor()
-	
 	cursor.execute("SELECT * from customer_acct")
 	accts = cursor.fetchall()
 	for row in accts:
+		print("updating")
 		id = row[AcctIndex["acct_id"]]
 		newbalance = round(row[AcctIndex["balance"]] + (row[AcctIndex["balance"]] * row[AcctIndex["interest"]]), 2)
 		cursor.execute(f"UPDATE customer_acct SET balance = {newbalance}, "
 		               f"edited = '{datetime.datetime.now().replace(microsecond=0)}'"
 		               f" WHERE acct_id = {id}")
+		cursor.execute(f"INSERT INTO TRANSACTIONS(acct_to, acct_from, amount, note, date) VALUES(?,?,?,?,?)",
+		               (id, id, round(newbalance - row[AcctIndex["balance"]],2), "Interest.", datetime.date.today()))
 	conn.commit()
 	conn.close()
 	s.enter(60, 1, eventloop, (sc,))

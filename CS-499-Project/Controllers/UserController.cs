@@ -2,6 +2,9 @@ using CS_499_Project.Object_Classes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace CS_499_Project.Controllers
 {
@@ -168,6 +171,31 @@ namespace CS_499_Project.Controllers
 
             return
             View();
+        }
+
+        public IActionResult PrintReport()
+        {
+            var session = Request.Cookies["SESSION_ID"];
+            var LookupDB = new Database();
+            var profile = (LookupDB).VerifySession(session);
+            if (profile?.profile_type != null)
+            {
+                List<AccountInterface> CustAccounts = LookupDB.CustomerAcctList(profile.username);
+                List<TransactionInterface> TransList = new List<TransactionInterface>();
+                foreach(AccountInterface item in CustAccounts)
+                {
+                    TransList.AddRange(
+                        LookupDB.ListTransactions(item.accountNumber())
+                        );
+                }
+
+                ViewBag.Transactions = TransList;
+                return View();
+            }
+            else
+            {
+                return View("Denied");
+            }
         }
     }
 }

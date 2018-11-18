@@ -14,10 +14,12 @@
     <Content Remove="wwwroot\css\font-css\**" />
     <EmbeddedResource Remove="wwwroot\css\font-css\**" />
     <None Remove="wwwroot\css\font-css\**" />
+    <Compile Remove="Object Classes\InterestHandler.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="angularjs" Version="1.7.2" />
+    <PackageReference Include="iTextSharp" Version="5.5.13" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.1" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.109.2" />
