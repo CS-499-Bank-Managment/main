@@ -8,23 +8,37 @@
 
 @if (ViewBag.Accounts != null)
 {
-    <form method="post">
+<form method="post">
 
-        <div class="input-field col s12 text-white" id="to">
-            <div><label for="to">Deposit to:</label></div>
-            <select id="selectTo" name="acctTo" class="select">
-                @foreach (AccountInterface act in ViewBag.Accounts)
-                {
-                    <option value="@act.accountNumber()"> @act.DisplayName </option>
-                }
-            </select>
-        </div>
-        <br class="little-space" />
-        <div class="input-field col s12 text-white">
-            <label for="amount">Amount of Deposit:</label>
-            <input class="select" type="number" id="amount" name="amount" value="" step="0.01" />
-        </div>
-        <br class="little-space" />
-        <div class="sumbit-button waves-effect waves-light btn light-green accent-2"><input type="submit" value="Deposit" /></div>
-    </form>
+    <div class="input-field col s12 text-white" id="to">
+        <div><label for="to">Deposit to:</label></div>
+        <select id="selectTo" name="acctTo" class="select">
+            @foreach (AccountInterface act in ViewBag.Accounts)
+            {
+                <option value="@act.accountNumber()"> @act.DisplayName </option>
+            }
+        </select>
+    </div>
+    <div class="input-field col s12 text-white">
+        <p>
+            <label>
+                <input name="depType" type="radio" value="Cash" />
+                <span>Cash</span>
+            </label>
+        </p>
+        <p>
+            <label>
+                <input name="depType" value="Check" type="radio" />
+                <span>Check</span>
+            </label>
+        </p>
+    </div>
+    <br class="little-space" />
+    <div class="input-field col s12 text-white">
+        <label for="amount">Amount of Deposit:</label>
+        <input class="select" type="number" id="amount" name="amount" value="" step="0.01" />
+    </div>
+    <br class="little-space" />
+    <div class="sumbit-button waves-effect waves-light btn light-green accent-2"><input type="submit" value="Deposit" /></div>
+</form>
 }

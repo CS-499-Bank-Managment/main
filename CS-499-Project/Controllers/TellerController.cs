@@ -288,8 +288,9 @@ namespace CS_499_Project.Controllers
                 //To make sure we don't run this on page load.
                 if (!String.IsNullOrEmpty(Request.Form["acctTo"]))
                 {
+                    string cashorcheck = Request.Form["depType"];
                     ((TellerProfile)my_interface)?.Deposit(Convert.ToInt32(Request.Form["acctTo"]),
-                        Convert.ToDecimal(Request.Form["amount"]));
+                        Convert.ToDecimal(Request.Form["amount"]), cashorcheck);
                     ViewBag.To = Request.Form["acctTo"];
                     ViewBag.amt = Request.Form["amount"];
                     ViewBag.From = null;

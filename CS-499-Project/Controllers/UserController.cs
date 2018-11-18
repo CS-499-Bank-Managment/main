@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using System;
 
 namespace CS_499_Project.Controllers
 {
@@ -181,6 +182,124 @@ namespace CS_499_Project.Controllers
             {
                 return View("Denied");
             }
+        }
+
+        public IActionResult Transaction(string To, string amt, string From)
+        {
+            var session = Request.Cookies["SESSION_ID"];
+            Database data = new Database();
+            ProfileInterface Verified = data.VerifySession(session);
+            //Check if Verified is a TellerProfile type object, this means the session is valid
+            if (Verified?.profile_type != ProfileInterface.ProfileType.CUSTOMER)
+            {
+                return View("Denied");
+            }
+            else
+            {
+                ViewBag.ResultDict = ((TellerProfile)Verified).AddAmount(Convert.ToInt32(ViewBag.To), Convert.ToDecimal(ViewBag.amt));
+                return View();
+
+            }
+        }
+
+        public IActionResult Transfer()
+        {
+
+            var session = Request.Cookies["SESSION_ID"];
+            Database Test_Auth = new Database();
+            ProfileInterface Verified = Test_Auth.VerifySession(session);
+            //Check if Verified is a TellerProfile type object, this means the session is valid
+            if (Verified?.profile_type != ProfileInterface.ProfileType.CUSTOMER)
+            {
+                return View("Denied");
+            }
+
+
+            var my_interface = Test_Auth.VerifySession(session);
+
+            var customer = Test_Auth.getCurrentCustomer(session);
+            ViewBag.cust = customer;
+            ViewBag.searched = "yes";
+            ViewBag.Accounts = ((CustomerProfile)my_interface).ListAccounts();
+
+
+            if (Request.HasFormContentType)
+            {
+
+                if (!String.IsNullOrEmpty(Request.Form["username"]))
+                {
+
+                    ViewBag.cust = customer;
+                    ViewBag.searched = "yes";
+                    ViewBag.Accounts = ((CustomerProfile)my_interface).ListAccounts();
+                }
+                //At this point there should be an acctFrom in the title. this is just a sanity check
+                //To make sure we don't run this on page load.
+                if (!String.IsNullOrEmpty(Request.Form["acctTo"]))
+                {
+                    ((CustomerProfile)my_interface)?.Transfer(Convert.ToInt32(Request.Form["acctTo"]),
+                        Convert.ToInt32(Request.Form["acctFrom"]), Convert.ToDecimal(Request.Form["amount"]));
+                    ViewBag.To = Request.Form["acctTo"];
+                    ViewBag.amt = Request.Form["amount"];
+                    ViewBag.From = Request.Form["acctFrom"];
+                    ViewBag.type = "Transfer";
+                    return View("Transaction");
+
+                }
+            }
+
+            ViewBag.User = my_interface.username;
+            return View();
+        }
+
+        public IActionResult Bill()
+        {
+
+            var session = Request.Cookies["SESSION_ID"];
+            Database Test_Auth = new Database();
+            ProfileInterface Verified = Test_Auth.VerifySession(session);
+            //Check if Verified is a TellerProfile type object, this means the session is valid
+            if (Verified?.profile_type != ProfileInterface.ProfileType.CUSTOMER)
+            {
+                return View("Denied");
+            }
+
+
+            var my_interface = Test_Auth.VerifySession(session);
+
+            var customer = Test_Auth.getCurrentCustomer(session);
+            ViewBag.cust = customer;
+            ViewBag.searched = "yes";
+            ViewBag.Accounts = ((CustomerProfile)my_interface).ListAccounts();
+
+
+            if (Request.HasFormContentType)
+            {
+
+                if (!String.IsNullOrEmpty(Request.Form["username"]))
+                {
+
+                    ViewBag.cust = customer;
+                    ViewBag.searched = "yes";
+                    ViewBag.Accounts = ((CustomerProfile)my_interface).ListAccounts();
+                }
+                //At this point there should be an acctFrom in the title. this is just a sanity check
+                //To make sure we don't run this on page load.
+                if (!String.IsNullOrEmpty(Request.Form["acctTo"]))
+                {
+                    ((CustomerProfile)my_interface)?.Transfer(Convert.ToInt32(Request.Form["acctTo"]),
+                        Convert.ToInt32(Request.Form["acctFrom"]), Convert.ToDecimal(Request.Form["amount"]));
+                    ViewBag.To = Request.Form["acctTo"];
+                    ViewBag.amt = Request.Form["amount"];
+                    ViewBag.From = Request.Form["acctFrom"];
+                    ViewBag.type = "Bill Pay";
+                    return View("Transaction");
+
+                }
+            }
+
+            ViewBag.User = my_interface.username;
+            return View();
         }
     }
 }
