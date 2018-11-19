@@ -10,21 +10,23 @@
     {<div class="trash-icon" id="user-trash" data-url="@Url.Action("DeleteUser","Admin", new { username = (string) ViewBag.current_customer })"><img id="trash-img" src="~/images/trash.png" alt="delete user icon" height="40" width="40" /></div>}
 </h1></div>
     <br />
+    @if (ViewBag.isCustomer)
+    {
     <center>
         <div id="action-row">
-            <a href="@Url.Action("Bill","User")">
+            <a href="@Url.Action("Bill", "User")">
                 <div class="action-box">
                     <img class="action-icon" src="~/images/bill-64.png" alt="pay bill icon" height="64" width="64">
                     <div class="action-text">Pay Bill</div>
                 </div>
             </a>
-            <a href="@Url.Action("Transfer","User")">
+            <a href="@Url.Action("Transfer", "User")">
                 <div class="action-box">
                     <img class="action-icon" src="~/images/transfer.png" alt="transfer icon" height="64" width="64">
                     <div class="action-text">Transfer</div>
                 </div>
             </a>
-            @if ( (bool) ViewBag.allowed)
+            @if ((bool)ViewBag.allowed)
             {
                 <a href="@Url.Action("Check", "Teller")">
                     <div class="action-box">
@@ -32,7 +34,7 @@
                         <div class="action-text">Check</div>
                     </div>
                 </a>
-                <a href="@Url.Action("Cash","Teller")">
+                <a href="@Url.Action("Cash", "Teller")">
                     <div class="action-box">
                         <img class="action-icon" src="~/images/banknotes-64.gif" alt="cash icon" height="64" width="64">
                         <div class="action-text">Cash</div>
@@ -41,13 +43,14 @@
             }
         </div>
     </center>
-    <h2>Accounts @if ( (bool) ViewBag.isAdmin) {<a href="@Url.Action("CreateAccountForm", "Admin")"><div class="add-icon"><img id="add-img" src="~/images/plus-48.png" width="30" height="30" alt="add account" /></div></a>}</h2>
+    <h2>Accounts @if ((bool)ViewBag.isAdmin)
+    {<a href="@Url.Action("CreateAccountForm", "Admin")"><div class="add-icon"><img id="add-img" src="~/images/plus-48.png" width="30" height="30" alt="add account" /></div></a>}</h2>
     <div id="accounts-wrapper">
         @foreach (AccountInterface account in ViewBag.accounts)
         {
         <h3>
-            <a class="account-link" href="@Url.Action("AccountDashboard", "User", new { account_number=account.accountNumber() })">@account.DisplayName</a>@if ( (bool) ViewBag.isAdmin)
-                    {<div class="trash-icon-small" data-url="@Url.Action("DeleteAccount","Admin", new { username = (string) ViewBag.current_customer, account_id = (int) account.accountNumber() })"><img class="trash-img-small" src="~/images/trash.png" alt="delete account icon for @account.DisplayName" height="30" width="30" /></div>}
+            <a class="account-link" href="@Url.Action("AccountDashboard", "User", new { account_number = account.accountNumber() })">@account.DisplayName</a>@if ((bool)ViewBag.isAdmin)
+            {<div class="trash-icon-small" data-url="@Url.Action("DeleteAccount", "Admin", new { username = (string)ViewBag.current_customer, account_id = (int)account.accountNumber() })"><img class="trash-img-small" src="~/images/trash.png" alt="delete account icon for @account.DisplayName" height="30" width="30" /></div>}
         </h3>
             <p>Balance: $@account.accountBalance().ToString("0.00")</p>
             @if (account.getTransactions().Count > 0)
@@ -77,6 +80,7 @@
             {
                 <p>No transactions for this account yet!</p>
             }
-         }
+        }
     </div>
+    }
 </div>

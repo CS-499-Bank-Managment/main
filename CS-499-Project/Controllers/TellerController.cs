@@ -14,6 +14,7 @@ namespace CS_499_Project.Controllers
 
         public IActionResult Dashboard()
         {
+            var database = new Database();
             ViewBag.Title = "Employee Dashboard";
             if (Request.Path.Value.ToString().ToLower().EndsWith('/'))
             {
@@ -25,7 +26,7 @@ namespace CS_499_Project.Controllers
             }
             var type = "";
             var session = Request.Cookies["SESSION_ID"];
-            ProfileInterface Verified = (new Database()).VerifySession(session);
+            ProfileInterface Verified = database.VerifySession(session);
             if(Verified == null)
             {
                 return View("Denied");
@@ -58,8 +59,7 @@ namespace CS_499_Project.Controllers
             {
                 ViewBag.LS = Request.Form["username"];
                 ViewBag.set_username = "true";
-                var lookup_db = new Database();
-                ViewBag.info = lookup_db.CustomerLookup(Request.Form["username"], type);
+                ViewBag.info = database.CustomerLookup(Request.Form["username"], type);
             }
             return View();
         }
@@ -79,8 +79,9 @@ namespace CS_499_Project.Controllers
 
         public IActionResult ListAccounts()
         {
+            var database = new Database();
             var session = Request.Cookies["SESSION_ID"];
-            ProfileInterface Verified = new Database().VerifySession(session);
+            ProfileInterface Verified = database.VerifySession(session);
             //Check if Verified is a TellerProfile type object, this means the session is valid
             if (Verified?.profile_type != ProfileInterface.ProfileType.TELLER)
             {
@@ -89,7 +90,7 @@ namespace CS_499_Project.Controllers
             List<Dictionary<string, string>> acct_list = new List<Dictionary<string, string>>();
             var userid = Request.Query["username"];
             ViewBag.lookup = userid;
-            var Account_lookup = new Database();
+            var Account_lookup = database;
             Console.WriteLine(userid);
              var cust_accounts = Account_lookup.CustomerAcctList(userid);
             foreach(AccountInterface account in cust_accounts)
@@ -102,8 +103,9 @@ namespace CS_499_Project.Controllers
 
         public IActionResult Edit()
         {
+            var database = new Database();
             var session = Request.Cookies["SESSION_ID"];
-            ProfileInterface Verified = new Database().VerifySession(session);
+            ProfileInterface Verified = database.VerifySession(session);
             //Check if Verified is a TellerProfile type object, this means the session is valid
             if (Verified.profile_type != ProfileInterface.ProfileType.TELLER)
             {
@@ -111,7 +113,7 @@ namespace CS_499_Project.Controllers
             }
             var acct = Request.Query["acct"];
             ViewBag.num = acct;
-            ViewBag.transactions = (new Database()).ListTransactions(Convert.ToInt32(acct));
+            ViewBag.transactions = database.ListTransactions(Convert.ToInt32(acct));
             return View();
         }
 

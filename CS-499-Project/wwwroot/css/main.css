@@ -425,6 +425,7 @@ header {
     border: 1px solid #5bb772;
     background-color: white;
     height: 80px;
+    z-index: 500;
 }
 
 .user-menu-item {

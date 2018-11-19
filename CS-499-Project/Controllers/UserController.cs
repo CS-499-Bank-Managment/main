@@ -17,14 +17,15 @@ namespace CS_499_Project.Controllers
 
         public IActionResult AccountDashboard(int account_number)
         {
+            var database = new Database();
             var session = Request.Cookies["SESSION_ID"];
-            ProfileInterface Verified = new Database().VerifySession(session);
+            ProfileInterface Verified = database.VerifySession(session);
             var username = Verified.username;
             ViewBag.Title = "Account Dashboard";
             ViewBag.user_header = username;
             var number = account_number;
-            var customer_served = new Database().getCurrentCustomer(session);
-            AccountInterface account = (new Database()).getAccount(number, customer_served);
+            var customer_served = database.getCurrentCustomer(session);
+            AccountInterface account = database.getAccount(number, customer_served);
             ViewBag.account = account;
             switch (Verified.profile_type)
             {
@@ -32,7 +33,7 @@ namespace CS_499_Project.Controllers
                 case ProfileInterface.ProfileType.TELLER: ViewBag.user_role = "Teller"; break;
                 case ProfileInterface.ProfileType.CUSTOMER: ViewBag.user_role = "User"; break;
             }
-            List<TransactionInterface> transactions = new Database().ListTransactions(account.accountNumber());
+            List<TransactionInterface> transactions = database.ListTransactions(account.accountNumber());
             foreach (TransactionInterface transaction in transactions)
             {
                 account.addTransaction(transaction);
@@ -62,11 +63,12 @@ namespace CS_499_Project.Controllers
         public IActionResult Dashboard()
         {
             var session = Request.Cookies["SESSION_ID"];
-            ProfileInterface Verified = new Database().VerifySession(session);
+            var database = new Database();
+            ProfileInterface Verified = database.VerifySession(session);
             var username = Verified.username;
             ViewBag.Title = "Customer Dashboard";
             ViewBag.user_header = username;
-            var customer_served = new Database().getCurrentCustomer(session);
+            var customer_served = database.getCurrentCustomer(session);
             if (Verified.profile_type == ProfileInterface.ProfileType.TELLER || 
                Verified.profile_type == ProfileInterface.ProfileType.ADMIN)
             {
@@ -93,20 +95,29 @@ namespace CS_499_Project.Controllers
                 case ProfileInterface.ProfileType.CUSTOMER: ViewBag.user_role = "User"; break;
             }
 
-            ViewBag.accounts = new Database().CustomerAcctList(customer_served);
-            ViewBag.full_name = Verified.full_name;
-            foreach (AccountInterface account in ViewBag.accounts)
+            ViewBag.full_name = database.GetFullName(customer_served);
+            if (ViewBag.full_name != null)
             {
-                List<TransactionInterface> transactions = new Database().ListTransactions(account.accountNumber());
-                int count = 0;
-                foreach(TransactionInterface transaction in transactions)
+                ViewBag.accounts = database.CustomerAcctList(customer_served);
+                foreach (AccountInterface account in ViewBag.accounts)
                 {
-                    if (count < 5)
+                    List<TransactionInterface> transactions = database.ListTransactions(account.accountNumber());
+                    int count = 0;
+                    foreach (TransactionInterface transaction in transactions)
                     {
-                        account.addTransaction(transaction);
-                        count++;
+                        if (count < 5)
+                        {
+                            account.addTransaction(transaction);
+                            count++;
+                        }
                     }
                 }
+                ViewBag.isCustomer = true;
+            }
+            else
+            {
+                ViewBag.full_name = database.GetEmployeeName(customer_served);
+                ViewBag.isCustomer = false;
             }
 
             ViewBag.current_customer = customer_served;

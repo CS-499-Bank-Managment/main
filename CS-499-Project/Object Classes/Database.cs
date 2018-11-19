@@ -456,6 +456,7 @@ namespace CS_499_Project.Object_Classes
                 var date = DateTime.Parse(balance_reader["created"].ToString());
                 account = new AccountInterface(balance, number, type, customer, name, interest, date);
             }
+            balance_reader.Close();
             return account;
         }
 
@@ -711,6 +712,34 @@ namespace CS_499_Project.Object_Classes
             }
             reader.Close();
             return username;
+        }
+
+        public string GetFullName(string username)
+        {
+            string full_name = null;
+            dbcmd.CommandText = "SELECT * from customers where username=@user";
+            dbcmd.Parameters.AddWithValue("user", username);
+            var reader = dbcmd.ExecuteReader();
+            while (reader.Read())
+            {
+                full_name = reader["name"].ToString();
+            }
+            reader.Close();
+            return full_name;
+        }
+
+        public string GetEmployeeName(string username)
+        {
+            string full_name = "";
+            dbcmd.CommandText = "SELECT * from tellers where username=@user UNION SELECT * from admins where username=@user";
+            dbcmd.Parameters.AddWithValue("user", username);
+            var reader = dbcmd.ExecuteReader();
+            while (reader.Read())
+            {
+                full_name = reader["name"].ToString();
+            }
+            reader.Close();
+            return full_name;
         }
 
         public List<TransactionInterface> ListTransactions(long acct_id)

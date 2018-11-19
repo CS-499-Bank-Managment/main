@@ -35,26 +35,27 @@ namespace CS_499_Project.Controllers
 
         public IActionResult DeleteProfileForm()
         {
-            var current_user = new Database().VerifySession(Request.Cookies["SESSION_ID"]);
+            var database = new Database();
+            var current_user = database.VerifySession(Request.Cookies["SESSION_ID"]);
             if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
             {
                 return View("Denied");
             }
-            ViewBag.profiles = (new Database()).GetAllProfiles();
+            ViewBag.profiles = database.GetAllProfiles();
             return View();
         }
 
 
         public IActionResult CreateAccountForm()
         {
-            var current_user = new Database().VerifySession(Request.Cookies["SESSION_ID"]);
+            var database = new Database();
+            var current_user = database.VerifySession(Request.Cookies["SESSION_ID"]);
             if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
             {
                 return View("Denied");
             }
             List<string> results = new List<string>();
-            Database test = new Database();
-            results = test.GetCustomers();
+            results = database.GetCustomers();
             ViewBag.users = results;
             return View();
         }
