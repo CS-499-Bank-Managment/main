@@ -1,0 +1,58 @@
+@using CS_499_Project.Object_Classes
+@{
+    ViewBag.title = "Transfer";
+    ViewBag.FormTitle = "Transfer";
+    Layout = "/Views/Shared/_FormLayout.cshtml";
+}
+
+<script type="text/javascript">
+    function JSRemove() {
+
+        var optionlist = new Array();
+        var size = document.getElementById("selectFrom").length;
+        for (let i = 0; i < size; i++) {
+            optionlist[i] = document.getElementById("selectFrom")[i];
+        }
+        document.getElementById("selectTo").innerHTML = document.getElementById("selectFrom").innerHTML;
+        document.getElementById("selectTo").options.remove(
+            document.getElementById("selectFrom").selectedIndex);
+
+        $('select').formSelect();
+    }
+    
+   
+</script>
+
+
+@if (ViewBag.Accounts != null)
+{
+<form method="post">
+    <div class="input-field col s12 text-white" id="from">
+        <div><label for="from">Transfer From:</label></div>
+        <select id="selectFrom" name="acctFrom" onchange="JSRemove()" class="select">
+            @foreach (AccountInterface act in ViewBag.Accounts)
+            {
+                <option value="@act.accountNumber()"> @act.DisplayName </option>
+            }
+        </select>
+    </div>
+    <br class="little-space" />
+    
+    <div class="input-field col s12 text-white" id="to">
+        <div><label for="to">To:</label></div>
+        <select id="selectTo" name="acctTo" class="select">
+            @foreach (AccountInterface act in ViewBag.Accounts)
+            {
+                <option value="@act.accountNumber()"> @act.DisplayName </option>
+            }
+        </select>
+    </div>
+    <br class="little-space" />
+    <div class="input-field col s12 text-white">
+        <label for="amount">Amount to Transfer:</label>
+        <input class="select" type="number" id="amount" name="amount" value="" step="0.01" />
+    </div>
+    <br class="little-space" />
+    <div class="sumbit-button waves-effect waves-light btn light-green accent-2"><input type="submit" value="Transfer!" /></div>
+</form>
+}

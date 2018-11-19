@@ -394,7 +394,7 @@ namespace CS_499_Project.Object_Classes
             return result_dict;
         }
 
-        public Dictionary<string, string> DepositAmt(int acct_to, decimal amount)
+        public Dictionary<string, string> DepositAmt(int acct_to, decimal amount, string type)
         {
             /*
              * This method deposits money into an account.
@@ -434,7 +434,7 @@ namespace CS_499_Project.Object_Classes
                 result_dict.Add("Acct_To_New", new_balance_reader["balance"].ToString());
             }
             new_balance_reader.Close();
-            LogTransaction(acct_to, 0, amount, "Deposit");
+            LogTransaction(acct_to, 0, amount, (type + " Deposit"));
 
             return result_dict;
         }

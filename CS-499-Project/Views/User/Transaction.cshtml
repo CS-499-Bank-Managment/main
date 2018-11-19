@@ -1,0 +1,27 @@
+@{
+    ViewBag.title = ViewBag.type + " Complete";
+    ViewBag.FormTitle = ViewBag.type + " Completed Successfully";
+    Layout = "/Views/Shared/_FormLayout.cshtml";
+}
+
+@if ((string)ViewBag.To != null)
+{
+    <div>To: @ViewBag.To</div>
+    <br class="little-space" />
+}
+@if ((string)ViewBag.From != null)
+{
+    <div>From: @ViewBag.From</div>
+    <br class="little-space" />
+}
+@if ((string)ViewBag.amt != null)
+{
+    <div>Amount: $@ViewBag.amt</div>
+    <br class="little-space" />
+}
+@if ((string)ViewBag.type != null)
+{
+    <div>Type: @ViewBag.type</div>
+    <br class="little-space" />
+}
+

@@ -51,10 +51,10 @@ namespace CS_499_Project.Object_Classes
             Dictionary<string, string> results = DB.WithdrawAmt(AcctFrom, amount);
             return results;
         }
-        public Dictionary<string, string> Deposit(int AcctTo, decimal amount)
+        public Dictionary<string, string> Deposit(int AcctTo, decimal amount, string type)
         {
             Database DB = new Database();
-            Dictionary<string, string> results = DB.DepositAmt(AcctTo, amount);
+            Dictionary<string, string> results = DB.DepositAmt(AcctTo, amount, type);
             return results;
         }
 
