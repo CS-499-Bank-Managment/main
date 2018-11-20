@@ -6,15 +6,6 @@
 
 
 <form action="./CreateAccountConfirmation" method="post">
-    <div class="input-field col s12 text-white">
-        <div><label for="user">User Profile to add an Account to</label></div>
-        <select id="user" name="username" class="select">
-            @foreach (var item in ViewBag.users)
-            {
-                <option value="@item">@item</option>
-            }
-        </select>
-    </div>
     <br class="little-space" />
     <div class="input-field col s12 text-white">
         <input id="acctname" class="field" type="text" name="name" />

@@ -28,16 +28,16 @@
             </a>
             @if ((bool)ViewBag.allowed)
             {
-                <a href="@Url.Action("Check", "Teller")">
+                <a href="@Url.Action("Deposit", "Teller")">
                     <div class="action-box">
                         <img class="action-icon" src="~/images/check-icon.png" alt="check icon" height="64" width="64">
-                        <div class="action-text">Check</div>
+                        <div class="action-text">Deposit</div>
                     </div>
                 </a>
-                <a href="@Url.Action("Cash", "Teller")">
+                <a href="@Url.Action("Withdrawal", "Teller")">
                     <div class="action-box">
                         <img class="action-icon" src="~/images/banknotes-64.gif" alt="cash icon" height="64" width="64">
-                        <div class="action-text">Cash</div>
+                        <div class="action-text">Withdrawal</div>
                     </div>
                 </a>
             }
