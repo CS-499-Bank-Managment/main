@@ -123,7 +123,8 @@ namespace CS_499_Project.Controllers
             Database data = new Database();
             ProfileInterface Verified = data.VerifySession(session);
             //Check if Verified is a TellerProfile type object, this means the session is valid
-            if (Verified?.profile_type != ProfileInterface.ProfileType.TELLER)
+            if (Verified?.profile_type != ProfileInterface.ProfileType.TELLER &&
+                Verified?.profile_type != ProfileInterface.ProfileType.ADMIN)
             {
                 return View("Denied");
             }
@@ -143,7 +144,8 @@ namespace CS_499_Project.Controllers
             Database Test_Auth = new Database();
             ProfileInterface Verified = Test_Auth.VerifySession(session);
             //Check if Verified is a TellerProfile type object, this means the session is valid
-            if (Verified?.profile_type != ProfileInterface.ProfileType.TELLER)
+            if (Verified?.profile_type != ProfileInterface.ProfileType.TELLER &&
+               Verified?.profile_type != ProfileInterface.ProfileType.ADMIN)
             {
                 return View("Denied");
             }
@@ -199,7 +201,8 @@ namespace CS_499_Project.Controllers
             Database Test_Auth = new Database();
             ProfileInterface Verified = Test_Auth.VerifySession(session);
             //Check if Verified is a TellerProfile type object, this means the session is valid
-            if (Verified?.profile_type != ProfileInterface.ProfileType.TELLER)
+            if (Verified?.profile_type != ProfileInterface.ProfileType.TELLER &&
+               Verified?.profile_type != ProfileInterface.ProfileType.ADMIN)
             {
                 return View("Denied");
             }
@@ -255,7 +258,8 @@ namespace CS_499_Project.Controllers
             Database Test_Auth = new Database();
             ProfileInterface Verified = Test_Auth.VerifySession(session);
             //Check if Verified is a TellerProfile type object, this means the session is valid
-            if (Verified?.profile_type != ProfileInterface.ProfileType.TELLER)
+            if (Verified?.profile_type != ProfileInterface.ProfileType.TELLER &&
+                Verified?.profile_type != ProfileInterface.ProfileType.ADMIN)
             {
                 return View("Denied");
             }
@@ -273,7 +277,16 @@ namespace CS_499_Project.Controllers
             }
             ViewBag.cust = customer;
             ViewBag.searched = "yes";
-            ViewBag.Accounts = ((TellerProfile)my_interface).ListAccounts(customer);
+            if (Verified.profile_type != ProfileInterface.ProfileType.CUSTOMER)
+            {
+                CustomerProfile custprof = new CustomerProfile(customer);
+                ViewBag.Accounts = custprof.ListAccounts();
+            }
+            else
+            {
+
+                ViewBag.Accounts = ((CustomerProfile)my_interface).ListAccounts();
+            }
 
 
             if (Request.HasFormContentType)
