@@ -439,8 +439,7 @@ namespace CS_499_Project.Object_Classes
             return result_dict;
         }
 
-
-    public AccountInterface getAccount(int account_number, string customer)
+        public AccountInterface getAccount(int account_number, string customer)
         {
             AccountInterface account = null;
             this.dbcmd.CommandText = "select * from customer_acct where acct_id=@act";
@@ -685,17 +684,25 @@ namespace CS_499_Project.Object_Classes
             reader.Close();
             if(type == "Admin")
             {
-                dbcmd.CommandText = "SELECT * from tellers where username LIKE @user1 OR name LIKE @user2 UNION SELECT * from admins where username LIKE @user3 OR name LIKE @user4";
+                dbcmd.CommandText = "SELECT * from tellers where username LIKE @user1 OR name LIKE @user2";
                 dbcmd.Parameters.AddWithValue("user1", "%" + username + "%");
                 dbcmd.Parameters.AddWithValue("user2", "%" + username + "%");
-                dbcmd.Parameters.AddWithValue("user3", "%" + username + "%");
-                dbcmd.Parameters.AddWithValue("user4", "%" + username + "%");
                 var reader2 = dbcmd.ExecuteReader();
                 while (reader2.Read())
                 {
                     profile_list.Add(new TellerProfile(reader2["username"].ToString(), reader2["name"].ToString(), reader2["email"].ToString()));
                 }
                 reader2.Close();
+
+                dbcmd.CommandText = "SELECT * from admins where username LIKE @user3 OR name LIKE @user4";
+                dbcmd.Parameters.AddWithValue("user3", "%" + username + "%");
+                dbcmd.Parameters.AddWithValue("user4", "%" + username + "%");
+                var reader3 = dbcmd.ExecuteReader();
+                while (reader3.Read())
+                {
+                    profile_list.Add(new AdminProfile(reader3["username"].ToString(), reader3["name"].ToString(), reader3["email"].ToString()));
+                }
+                reader3.Close();
             }
             return profile_list;
         }
