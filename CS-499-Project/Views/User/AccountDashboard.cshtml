@@ -5,7 +5,7 @@
 
 <div id="main-content">
     <h1>@ViewBag.account.DisplayName</h1>
-    <h2 class="table-header">Transaction History <a href="@Url.Action("PrintReport", "User", new { account_number = ViewBag.account.accountNumber() })"><button class="report-button main-button" type="button">Generate Report</button></a></h2>
+    <h2 class="table-header">Transaction History <a href="@Url.Action("PrintReport", "User", new { account_number = ViewBag.account.accountNumber() })" target="_blank"><button class="report-button main-button" type="button">Generate Report</button></a></h2>
     @if (ViewBag.account.getTransactions().Count > 0)
     {
     <table id="accounts-table">
