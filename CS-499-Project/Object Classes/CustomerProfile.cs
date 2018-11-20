@@ -22,7 +22,7 @@ namespace CS_499_Project.Object_Classes
             this.accounts = new List<AccountInterface>();
             Database acctVerify = new Database();
             var acct_results = acctVerify.Login(username, "customer");
-            this.username = acct_results["username"];
+            this.username = username;
             this.profile_type = ProfileType.CUSTOMER;
             var temp_accounts = acctVerify.CustomerAcctList(username);
             foreach (var acct in temp_accounts)
