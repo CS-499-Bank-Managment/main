@@ -53,7 +53,7 @@
             {<div class="trash-icon-small" data-url="@Url.Action("DeleteAccount", "Admin", new { username = (string)ViewBag.current_customer, account_id = (int)account.accountNumber() })"><img class="trash-img-small" src="~/images/trash.png" alt="delete account icon for @account.DisplayName" height="30" width="30" /></div>}
         </h3>
             <p>Balance: $@account.accountBalance().ToString("0.00")</p>
-            @if (account.getTransactions().Count > 0)
+            if (account.getTransactions().Count > 0)
             {
                 <table class="account-table">
                     <tr>

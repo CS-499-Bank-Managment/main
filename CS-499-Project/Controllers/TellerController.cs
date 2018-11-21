@@ -211,7 +211,6 @@ namespace CS_499_Project.Controllers
             var my_interface = Test_Auth.VerifySession(session);
 
             // TEST PURPOSES ONLY - REMOVE
-            Test_Auth.setCurrentCustomer("clay", session);
 
             var customer = Test_Auth.getCurrentCustomer(session);
             if (customer == my_interface.username)
@@ -220,8 +219,16 @@ namespace CS_499_Project.Controllers
             }
             ViewBag.cust = customer;
             ViewBag.searched = "yes";
-            ViewBag.Accounts = ((TellerProfile)my_interface).ListAccounts(customer);
+            
+            if (my_interface.profile_type == ProfileInterface.ProfileType.TELLER)
+            {
+                ViewBag.Accounts = ((TellerProfile) my_interface).ListAccounts(customer);
+            }
 
+            if (my_interface.profile_type == ProfileInterface.ProfileType.ADMIN)
+            {
+                ViewBag.Accounts = (new TellerProfile()).ListAccounts(customer);
+            }
 
             if (Request.HasFormContentType)
             {
@@ -231,13 +238,32 @@ namespace CS_499_Project.Controllers
 
                     ViewBag.cust = customer;
                     ViewBag.searched = "yes";
-                    ViewBag.Accounts = ((TellerProfile)my_interface).ListAccounts(customer);
+                    if (my_interface.profile_type == ProfileInterface.ProfileType.TELLER)
+                    {
+                        ViewBag.Accounts = ((TellerProfile) my_interface).ListAccounts(customer);
+                    }
+
+                    if (my_interface.profile_type == ProfileInterface.ProfileType.ADMIN)
+                    {
+                        ViewBag.Accounts = (new TellerProfile()).ListAccounts(customer);
+                    }
                 }
                 //At this point there should be an acctFrom in the title. this is just a sanity check
                 //To make sure we don't run this on page load.
                 if (!String.IsNullOrEmpty(Request.Form["acctFrom"]))
                 {
-                    ((TellerProfile)my_interface)?.Withdrawal(Convert.ToInt32(Request.Form["acctFrom"]), Convert.ToDecimal(Request.Form["amount"]));
+                    if (my_interface.profile_type == ProfileInterface.ProfileType.TELLER)
+                    {
+                        ((TellerProfile) my_interface)?.Withdrawal(Convert.ToInt32(Request.Form["acctFrom"]),
+                            Convert.ToDecimal(Request.Form["amount"]));
+                    }
+
+                    if (my_interface.profile_type == ProfileInterface.ProfileType.ADMIN)
+                    {
+                        (new TellerProfile()).Withdrawal(Convert.ToInt32(Request.Form["acctFrom"]),
+                            Convert.ToDecimal(Request.Form["amount"]));
+                    }
+
                     ViewBag.amt = Request.Form["amount"];
                     ViewBag.From = Request.Form["acctFrom"];
                     ViewBag.To = null;
@@ -267,8 +293,6 @@ namespace CS_499_Project.Controllers
 
             var my_interface = Test_Auth.VerifySession(session);
 
-            // TEST PURPOSES ONLY - REMOVE
-            Test_Auth.setCurrentCustomer("clay", session);
 
             var customer = Test_Auth.getCurrentCustomer(session);
             if (customer == my_interface.username)
@@ -276,9 +300,13 @@ namespace CS_499_Project.Controllers
                 return RedirectToAction("Dashboard", "Teller"); // if you're not helping someone, go back to dashboard
             }
             ViewBag.cust = customer;
+            Console.Clear();
+            Console.WriteLine($" Currently Helping: {customer}");
             ViewBag.searched = "yes";
             if (Verified.profile_type != ProfileInterface.ProfileType.CUSTOMER)
             {
+                Console.Clear();
+                Console.WriteLine($"Helping Customer: {customer}");
                 CustomerProfile custprof = new CustomerProfile(customer);
                 ViewBag.Accounts = custprof.ListAccounts();
             }
@@ -304,8 +332,18 @@ namespace CS_499_Project.Controllers
                 if (!String.IsNullOrEmpty(Request.Form["acctTo"]))
                 {
                     string cashorcheck = Request.Form["depType"];
-                    ((TellerProfile)my_interface)?.Deposit(Convert.ToInt32(Request.Form["acctTo"]),
-                        Convert.ToDecimal(Request.Form["amount"]), cashorcheck);
+                    if (my_interface.profile_type == ProfileInterface.ProfileType.TELLER)
+                    {
+                        ((TellerProfile) my_interface)?.Deposit(Convert.ToInt32(Request.Form["acctTo"]),
+                            Convert.ToDecimal(Request.Form["amount"]), cashorcheck);
+                    }
+
+                    if (my_interface.profile_type == ProfileInterface.ProfileType.ADMIN)
+                    {
+                        (new TellerProfile()).Deposit(Convert.ToInt32(Request.Form["acctTo"]),
+                            Convert.ToDecimal(Request.Form["amount"]), cashorcheck);
+                    }
+
                     ViewBag.To = Request.Form["acctTo"];
                     ViewBag.amt = Request.Form["amount"];
                     ViewBag.From = null;
