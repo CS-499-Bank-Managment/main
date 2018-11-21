@@ -777,6 +777,26 @@ namespace CS_499_Project.Object_Classes
             dbcmd.Parameters.AddWithValue("@id", number);
             return dbcmd.ExecuteScalar().ToString();
         }
+
+        public void DeleteProfile(string username, string role)
+        {
+            switch (role)
+            {
+                case "customer":
+                    dbcmd.CommandText = "DELETE FROM customers WHERE username=@name";
+                    break;
+                case "admin":
+                    dbcmd.CommandText = "DELETE FROM admins WHERE username=@name";
+                    break;
+                case "teller":
+                    dbcmd.CommandText = "DELETE FROM TELLERS WHERE username=@name";
+                    break;
+            }
+
+            dbcmd.Parameters.AddWithValue("name", username);
+            dbcmd.ExecuteNonQuery();
+
+        }
         //Destructor for database to make sure nothing stays open.
         ~Database()
         {

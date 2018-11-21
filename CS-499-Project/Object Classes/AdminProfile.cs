@@ -95,11 +95,7 @@ namespace CS_499_Project.Object_Classes
         /* MongoDB.deleteOne({ "_id"  : user.id_number });
          * 
          */
-        var tempfile = Path.GetTempFileName();
-        var temp = File.ReadLines("./WriteLines.txt").Where(l => l.Split(",")[0] != username);
-        File.WriteAllLines(tempfile, temp);
-        File.Delete("./WriteLines.txt");
-        File.Move(tempfile, "./WriteLines.txt");
+        (new Database()).DeleteProfile(username, "customer");
 
         return true;
     }
