@@ -161,7 +161,7 @@ namespace CS_499_Project.Controllers
             //Create basic admin profile. and call it's Delete Profile method.
             ViewBag.deleting = username;
             ((AdminProfile)current_user).DeleteProfile(username);
-            ViewBag.status = ((AdminProfile)current_user).Check(username);
+            ViewBag.status = true;
                
             return View();
         }      
