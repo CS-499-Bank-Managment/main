@@ -769,8 +769,12 @@ namespace CS_499_Project.Object_Classes
 
         public string GetAcctName(int number)
         {
+            if (number == 0)
+            {
+                return "Bank";
+            }
             this.dbcmd.CommandText = "SELECT name from customer_acct where acct_id=@id";
-            dbcmd.Parameters.AddWithValue("id", number);
+            dbcmd.Parameters.AddWithValue("@id", number);
             return dbcmd.ExecuteScalar().ToString();
         }
         //Destructor for database to make sure nothing stays open.
