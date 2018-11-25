@@ -232,9 +232,11 @@ namespace CS_499_Project.Controllers
             }
 
 
-            var my_interface = Test_Auth.VerifySession(session);
+             var my_interface = Test_Auth.VerifySession(session);
 
-            var customer = Test_Auth.getCurrentCustomer(session);
+             var customer = Test_Auth.getCurrentCustomer(session);
+            
+            //Get the customners profile, and set a flag that we've searched.
             ViewBag.cust = customer;
             ViewBag.searched = "yes";
             if (Verified.profile_type != ProfileInterface.ProfileType.CUSTOMER)
@@ -263,8 +265,17 @@ namespace CS_499_Project.Controllers
                 //To make sure we don't run this on page load.
                 if (!String.IsNullOrEmpty(Request.Form["acctTo"]))
                 {
-                    ((CustomerProfile)my_interface)?.Transfer(Convert.ToInt32(Request.Form["acctTo"]),
-                        Convert.ToInt32(Request.Form["acctFrom"]), Convert.ToDecimal(Request.Form["amount"]));
+                    if (Verified.profile_type != ProfileInterface.ProfileType.CUSTOMER)
+                    {
+                        new CustomerProfile(customer).Transfer(Convert.ToInt32(Request.Form["acctTo"]),
+                            Convert.ToInt32(Request.Form["acctFrom"]), Convert.ToDecimal(Request.Form["amount"]));
+                    }
+                    else
+                    {
+                        ((CustomerProfile) my_interface).Transfer(Convert.ToInt32(Request.Form["acctTo"]),
+                            Convert.ToInt32(Request.Form["acctFrom"]), Convert.ToDecimal(Request.Form["amount"]));
+                    }
+
                     ViewBag.To = Request.Form["acctTo"];
                     ViewBag.amt = Request.Form["amount"];
                     ViewBag.From = Request.Form["acctFrom"];
