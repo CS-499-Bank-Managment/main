@@ -25,14 +25,6 @@ namespace CS_499_Project.Object_Classes
         public void setDescription(string desc) => this.description = desc;
         public void setLabel(string label) => this.label = label;
 
-        //commented bc idk if we need this one
-        //public Transaction(decimal amount, string description, string label = null)
-        //{
-        //    this.amount = amount;
-        //    this.description = description;
-        //    this.label = label;
-        //    this.transaction_time.Equals(DateTime.Now);
-        //}
 
         public Transaction(decimal amnt, string desc, string date)
         {

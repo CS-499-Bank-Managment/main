@@ -1,5 +1,7 @@
 using System;
 
+//More or less a message object to make passing information about the transaction easier.
+
 namespace CS_499_Project.Object_Classes
 {
     public class TransactionInterface

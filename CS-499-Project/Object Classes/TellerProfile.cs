@@ -38,6 +38,10 @@ namespace CS_499_Project.Object_Classes
             return this._authenticated;
         }
         
+        /*
+         * All of the Methods here serve only to call a Database method.
+         */
+        
         public Dictionary<string, string> Transfer(int AcctTo, int AcctFrom, decimal amount)
         {
             Database DB = new Database();

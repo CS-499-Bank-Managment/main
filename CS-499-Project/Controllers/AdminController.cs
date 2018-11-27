@@ -82,16 +82,19 @@ namespace CS_499_Project.Controllers
             {
                 return View("Denied");
             }
-            if (((AdminProfile)current_user).CreateCustAccount(username, deposit, type, name, interest))
+
+            try
             {
-                // What is this hoping to accomplish? results has no contents. 
-                ViewBag.acct_user = username;
-                ViewBag.acct_dep = deposit;
-                ViewBag.acct_type = type;
-                ViewBag.acct_name = name;
+                if (((AdminProfile) current_user).CreateCustAccount(username, deposit, type, name, interest))
+                {
+                    // What is this hoping to accomplish? results has no contents. 
+                    ViewBag.acct_user = username;
+                    ViewBag.acct_dep = deposit;
+                    ViewBag.acct_type = type;
+                    ViewBag.acct_name = name;
+                }
             }
-            else
-            {
+            catch (SystemException) {
                 ViewBag.errorMessage = "Unable to create account";
             }
             return View();
