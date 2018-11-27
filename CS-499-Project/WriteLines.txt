@@ -1,2 +1,0 @@
-Clay,foo,admin
-Clay,foo,admin
