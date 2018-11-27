@@ -35,6 +35,9 @@ namespace CS_499_Project.Controllers
 
         public IActionResult DeleteProfileForm()
         {
+            /*
+             * View that presents a form to delete a user's Profile
+             */
             var database = new Database();
             var current_user = database.VerifySession(Request.Cookies["SESSION_ID"]);
             if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
@@ -108,6 +111,7 @@ namespace CS_499_Project.Controllers
 
         public IActionResult CreateProfileForm()
         {
+            //View to present a form to create a new profile.
             var current_user = new Database().VerifySession(Request.Cookies["SESSION_ID"]);
             if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
             {

@@ -50,7 +50,7 @@ namespace CS_499_Project.Object_Classes
         public bool NewUser(string username, string password, string role, string name, string email)
         {
             Console.WriteLine($"Function called with {username} {password} {role} {name} {email}");
-            //Add the username and password into the role diagram. TODO: fix sqli in roles.
+            //Add the username and password into the role table.
             switch (role)
             {
                 case "admin":
@@ -72,6 +72,7 @@ namespace CS_499_Project.Object_Classes
             this.dbcmd.ExecuteNonQuery();
 
 
+            //The following selects the appropriate query string to use
             Dictionary<string, string> info_dict = new Dictionary<string, string>();
             switch (role)
             {
@@ -89,6 +90,7 @@ namespace CS_499_Project.Object_Classes
             }
             dbcmd.Parameters.AddWithValue("user", username);
             SQLiteDataReader results = dbcmd.ExecuteReader();
+            //Then verifies the user was actually created.
             
             if (!results.HasRows)
             {
@@ -103,6 +105,7 @@ namespace CS_499_Project.Object_Classes
 
         }
 
+        //Gets all profiles from all tables.
         public List<String> GetAllProfiles()
         {
             List<string> profiles = new List<string>();
@@ -117,6 +120,7 @@ namespace CS_499_Project.Object_Classes
 
         public List<String> GetCustomers()
         {
+            //Gets all customers.
             List<string> profiles = new List<string>();
             this.dbcmd.CommandText = $"SELECT * FROM customers";
             SQLiteDataReader results = this.dbcmd.ExecuteReader();
@@ -671,8 +675,10 @@ namespace CS_499_Project.Object_Classes
 
         public List<ProfileInterface> CustomerLookup(string username, string type)
         {
+            //Returns a List of Profile Interfaces that match the username.
+            
             List<ProfileInterface> profile_list = new List<ProfileInterface>();
-             dbcmd.CommandText = "SELECT * from customers where username LIKE @user1 OR name LIKE @user2";
+            dbcmd.CommandText = "SELECT * from customers where username LIKE @user1 OR name LIKE @user2";
             dbcmd.Parameters.AddWithValue("user1", "%" + username + "%");
             dbcmd.Parameters.AddWithValue("user2", "%" + username + "%");
             var reader = dbcmd.ExecuteReader();
