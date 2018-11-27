@@ -44,7 +44,7 @@
         </div>
     </center>
     <h2>Accounts @if ((bool)ViewBag.isAdmin)
-    {<a href="@Url.Action("CreateAccountForm", "Admin")"><div class="add-icon"><img id="add-img" src="~/images/plus-48.png" width="30" height="30" alt="add account" /></div></a>}</h2>
+    {<a href="@Url.Action("CreateAccountForm", "Admin", new { user = ViewBag.current_customer})"><div class="add-icon"><img id="add-img" src="~/images/plus-48.png" width="30" height="30" alt="add account" /></div></a>}</h2>
     <div id="accounts-wrapper">
         @foreach (AccountInterface account in ViewBag.accounts)
         {

@@ -8,7 +8,8 @@
 <form action="./CreateAccountConfirmation" method="post">
     <br class="little-space" />
     <div class="input-field col s12 text-white">
-        <input id="acctname" class="field" type="text" name="name" />
+        <input type="hidden" value="@ViewBag.owner" name="username"/>
+        <input id="acctname" class="field" type="text" name="name"/>
         <label for="acctname">Account Display Name</label>
     </div>
     <br class="little-space" />

@@ -36,6 +36,7 @@ namespace CS_499_Project.Object_Classes
 
     public bool CreateCustAccount(string acct_owner, decimal balance, int type, string acct_name, decimal interest)
     {
+        Console.WriteLine($"Creating Account with the Following parameters: {acct_owner} {balance} {type} {acct_name} {interest}");
         new Database().CreateCustAcct(acct_owner, balance, type, acct_name, interest);
         return true;
     }

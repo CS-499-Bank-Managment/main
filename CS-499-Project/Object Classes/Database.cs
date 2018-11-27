@@ -195,11 +195,10 @@ namespace CS_499_Project.Object_Classes
             this.dbcmd.CommandText = "SELECT * from customers where username=@user";
             this.dbcmd.Parameters.AddWithValue("user", username);
             var reader = this.dbcmd.ExecuteReader();
-            var userid = "";
+            var userid = 0;
             while(reader.Read())
             {
-                Console.Out.WriteLine(Convert.ToString(reader["userid"]));
-                userid = Convert.ToString(reader["userid"]);
+                userid = Convert.ToInt32(reader["userid"]);
             }
 
             reader.Close();

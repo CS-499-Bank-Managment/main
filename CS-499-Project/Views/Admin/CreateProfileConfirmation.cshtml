@@ -11,7 +11,7 @@
         @{
             if (ViewBag.role == "customer")
             {
-                <a class="link" href="./CreateAccountForm">Create an Account!</a>
+                <a class="link" href="./CreateAccountForm?user=@ViewBag.User">Create an Account!</a>
             }
         }
 

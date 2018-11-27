@@ -54,6 +54,8 @@ namespace CS_499_Project.Controllers
             {
                 return View("Denied");
             }
+
+            ViewBag.owner = Request.Query["user"];
             List<string> results = new List<string>();
             results = database.GetCustomers();
             ViewBag.users = results;
