@@ -757,7 +757,7 @@ namespace CS_499_Project.Object_Classes
         public List<TransactionInterface> ListTransactions(long acct_id)
         {
             List<TransactionInterface> transaction_list = new List<TransactionInterface>();
-            dbcmd.CommandText = "SELECT * from transactions where acct_to=@id OR acct_from=@id";
+            dbcmd.CommandText = "SELECT * from transactions where acct_to=@id OR acct_from=@id ORDER BY date";
             dbcmd.Parameters.AddWithValue("id", acct_id);
             var reader = dbcmd.ExecuteReader();
             while (reader.Read())
