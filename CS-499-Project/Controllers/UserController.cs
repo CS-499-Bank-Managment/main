@@ -7,6 +7,18 @@ using System.Linq;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using System;
 
+/*
+ *
+ * At the top of every method you will see some Request.Cookies["SESSION_ID"],
+ * VerifySession(CookieValue)
+ * ...
+ * ((<role>Profile).Method());
+ *
+ * This Verifies the user is of the current type, and if it cannot be it returns the Denied View.
+ * This comment block servers as an explanation once, instead of every time.
+ * 
+ */
+
 namespace CS_499_Project.Controllers
 {
     public class UserController : Controller

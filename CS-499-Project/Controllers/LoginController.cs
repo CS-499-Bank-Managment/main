@@ -12,6 +12,18 @@ using System.Web.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 
+/*
+ *
+ * At the top of every method you will see some Request.Cookies["SESSION_ID"],
+ * VerifySession(CookieValue)
+ * ...
+ * ((<role>Profile).Method());
+ *
+ * This Verifies the user is of the current type, and if it cannot be it returns the Denied View.
+ * This comment block servers as an explanation once, instead of every time.
+ * 
+ */
+
 namespace CS_499_Project.Controllers
 {
     public class LoginController : Controller
