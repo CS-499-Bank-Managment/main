@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.Security.Cryptography;
 using System.Text;
+using System.Linq;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using Microsoft.AspNetCore.Mvc;
 
@@ -710,6 +711,11 @@ namespace CS_499_Project.Object_Classes
                 reader3.Close();
             }
             return profile_list;
+        }
+
+        public string GetUserType(string username)
+        {
+            return (from profile in CustomerLookup(username, "Admin") where profile.username == username select profile).ToList()[0].getType().ToLower();
         }
 
         public string GetUsername(int account_id)
