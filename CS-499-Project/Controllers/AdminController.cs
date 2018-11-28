@@ -94,7 +94,7 @@ namespace CS_499_Project.Controllers
                     ViewBag.acct_name = name;
                 }
             }
-            catch (SystemException) {
+            catch (SQLiteException) {
                 ViewBag.errorMessage = "Unable to create account";
             }
             return View();
@@ -150,18 +150,23 @@ namespace CS_499_Project.Controllers
                     return View();
                 }
 
-                //Call the create profile method
-                if (((AdminProfile)current_user).CreateProfile(User, Password, role, name, email))
+                try
                 {
-                    ViewBag.User = User;
-                    ViewBag.role = role;
-                    ViewBag.name = name;
-                    ViewBag.email = email;
-                    return View("CreateProfileConfirmation");
+                    //Call the create profile method
+                    if (((AdminProfile) current_user).CreateProfile(User, Password, role, name, email))
+                    {
+                        ViewBag.User = User;
+                        ViewBag.role = role;
+                        ViewBag.name = name;
+                        ViewBag.email = email;
+                        return View("CreateProfileConfirmation");
+                    }
+                        ViewBag.errorMessage = "COULD NOT CREATE USER";
                 }
-                else
+                catch (SQLiteException)
                 {
-                    ViewBag.errorMessage = "COULD NOT CREATE USER";
+                    ViewBag.errorMessage = "USERNAME ALREADY EXISTS";
+                    return View();
                 }
             }
 
