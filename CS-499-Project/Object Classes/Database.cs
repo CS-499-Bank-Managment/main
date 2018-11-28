@@ -757,7 +757,7 @@ namespace CS_499_Project.Object_Classes
         public List<TransactionInterface> ListTransactions(long acct_id)
         {
             List<TransactionInterface> transaction_list = new List<TransactionInterface>();
-            dbcmd.CommandText = "SELECT * from transactions where acct_to=@id OR acct_from=@id ORDER BY date";
+            dbcmd.CommandText = "SELECT * from transactions where acct_to=@id OR acct_from=@id ORDER BY date DESC";
             dbcmd.Parameters.AddWithValue("id", acct_id);
             var reader = dbcmd.ExecuteReader();
             while (reader.Read())
@@ -780,7 +780,14 @@ namespace CS_499_Project.Object_Classes
             }
             this.dbcmd.CommandText = "SELECT name from customer_acct where acct_id=@id";
             dbcmd.Parameters.AddWithValue("@id", number);
-            return dbcmd.ExecuteScalar().ToString();
+            try
+            {
+                return dbcmd.ExecuteScalar().ToString();
+            }
+            catch(NullReferenceException)
+            {
+                return "Invalid Account";
+            }
         }
 
         public void DeleteProfile(string username, string role)

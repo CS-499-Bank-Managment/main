@@ -193,8 +193,6 @@ namespace CS_499_Project.Controllers
             var LookupDB = new Database();
             var profile = (LookupDB).VerifySession(session);
             var username = LookupDB.getCurrentCustomer(session);
-            Console.Clear();
-            Console.WriteLine($"Function Parameter: {account_number}");
             if (profile?.profile_type != null)
             {
                 List<TransactionInterface> TransList = new List<TransactionInterface>();
