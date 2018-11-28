@@ -8,12 +8,12 @@
 {
     <meta http-equiv="refresh" content="0; URL='@ViewBag.redirect'" />
 }
+@if (ViewBag.errorMessage != null)
+{
+<p class="warn-message">@ViewBag.errorMessage</p>
+}
 @if (!ViewBag.Form)
 {
-    if (ViewBag.errorMessage != null)
-    {
-        <p class="warn-message">@ViewBag.errorMessage</p>
-    }
         <form method="post">
             <div class="input-field col s12 field text-white">
                 <input id="name" type="text" name="name" required />
