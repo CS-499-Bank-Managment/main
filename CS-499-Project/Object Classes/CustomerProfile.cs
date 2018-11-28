@@ -108,7 +108,7 @@ namespace CS_499_Project.Object_Classes
                 }
             }
         }
-        public Dictionary<string, string> Transfer(int AcctTo, int AcctFrom, decimal amount)
+        public Dictionary<string, string> Transfer(int AcctTo, int AcctFrom, decimal amount, string note = "")
         {
             Database DB = new Database();
             Dictionary<string, string> results = DB.TransferAcct(AcctTo, AcctFrom, amount);

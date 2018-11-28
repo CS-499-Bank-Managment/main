@@ -28,35 +28,9 @@ namespace CS_499_Project.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            //ProfileInterface current_user = (new Database().VerifySession(Request.Cookies["SESSION_ID"]));
-            //if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
-            //{
-            //    return View("Denied");
-            //}
-
-            ////This method shows the Default index page for the Admin Dashboard.
-
-            //ViewBag.username = current_user.username;
-            //ViewBag.role = current_user.profile_type;
-            //Console.WriteLine( current_user.GetType() == typeof(AdminProfile));
-            //return View();
             return RedirectToAction("Dashboard", "Teller");
         }
 
-        public IActionResult DeleteProfileForm()
-        {
-            /*
-             * View that presents a form to delete a user's Profile
-             */
-            var database = new Database();
-            var current_user = database.VerifySession(Request.Cookies["SESSION_ID"]);
-            if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
-            {
-                return View("Denied");
-            }
-            ViewBag.profiles = database.GetAllProfiles();
-            return View();
-        }
 
 
         public IActionResult CreateAccountForm()
@@ -173,22 +147,7 @@ namespace CS_499_Project.Controllers
 
             return View();
         }
-
-
-        public IActionResult DeleteProfileConfirmation(string username)
-        {
-            var current_user = new Database().VerifySession(Request.Cookies["SESSION_ID"]);
-            if (current_user?.profile_type != ProfileInterface.ProfileType.ADMIN)
-            {
-                return View("Denied");
-            }
-            //Create basic admin profile. and call it's Delete Profile method.
-            ViewBag.deleting = username;
-            ((AdminProfile)current_user).DeleteProfile(username);
-            ViewBag.status = true;
-               
-            return View();
-        }      
+     
         
         public IActionResult DeleteUser(string username)
         {

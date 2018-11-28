@@ -301,7 +301,7 @@ namespace CS_499_Project.Controllers
 
         public IActionResult Bill()
         {
-
+            CustomerProfile custprof = null;
             var session = Request.Cookies["SESSION_ID"];
             Database Test_Auth = new Database();
             ProfileInterface Verified = Test_Auth.VerifySession(session);
@@ -320,7 +320,7 @@ namespace CS_499_Project.Controllers
             ViewBag.cust = customer;
             if (Verified.profile_type != ProfileInterface.ProfileType.CUSTOMER)
             {
-                CustomerProfile custprof = new CustomerProfile(customer);
+                custprof = new CustomerProfile(customer);
                 ViewBag.Accounts = custprof.ListAccounts();
             }
             else {
@@ -339,7 +339,7 @@ namespace CS_499_Project.Controllers
                     ViewBag.searched = "yes";
                     if (Verified.profile_type != ProfileInterface.ProfileType.CUSTOMER)
                     {
-                        CustomerProfile custprof = new CustomerProfile(customer);
+                        custprof = new CustomerProfile(customer);
                         ViewBag.Accounts = custprof.ListAccounts();
                     }
                     else
@@ -352,8 +352,17 @@ namespace CS_499_Project.Controllers
                 //To make sure we don't run this on page load.
                 if (!String.IsNullOrEmpty(Request.Form["acctTo"]))
                 {
-                    ((CustomerProfile)my_interface)?.Transfer(Convert.ToInt32(Request.Form["acctTo"]),
-                        Convert.ToInt32(Request.Form["acctFrom"]), Convert.ToDecimal(Request.Form["amount"]));
+                    if (my_interface.profile_type == ProfileInterface.ProfileType.CUSTOMER)
+                    {
+                        ((CustomerProfile) my_interface)?.Transfer(Convert.ToInt32(Request.Form["acctTo"]),
+                            Convert.ToInt32(Request.Form["acctFrom"]), Convert.ToDecimal(Request.Form["amount"]));
+                    }
+                    else
+                    {
+                        custprof.Transfer(Convert.ToInt32(Request.Form["acctTo"]),
+                            Convert.ToInt32(Request.Form["acctFrom"]), Convert.ToDecimal(Request.Form["amount"]));
+                    }
+
                     ViewBag.To = Request.Form["acctTo"];
                     ViewBag.amt = Request.Form["amount"];
                     ViewBag.From = Request.Form["acctFrom"];
