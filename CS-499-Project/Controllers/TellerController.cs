@@ -312,13 +312,9 @@ namespace CS_499_Project.Controllers
                 return RedirectToAction("Dashboard", "Teller"); // if you're not helping someone, go back to dashboard
             }
             ViewBag.cust = customer;
-            Console.Clear();
-            Console.WriteLine($" Currently Helping: {customer}");
             ViewBag.searched = "yes";
             if (Verified.profile_type != ProfileInterface.ProfileType.CUSTOMER)
             {
-                Console.Clear();
-                Console.WriteLine($"Helping Customer: {customer}");
                 CustomerProfile custprof = new CustomerProfile(customer);
                 ViewBag.Accounts = custprof.ListAccounts();
             }
