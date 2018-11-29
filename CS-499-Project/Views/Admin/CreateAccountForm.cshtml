@@ -8,8 +8,8 @@
 <form action="./CreateAccountConfirmation" method="post">
     <br class="little-space" />
     <div class="input-field col s12 text-white">
-        <input type="hidden" value="@ViewBag.owner" name="username"/>
-        <input id="acctname" class="field" type="text" name="name"/>
+        <input type="hidden" value="@ViewBag.owner" name="username" />
+        <input id="acctname" class="field" type="text" name="name" />
         <label for="acctname">Account Display Name</label>
     </div>
     <br class="little-space" />
@@ -30,8 +30,12 @@
     <br class="little-space" />
     <div id="interest" class="input-field col s12 text-white">
         <div><label for="interest">Interest</label></div>
-        <input class="select" type="number" name="interest" step="0.01" value="0.00"/>
+        <input class="select" type="number" name="interest" step="0.01" value="0.00" />
     </div>
-    <div class="sumbit-button waves-effect waves-light btn light-green accent-2"><input type="submit" value="Add Account" /></div>
+    
+    <button class="sumbit-button waves-effect waves-light btn light-green accent-2 grey-text text-darken-3" type="submit">
+        Add Account 
+    </button>
+
 </form>
 
