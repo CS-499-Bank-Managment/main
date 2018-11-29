@@ -347,7 +347,7 @@ namespace CS_499_Project.Object_Classes
             return result_dict;
         }
 
-        public Dictionary<string, string> WithdrawAmt(int acct_from, decimal amount)
+        public Dictionary<string, string> WithdrawAmt(int acct_from, decimal amount, string description = "Cash Withdraw")
         {
             /*
              * This method removes money from one account.
@@ -391,7 +391,7 @@ namespace CS_499_Project.Object_Classes
                 new_balance_reader.Close();
 
 
-                LogTransaction(0, acct_from, amount, "Cash Withdrawal");
+                LogTransaction(0, acct_from, amount, description);
 
             }
 

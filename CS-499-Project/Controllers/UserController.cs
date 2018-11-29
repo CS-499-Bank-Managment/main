@@ -352,23 +352,14 @@ namespace CS_499_Project.Controllers
                 //To make sure we don't run this on page load.
                 if (!String.IsNullOrEmpty(Request.Form["acctTo"]))
                 {
-                    if (my_interface.profile_type == ProfileInterface.ProfileType.CUSTOMER)
-                    {
-                        ((CustomerProfile) my_interface)?.Transfer(Convert.ToInt32(Request.Form["acctTo"]),
-                            Convert.ToInt32(Request.Form["acctFrom"]), Convert.ToDecimal(Request.Form["amount"]));
-                    }
-                    else
-                    {
-                        custprof.Transfer(Convert.ToInt32(Request.Form["acctTo"]),
-                            Convert.ToInt32(Request.Form["acctFrom"]), Convert.ToDecimal(Request.Form["amount"]));
-                    }
+                    Test_Auth.WithdrawAmt(Convert.ToInt32(Request.Form["acctFrom"]), Convert.ToDecimal(Request.Form["amount"]), "Bill Pay");
+                    Test_Auth.WithdrawAmt(Convert.ToInt32(Request.Form["acctTo"]), Convert.ToDecimal(Request.Form["amount"]), "Bill Pay");
 
                     ViewBag.To = Request.Form["acctTo"];
                     ViewBag.amt = Request.Form["amount"];
                     ViewBag.From = Request.Form["acctFrom"];
                     ViewBag.type = "Bill Pay";
                     return View("Transaction");
-
                 }
             }
 
